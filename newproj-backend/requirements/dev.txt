@@ -1,0 +1,16 @@
+# Test
+# ------------------------------------------------------------------------------
+pytest==7.3.2
+pytest-django==4.5.2
+pytest-cov==4.1.0
+pytest-dependency==0.5.1
+coverage==7.2.7
+django-rest-assured==0.2.3
+factory-boy==2.11.1  # https://github.com/FactoryBoy/factory_boy
+
+# Other
+# ------------------------------------------------------------------------------
+django-extensions==3.2.3 # https://pypi.org/project/django-extensions/3.2.3/
+graphviz==0.20.1 # https://pypi.org/project/graphviz/0.20.1/
+iniconfig==2.0.0
+pluggy==1.2.0

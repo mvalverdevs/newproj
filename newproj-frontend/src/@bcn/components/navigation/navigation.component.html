@@ -1,0 +1,17 @@
+<div id="main-navigation" class="nav vertical">
+
+    <!-- Vertical Navigation Layout -->
+    <ng-container>
+
+        <ng-container *ngFor="let item of navigation">
+          <ng-container *ngIf="isAllowed(item) | async">
+              <bcn-nav-vertical-group *ngIf="item.type=='group'" [item]="item"></bcn-nav-vertical-group>
+              <bcn-nav-vertical-collapsable *ngIf="item.type=='collapse'" [item]="item"></bcn-nav-vertical-collapsable>
+              <bcn-nav-vertical-item *ngIf="item.type=='item'" [item]="item"></bcn-nav-vertical-item>
+          </ng-container>
+        </ng-container>
+
+    </ng-container>
+    <!-- / Vertical Navigation Layout -->
+
+</div>

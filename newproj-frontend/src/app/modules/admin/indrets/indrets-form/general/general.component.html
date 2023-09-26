@@ -1,0 +1,674 @@
+<form
+    *ngIf="this.InputformService.form.get('data')"
+    #formElement
+    fxLayout="column"
+    fxLayoutAlign="start"
+    fxFlex="100"
+    name="form"
+    [formGroup]="InputformService.form.get('data')"
+>
+    <mat-accordion>
+        <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon
+                        class="error"
+                        *ngIf="!!this.errors"
+                        [svgIcon]="'heroicons_outline:exclamation-circle'"
+                    ></mat-icon>
+                    Indret
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="flex flex-col">
+                <div class="flex gap-4" fxLayout.lt-sm="column">
+                    <mat-form-field fxFlex="10" fxFlex.lt-sm="100">
+                        <mat-label>Núm. FUE</mat-label>
+
+                        <input
+                            matInput
+                            type="text"
+                            formControlName="identification"
+                        />
+                        <mat-error>
+                            <app-bcn-error
+                                [serverErrors]="this.errors?.identification"
+                                [control]="
+                                    InputformService.form.controls['data'][
+                                        'controls'
+                                    ].identification
+                                "
+                            ></app-bcn-error>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="10" fxFlex.lt-sm="100">
+                        <mat-label>ID origen</mat-label>
+
+                        <input
+                            matInput
+                            type="number"
+                            formControlName="id_source"
+                        />
+                        <mat-error>
+                            <app-bcn-error
+                                [serverErrors]="this.errors?.id_source"
+                                [control]="
+                                    InputformService.form.controls['data'][
+                                        'controls'
+                                    ].id_source
+                                "
+                            ></app-bcn-error>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field fxFlex="40" fxFlex.lt-sm="100">
+                        <mat-label>Nom indret</mat-label>
+
+                        <input matInput type="text" formControlName="name" />
+                        <mat-error>
+                            <app-bcn-error
+                                [serverErrors]="this.errors?.name"
+                                [control]="InputformService.form.controls['data']['controls'].name"
+                            ></app-bcn-error>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="20" fxFlex.lt-sm="100">
+                        <mat-label>Alta</mat-label>
+                        <input
+                            matInput
+                            [matDatepicker]="datepicker"
+                            formControlName="registration_date"
+                        />
+                        <mat-datepicker-toggle
+                            matIconSuffix
+                            [for]="datepicker"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #datepicker></mat-datepicker>
+                        <mat-error>
+                            <app-bcn-error
+                                [serverErrors]="this.errors?.registration_date"
+                                [control]="
+                                    InputformService.form.registration_date
+                                "
+                            ></app-bcn-error>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="flex gap-4" fxLayout.lt-sm="column">
+                    <div
+                        fxLayout="column"
+                        fxFlex="60"
+                        fxFlex.lt-sm="100"
+                        fxLayoutAlign="start start"
+                    >
+                        <div class="mb-1">
+                            <mat-label>Tipus d'establiment*</mat-label>
+                        </div>
+                        <app-area-autocomplete
+                            placeholder="{{ 'Seleccioni un valor' }}"
+                            fxFlex="50"
+                            style="width: 100%"
+                            [required]="true"
+                            [bgWhite]="true"
+                            [multiple]="true"
+                            [type]="'indret_type'"
+                            [disabled]="!InputformService.form.get('data.is_active').value"
+                            [canCreate]="false"
+                            [serverErrors]="this.errors?.types"
+                            [control]="
+                                InputformService.form.controls['data'][
+                                    'controls'
+                                ].types
+                            "
+                            [disabled]="!InputformService.form.get('data.is_active').value"
+                            formControlName="types"
+                            id="types"
+                            [matMinLength]="0"
+                            (change)="autocompleteCategory($event)"
+                        >
+                        </app-area-autocomplete>
+                    </div>
+                    <div
+                        fxLayout="column"
+                        fxFlex="40"
+                        fxFlex.lt-sm="100"
+                        fxLayoutAlign="start start"
+                    >
+                        <div class="mb-1">
+                            <mat-label>Categoria</mat-label>
+                        </div>
+                        <app-area-autocomplete
+                            placeholder="Seleccioni un tipus d'establiment"
+                            class="w-full"
+                            [required]="false"
+                            [bgWhite]="true"
+                            [multiple]="true"
+                            [disabled]="!InputformService.form.get('data.is_active').value"
+                            [type]="'indret_category'"
+                            [canCreate]="false"
+                            [serverErrors]="this.errors?.categories"
+                            [control]="
+                                InputformService.form.controls['data'][
+                                    'controls'
+                                ].categories
+                            "
+                            formControlName="categories"
+                            id="categories"
+                            [matMinLength]="0"
+                            readonly="true"
+                        >
+                        </app-area-autocomplete>
+                    </div>
+                </div>
+                <div class="flex gap-4" fxLayout.lt-sm="column">
+                    <div
+                    fxLayout="column"
+                    fxFlex="40"
+                    fxFlex.lt-sm="100"
+                    fxLayoutAlign="start start"
+                >
+                    <div class="mb-0">
+                        <mat-label>PNCOCA</mat-label>
+                    </div>
+                        <app-select-autocomplete
+                            class="w-full"
+                            placeholder="{{ 'Seleccioni un valor' }}"
+                            formControlName="pncoca"
+                            [bgWhite]="true"
+                            [multiple]="false"
+                            [data]="this.data_PNCOCA"
+                            [serverErrors]="this.errors?.pncoca"
+                            [control]="InputformService.form.controls['data']['controls'].pncoca"
+                            [disabled]="!InputformService.form.get('data.is_active').value"
+                            [matMinLength]="0"
+                        >
+                        </app-select-autocomplete>
+                    </div>
+
+                    <!-- <div
+                    fxLayout="column"
+                    fxFlex="30"
+                    fxFlex.lt-sm="100"
+                    fxLayoutAlign="start start"
+                >
+                    <div class="mb-1">
+                        <mat-label>Classificació ambiental</mat-label>
+                    </div>
+
+                        <app-select-autocomplete
+                        class="w-full"
+                        placeholder="{{ 'Seleccioni un valor' }}"
+                        formControlName="ambiental_risk"
+                        [bgWhite]="true"
+                        [multiple]="false"
+                        [data]="[
+                            { id: 'c1', name: 'C1' },
+                            { id: 'c2', name: 'C2' },
+                            { id: 'c3', name: 'C3' }
+                        ]"
+                        [serverErrors]="this.errors?.ambiental_risk"
+                        [control]="InputformService.form.controls['data']['controls'].ambiental_risk
+                        "
+                        [matMinLength]="0"
+                    >
+                    </app-select-autocomplete>
+                    </div> -->
+
+                    <mat-form-field fxFlex="30" class="w-full">
+                        <mat-label class="mb-2">Classificació ambiental</mat-label>
+
+                        <input
+                            matInput
+                            type="text"
+                            formControlName="ambiental_risk"
+                        />
+                        <mat-error>
+                            <app-bcn-error
+                                [serverErrors]="this.errors?.ambiental_risk"
+                                [control]="
+                                    InputformService.form.controls['data'][
+                                        'controls'
+                                    ].ambiental_risk
+                                "
+                            ></app-bcn-error>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="flex gap-4 mb-4" fxLayout.lt-sm="column">
+                    <div
+                        class="flex flex-col"
+                        fxFlex="20"
+                        fxFlex.lt-sm="100"
+                        *isShown="[[InputformService.form.get('data.categories').value ],[7]]"
+                    >
+                        <mat-form-field class="w-full">
+                            <mat-label fxLayoutAlign="space-between center">
+                                <span class="mb-2">Codi escola</span>
+                                <div
+                                    class="hint_info"
+                                    fxLayoutAlign="start center"
+                                >
+                                    <mat-icon
+                                        class="mr-1 mb-1"
+                                        [svgIcon]="
+                                            'heroicons_outline:information-circle'
+                                        "
+                                    ></mat-icon>
+                                    <mat-hint class="mb-2"
+                                        >Codi consorci educació</mat-hint
+                                    >
+                                </div>
+                            </mat-label>
+
+                            <input
+                                class="mt-2"
+                                matInput
+                                type="text"
+                                formControlName="school_code"
+                            />
+                            <mat-error>
+                                <app-bcn-error
+                                    [serverErrors]="this.errors?.school_code"
+                                    [control]="
+                                        InputformService.form.controls['data'][
+                                            'controls'
+                                        ].school_code
+                                    "
+                                ></app-bcn-error>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div
+                        fxLayout="column"
+                        fxFlex="50"
+                        fxFlex.lt-sm="100"
+                        fxLayoutAlign="start start"
+                    >
+                        <div class="mb-0">
+                            <mat-label>Indrets relacionat</mat-label>
+                        </div>
+
+                        <app-indrets-autocomplete
+                            *ngIf="!hasAddressIndret"
+                            placeholder="{{ 'Seleccioni un valor' }}"
+                            class="w-full"
+                            [required]="false"
+                            [bgWhite]="true"
+                            [multiple]="true"
+                            [nameLabel]="true"
+                            [canCreate]="false"
+                            [idIndret]="InputformService.form.value.data.id"
+                            [disabled]="!InputformService.form.get('data.is_active').value"
+                            [serverErrors]="this.errors?.related_indrets"
+                            [control]="
+                                InputformService.form.controls['data'][
+                                    'controls'
+                                ].related_indrets
+                            "
+                            formControlName="related_indrets"
+                            id="related_indrets"
+                            [matMinLength]="0"
+                        >
+                        </app-indrets-autocomplete>
+
+                        <app-indrets-autocomplete
+                            *ngIf="hasAddressIndret"
+                            placeholder="{{ 'Seleccioni un valor' }}"
+                            class="w-full"
+                            [required]="false"
+                            [formService]="InputformService.form.value.data"
+                            [bgWhite]="true"
+                            [multiple]="true"
+                            [nameLabel]="true"
+                            [canCreate]="false"
+                            [hasAddressIndret]="hasAddressIndret"
+                            [disabled]="!InputformService.form.get('data.is_active').value"
+                            [idIndret]="InputformService.form.value.data.id"
+                            [data]="
+                                hasAddressIndret ? addressIndret : undefined
+                            "
+                            [serverErrors]="this.errors?.related_indrets"
+                            [control]="
+                                InputformService.form.controls['data'][
+                                    'controls'
+                                ].related_indrets
+                            "
+                            formControlName="related_indrets"
+                            [matMinLength]="0"
+                        >
+                        </app-indrets-autocomplete>
+                    </div>
+                </div>
+
+                <div class="flex gap-4 mb-4" fxLayout.lt-sm="column">
+                    <mat-form-field
+                        class="textarea"
+                        fxFlex="100"
+                        fxFlex.lt-sm="100"
+                    >
+                        <mat-label>Observaciones (opcional)</mat-label>
+
+                        <textarea
+                            matInput
+                            type="text"
+                            formControlName="observations"
+                        ></textarea>
+                        <mat-error>
+                            <app-bcn-error
+                                [serverErrors]="this.errors?.observations"
+                                [control]="
+                                    InputformService.form.controls['data'][
+                                        'controls'
+                                    ].observations
+                                "
+                            ></app-bcn-error>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon
+                        class="error"
+                        *ngIf="getErrorsAddress()"
+                        [svgIcon]="'heroicons_outline:exclamation-circle'"
+                    ></mat-icon>
+                    Direcció
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="flex gap-4 mb-4 end" fxLayout.lt-sm="column">
+                <button
+                    mat-stroked-button
+                    color="primary"
+                    (click)="clearAddress()"
+                >
+                <mat-icon>clear</mat-icon>
+                    Esborrar direcció
+                </button>
+            </div>
+            <div class="flex gap-4 mb-4" fxLayout.lt-sm="column">
+
+                <div
+                    fxLayout="column"
+                    fxFlex="40"
+                    fxFlex.lt-sm="100"
+                    fxLayoutAlign="start start"
+                >
+                    <div class="mb-1 bold">
+                        <mat-label>Tipus via</mat-label>
+                    </div>
+                    <app-roadtype-geo-form
+                        class="w-full"
+                        placeholder="Seleccioni un valor"
+                        i18n-placeholder
+                        [form]="InputformService.form"
+                        [required]="true"
+                        [multiple]="false"
+                        [disabled]="!InputformService.form.get('data.is_active').value"
+                        [matMinLength]="0"
+                        [serverErrors]="this.errors"
+                        [field]="'data.type_of_road'"
+                    >
+                    </app-roadtype-geo-form>
+                </div>
+
+                <div
+                    fxLayout="column"
+                    fxFlex="40"
+                    fxFlex.lt-sm="100"
+                    fxLayoutAlign="start start"
+                >
+                    <div class="mb-1 bold">
+                        <mat-label>Via</mat-label>
+                    </div>
+                    <app-road-geo-form
+                        class="w-full"
+                        placeholder="Seleccioni un valor"
+                        i18n-placeholder
+                        [form]="InputformService.form"
+                        [required]="true"
+                        [disabled]="!InputformService.form.get('data.is_active').value"
+                        [multiple]="false"
+                        [matMinLength]="0"
+                        [serverErrors]="this.errors"
+                        [field]="'data.street'"
+                        [typeRoad]="'data.type_of_road_id'"
+                    >
+                    </app-road-geo-form>
+                </div>
+
+                <div
+                    fxLayout="column"
+                    fxFlex="10"
+                    fxFlex.lt-sm="100"
+                    fxLayoutAlign="start start"
+                >
+                    <div class="mb-1 bold">
+                        <mat-label>Número</mat-label>
+                    </div>
+                    <app-address-geo-form
+                        class="w-full"
+                        placeholder="Triï un numero"
+                        i18n-placeholder
+                        [form]="InputformService.form"
+                        [required]="true"
+                        [disabled]="!InputformService.form.get('data.is_active').value"
+                        [multiple]="false"
+                        [matMinLength]="0"
+                        [serverErrors]="this.errors"
+                        [field]="'data.start_number'"
+                        [road]="'data.street_id'"
+                        (emit)="getIndretAddress()"
+                    >
+                    </app-address-geo-form>
+                </div>
+            </div>
+
+            <div class="flex gap-4 mb-4" fxLayout.lt-sm="column" fxLayout="start end">
+                <mat-form-field fxFlex="10" fxFlex.lt-sm="100">
+                    <mat-label>Codi postal</mat-label>
+
+                    <input
+                        matInput
+                        type="text"
+                        formControlName="zip_code"
+                        readonly
+                    />
+                    <mat-error>
+                        <app-bcn-error
+                            [serverErrors]="this.errors?.zip_code"
+                            [control]="
+                                InputformService.form.controls['data'][
+                                    'controls'
+                                ].zip_code
+                            "
+                        ></app-bcn-error>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field fxFlex="40" fxFlex.lt-sm="100">
+                    <mat-label>Barri</mat-label>
+
+                    <input
+                        matInput
+                        type="text"
+                        formControlName="neighborhood_name"
+                        readonly
+                    />
+                    <mat-error>
+                        <app-bcn-error
+                            [serverErrors]="this.errors?.neighborhood_name"
+                            [control]="
+                                InputformService.form.controls['data'][
+                                    'controls'
+                                ].neighborhood_name
+                            "
+                        ></app-bcn-error>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field fxFlex.lt-sm="100" fxFlex="30">
+                    <mat-label>Districte</mat-label>
+                    <input
+                        matInput
+                        type="text"
+                        formControlName="district_name"
+                        readonly
+                    />
+                    <mat-error>
+                        <app-bcn-error
+                            [serverErrors]="this.errors?.district_name"
+                            [control]="
+                                InputformService.form.controls['data'][
+                                    'controls'
+                                ].district_name
+                            "
+                        ></app-bcn-error>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="flex gap-4 mb-4" fxLayout.lt-sm="column">
+                <div
+                    class="flex-col w-full"
+                    *ngIf="
+                        !InputformService.form.get('data.district_name').value
+                    "
+                >
+                    <mat-form-field fxFlex="10" fxFlex.lt-sm="100">
+                        <mat-label>Coordenades X</mat-label>
+                        <input
+                            matInput
+                            type="text"
+                            formControlName="dev_coordinates_lat"
+                            placeholder="X (metres)"
+                        />
+                        <mat-error>
+                            <app-bcn-error
+                                [serverErrors]="
+                                    this.errors?.dev_coordinates_lat
+                                "
+                                [control]="
+                                    InputformService.form.controls['data'][
+                                        'controls'
+                                    ].dev_coordinates_lat
+                                "
+                            ></app-bcn-error>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div
+                    class="flex-col w-full"
+                    *ngIf="
+                        !InputformService.form.get('data.district_name').value
+                    "
+                >
+                    <mat-form-field fxFlex="10" fxFlex.lt-sm="100">
+                        <mat-label>Coordenades Y</mat-label>
+                        <input
+                            matInput
+                            type="text"
+                            formControlName="dev_coordinates_lon"
+                            placeholder="Y (metres)"
+                        />
+                        <mat-error>
+                            <app-bcn-error
+                                [serverErrors]="
+                                    this.errors?.dev_coordinates_lon
+                                "
+                                [control]="
+                                    InputformService.form.controls['data'][
+                                        'controls'
+                                    ].dev_coordinates_lon
+                                "
+                            ></app-bcn-error>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div
+                    fxLayout="column"
+                    fxFlex="40"
+                    fxFlex.lt-sm="100"
+                    fxLayoutAlign="start start"
+                >
+                    <div class="label mb-1">
+                        <mat-label>Centre</mat-label>
+                    </div>
+                    <app-area-autocomplete
+                        placeholder="{{ 'Seleccioneu un centre' }}"
+                        fxFlex="50"
+                        style="width: 100%"
+                        [required]="false"
+                        [bgWhite]="true"
+                        [position]="'top'"
+                        [multiple]="false"
+                        [type]="'indret_center_type'"
+                        [disabled]="!InputformService.form.get('data.is_active').value"
+                        [canCreate]="false"
+                        [serverErrors]="this.errors?.center"
+                        [control]="
+                            InputformService.form.controls['data']['controls']
+                                .center
+                        "
+                        formControlName="center"
+                        [matMinLength]="0"
+                    >
+                    </app-area-autocomplete>
+                </div>
+
+                <div class="flex-col w-full" fxFlex="50">
+                    <mat-label>Règim de propietat</mat-label>
+                    <div fxFlex class="flex-col">
+                        <mat-radio-group
+                            aria-label="Règim de propietat"
+                            [formControlName]="'is_property'"
+                            fxFlex
+                            class="flex-col"
+                        >
+                            <mat-radio-button [value]="true"
+                                >Propiedad</mat-radio-button
+                            >
+                            <mat-radio-button [value]="false"
+                                >Alquiler</mat-radio-button
+                            >
+                        </mat-radio-group>
+                        <mat-error>
+                            <app-bcn-error
+                                [serverErrors]="this.errors?.is_property"
+                                [control]="
+                                    InputformService.form.controls['data'][
+                                        'controls'
+                                    ].is_property
+                                "
+                            ></app-bcn-error>
+                        </mat-error>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gap-4 flex" style="color: orange">
+                <mat-icon
+                    style="color: orange"
+                    *ngIf="hasAddressIndret > 0"
+                    [svgIcon]="'heroicons_solid:exclamation-triangle'"
+                ></mat-icon>
+                <ng-template [ngIf]="hasAddressIndret === 1">
+                    <mat-hint
+                        >Ja existeix un indret per a aquesta adreça</mat-hint
+                    >
+                </ng-template>
+                <ng-template [ngIf]="hasAddressIndret > 1">
+                    <mat-hint
+                        >Ja hi ha diversos indret per a aquesta adreça</mat-hint
+                    >
+                </ng-template>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</form>

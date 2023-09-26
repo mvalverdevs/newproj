@@ -1,0 +1,22 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+<div mat-dialog-content>
+  <p *ngIf="data.text">{{data.text}}</p>
+  <ul *ngIf="data.list">
+    <li *ngFor="let item of data.list"
+    class="flex justify-between items-center">
+      {{item.name}}
+        <button
+            mat-icon-button
+            type="button"
+            [mat-dialog-close]="item"
+            matSuffix>
+            <mat-icon
+                class="icon-size-5"
+                [svgIcon]="'heroicons_solid:arrow-right'"></mat-icon>
+        </button>
+    </li>
+  </ul>
+</div>
+<div mat-dialog-actions class="text-right" fxLayoutAlign="end center">
+    <button mat-button [mat-dialog-close]="false">Cancel·lar </button>
+</div>

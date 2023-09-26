@@ -1,0 +1,172 @@
+@import 'src/@bcn/scss/bcn';
+
+
+:host {
+
+    .folded:not(.unfolded) & {
+
+        .nav-link {
+
+            > .nav-link-title,
+            > .nav-link-badge {
+                opacity: 0;
+                transition: opacity 200ms ease;
+            }
+        }
+    }
+
+    .nav-link {
+        text-decoration: none !important;
+        display: flex;
+        align-items: center;
+        height: 48px;
+        padding: 0 20px;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        user-select: none;
+        color: currentColor;
+
+        > .nav-link-title {
+            flex: 1 1 auto;
+            white-space: nowrap;
+        }
+
+        .nav-link-badge {
+            display: flex;
+            align-items: center;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 7px;
+            font-size: 11px;
+            font-weight: 500;
+            border-radius: 20px;
+            transition: opacity 0.2s ease-in-out 0.1s;
+            margin-left: 8px;
+
+            + .collapsable-arrow {
+                margin-left: 8px;
+            }
+        }
+
+        &:hover {
+            background-color: map-get($background, hover);
+        }
+
+        .mat-ripple-element {
+            background-color: map-get($background, hover);
+        }
+
+        &:hover, &.active{
+            .nav-link-icon {
+                opacity: 1;
+            }
+
+            .nav-link-title{
+            }
+
+            .nav-link-badge {
+                background: #FFFFFF !important;
+                color: rgba(0, 0, 0, 0.87) !important;
+            }
+        }
+
+        &.active {
+
+            background: mat-color($accent, 800);
+            color: white;
+
+           
+        }
+
+        .nav-link-icon {
+            margin-right: 16px;
+            opacity: 0.7;
+        }
+
+        .nav-link-icon,
+        .collapsable-arrow {
+            font-size: 23px;
+            width: 23px;
+            height: 23px;
+            min-width: 23px;
+            min-height: 23px;
+            line-height: 23px;
+        }
+    }
+}
+
+
+
+:host {
+
+    .folded:not(.unfolded) & {
+
+        .nav-link {
+
+            > span {
+                opacity: 0;
+                transition: opacity 200ms ease;
+            }
+        }
+
+        &.open {
+
+            .children {
+                display: none !important;
+            }
+        }
+    }
+
+    .nav-link {
+
+        .collapsable-arrow {
+            color: white;
+            transition: transform .3s ease-in-out, opacity .25s ease-in-out .1s;
+            transform: rotate(0);
+        }
+    }
+
+    &.nav-collapsable {
+        display: block;
+
+        > .children {
+
+            > .nav-item {
+
+                > .nav-link,
+                &.nav-group > .group-title,
+                &.nav-group > .group-items > .nav-item > .nav-link {
+                    padding-left: 56px;
+                }
+
+                > .children {
+
+                    > .nav-item {
+
+                        > .nav-link,
+                        &.nav-group > .group-title,
+                        &.nav-group > .group-items > .nav-item > .nav-link {
+                            padding-left: 72px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    > .children {
+        overflow: hidden;
+    }
+
+    &.open {
+
+        > .nav-link {
+
+            .collapsable-arrow {
+                color: white;
+                transform: rotate(90deg);
+            }
+        }
+    }
+}

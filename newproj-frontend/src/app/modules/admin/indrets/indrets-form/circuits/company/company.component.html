@@ -1,0 +1,232 @@
+<form *ngIf="InputformService.form.get('data.circuits.'+this.circuit_id+'.canteen.'+this.type)"
+        [formGroup]="InputformService.form.get('data.circuits.'+this.circuit_id+'.canteen.'+this.type)" fxLayout="row wrap"
+        fxLayoutAlign="start"
+        fxFlex="100"
+        fxLayoutGap="20px">
+        
+    <mat-form-field fxFlex="48">
+        <mat-label>Empresa</mat-label>
+        <input matInput formControlName="name" placeholder="Empresa">
+        <mat-error>
+           <app-bcn-error
+               [serverErrors]="this.errors?.name"
+               [control]="InputformService.form.get('data.circuits.'+this.circuit_id+'.canteen.'+this.type)['controls'].name"
+           ></app-bcn-error>
+       </mat-error>
+    </mat-form-field>
+
+    <mat-form-field fxFlex="48">
+        <mat-label>NIF</mat-label>
+        <input matInput type="text" formControlName="identification"  placeholder="00000000X" pattern="[0-9]{8}[A-z]{1}">
+        <mat-error>
+           <app-bcn-error
+               [serverErrors]="this.errors?.identification"
+               [control]="InputformService.form.get('data.circuits.'+this.circuit_id+'.canteen.'+this.type)['controls'].identification"
+           ></app-bcn-error>
+       </mat-error>
+    </mat-form-field>
+
+    <mat-form-field fxFlex="48">
+        <mat-label>RSIPA</mat-label>
+        <input matInput formControlName="rsipac"  placeholder="00.00000/CAT" pattern="[0-9]{2}.[0-9]{5}/CAT">
+        <mat-error>
+           <app-bcn-error
+               [serverErrors]="this.errors?.rsipac"
+               [control]="InputformService.form.get('data.circuits.'+this.circuit_id+'.canteen.'+this.type)['controls'].rsipac"
+           ></app-bcn-error>
+       </mat-error>
+    </mat-form-field>
+
+    <mat-form-field fxFlex="48">
+        <mat-label>Telèfon</mat-label>
+        <input matInput formControlName="phone" placeholder="Teléfono principal">
+        <mat-error>
+           <app-bcn-error
+               [serverErrors]="this.errors?.phone"
+               [control]="InputformService.form.get('data.circuits.'+this.circuit_id+'.canteen.'+this.type)['controls'].phone"
+           ></app-bcn-error>
+       </mat-error>
+    </mat-form-field>
+
+    <mat-form-field fxFlex="48">
+        <mat-label>RGSEAA</mat-label>
+        <input matInput formControlName="rgs" placeholder="00.00000/B" pattern="[0-9]{2}.[0-9]{5}/B">
+        <mat-error>
+           <app-bcn-error
+               [serverErrors]="this.errors?.rgs"
+               [control]="InputformService.form.get('data.circuits.'+this.circuit_id+'.canteen.'+this.type)['controls'].rgs"
+           ></app-bcn-error>
+       </mat-error>
+    </mat-form-field>
+
+    <mat-form-field fxFlex="48">
+        <mat-label>Correu electròn</mat-label>
+        <input matInput formControlName="email" placeholder="Correo electrónico" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+        <mat-error *ngIf="InputformService.form.get('data.circuits.'+this.circuit_id+'.canteen.'+this.type+'.email').invalid && InputformService.form.get('data.circuits.'+this.circuit_id+'.canteen.'+this.type+'.email').touched">
+            Email inválido
+        </mat-error>
+        <mat-error>
+           <app-bcn-error
+               [serverErrors]="this.errors?.email"
+               [control]="InputformService.form.get('data.circuits.'+this.circuit_id+'.canteen.'+this.type)['controls'].email"
+           ></app-bcn-error>
+       </mat-error>
+    </mat-form-field>
+
+    <mat-form-field fxFlex="48">
+        <mat-label>Domicili soci</mat-label>
+        <input matInput formControlName="registered_office" placeholder="Domicilio soci">
+        <mat-error>
+           <app-bcn-error
+               [serverErrors]="this.errors?.registered_office"
+               [control]="InputformService.form.get('data.circuits.'+this.circuit_id+'.canteen.'+this.type)['controls'].registered_office"
+           ></app-bcn-error>
+       </mat-error>
+    </mat-form-field>
+
+    <mat-form-field fxFlex="48">
+        <mat-label>Persona de contacte</mat-label>
+        <input matInput formControlName="contact_person" placeholder="Persona de contacto">
+        <mat-error>
+           <app-bcn-error
+               [serverErrors]="this.errors?.contact_person"
+               [control]="InputformService.form.get('data.circuits.'+this.circuit_id+'.canteen.'+this.type)['controls'].contact_person"
+           ></app-bcn-error>
+       </mat-error>
+    </mat-form-field>
+
+    <mat-form-field fxFlex="100">
+        <mat-label>Observacions</mat-label>
+        <textarea matInput formControlName="observations" placeholder="Observaciones"></textarea>
+        <mat-error>
+           <app-bcn-error
+               [serverErrors]="this.errors?.observations"
+               [control]="InputformService.form.get('data.circuits.'+this.circuit_id+'.canteen.'+this.type)['controls'].observations"
+           ></app-bcn-error>
+       </mat-error>
+    </mat-form-field>
+    <mat-accordion fxFlex="100">
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <!-- <mat-icon class="error" *ngIf="titular?.direccio?.error"
+                              [svgIcon]="'heroicons_outline:exclamation-circle'"></mat-icon> -->
+                    Direcció
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="flex gap-4" fxLayout.lt-sm="column" fxLayoutGap="10px">
+                
+                <mat-form-field fxFlex="30" class="w-full">
+                    <mat-label>Província</mat-label>
+                    <input matInput type="text" formControlName="province">
+                    <mat-error>
+                        <app-bcn-error [serverErrors]="this.errors?.province"
+                                       [control]="InputformService.form.get('data.circuits.'+this.circuit_id+'.canteen.'+this.type)['controls'].province"></app-bcn-error>
+                    </mat-error>
+                </mat-form-field>
+            
+                <mat-form-field fxFlex="40" class="w-full">
+                    <mat-label>Municipi</mat-label>
+                    <input matInput type="text" formControlName="population">
+                    <mat-error>
+                        <app-bcn-error [serverErrors]="this.errors?.population"
+                                       [control]="InputformService.form.get('data.circuits.'+this.circuit_id+'.canteen.'+this.type)['controls'].population"></app-bcn-error>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field fxFlex="10" fxFlex.lt-sm="100">
+                    <mat-label>Codi postal</mat-label>
+
+                    <input matInput type="text" formControlName="zip_code" [readonly]="InputformService.form.get('data.circuits.'+this.circuit_id+'.canteen.'+this.type+'.population').value == 'Barcelona'">
+                    <mat-error>
+                        <app-bcn-error [serverErrors]="this.errors?.zip_code"
+                                       [control]="InputformService.form.get('data.circuits.'+this.circuit_id+'.canteen.'+this.type)['controls'].zip_code"></app-bcn-error>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="flex gap-4" fxLayout.lt-sm="column" fxLayoutGap="10px">
+                <mat-form-field fxFlex="20" class="w-full" *ngIf="InputformService.form.get('data.circuits.'+this.circuit_id+'.canteen.'+this.type+'.population').value != 'Barcelona'">
+                    <mat-label>Tipus via</mat-label>
+                    <input matInput type="text" formControlName="type_of_road_name" placeholder="Ex: Avinguda">
+                    <mat-error>
+                        <app-bcn-error [serverErrors]="this.errors?.type_of_road_name"
+                                       [control]="InputformService.form.controls['data']['controls'].type_of_road_name"></app-bcn-error>
+                    </mat-error>
+                </mat-form-field>
+                 
+                <div *ngIf="InputformService.form.get('data.circuits.'+this.circuit_id+'.canteen.'+this.type+'.population').value == 'Barcelona'"
+                     fxLayout="column" fxFlex="20" fxFlex.lt-sm="100"
+                     fxLayoutAlign="start start" fxLayoutGap="10px">
+                    <div class="mb-0 bold">
+                        <mat-label>Tipus via</mat-label>
+                    </div>
+                    <app-roadtype-geo-form 
+                                           class="w-full"
+                                           placeholder="Seleccioni un valor"
+                                           i18n-placeholder
+                                           [form]="InputformService.form.get('data.titularity')"
+                                           [required]="true" [multiple]="false" [matMinLength]="0"
+                                           [serverErrors]="this.errors" [field]="'type_of_road'">
+                    </app-roadtype-geo-form>
+                </div>
+
+                <mat-form-field fxFlex="50" class="w-full" *ngIf="InputformService.form.get('data.circuits.'+this.circuit_id+'.canteen.'+this.type+'.population').value != 'Barcelona'">
+                    <mat-label>Via</mat-label>
+                    <input matInput type="text" formControlName="street_name" placeholder="Ex: Gran Vía">
+                    <mat-error>
+                        <app-bcn-error [serverErrors]="this.errors?.street_name"
+                                       [control]="InputformService.form.get('data.circuits.'+this.circuit_id+'.canteen.'+this.type)['controls'].street_name"></app-bcn-error>
+                    </mat-error>
+                </mat-form-field>
+
+                <div *ngIf="InputformService.form.get('data.circuits.'+this.circuit_id+'.canteen.'+this.type+'.population').value == 'Barcelona'"
+                     fxLayout="column" fxFlex="40" fxFlex.lt-sm="100"
+                     fxLayoutAlign="start start" fxLayoutGap="10px">
+                    <div class="mb-0 bold">
+                        <mat-label>Via</mat-label>
+                    </div>
+                    <app-road-geo-form 
+                                    
+                                    class="w-full" 
+                                    placeholder="Seleccioni un valor"
+                                    i18n-placeholder [form]="InputformService.form.get('data.titularity')"
+                                    [required]="true" [multiple]="false" [matMinLength]="0"
+                                    [serverErrors]="this.errors" [field]="'street'"
+                                    [typeRoad]="'type_of_road_id'">
+                    </app-road-geo-form>
+                </div>
+
+                <mat-form-field fxFlex="10" class="w-full" *ngIf="InputformService.form.get('data.circuits.'+this.circuit_id+'.canteen.'+this.type+'.population').value != 'Barcelona'">
+                    <mat-label>Número</mat-label>
+                    <input matInput type="text" formControlName="start_number_name" placeholder="#">
+                    <mat-error>
+                        <app-bcn-error [serverErrors]="this.errors?.start_number_name"
+                                       [control]="InputformService.form.get('data.circuits.'+this.circuit_id+'.canteen.'+this.type)['controls'].start_number_name"></app-bcn-error>
+                    </mat-error>
+                </mat-form-field>
+
+                <div *ngIf="InputformService.form.get('data.circuits.'+this.circuit_id+'.canteen.'+this.type+'.population').value == 'Barcelona'"
+                     fxLayout="column" fxFlex="10" fxFlex.lt-sm="100"
+                     fxLayoutAlign="start start" fxLayoutGap="10px">
+                    <div class="mb-0 bold">
+                        <mat-label>Número</mat-label>
+                    </div>
+                    <app-address-geo-form class="w-full" placeholder="Triï un numero" i18n-placeholder
+                                        [disabled]="InputformService.form.get('data.titularity.street_id').value"
+                                        [form]="InputformService.form.get('data.titularity')"
+                                        [required]="true" [multiple]="false" [matMinLength]="0"
+                                        [serverErrors]="this.errors" [field]="'start_number'"
+                                        [road]="'street_id'">
+                    </app-address-geo-form>
+                </div>
+
+            </div>
+
+           
+        </mat-expansion-panel>
+
+
+
+    </mat-accordion>
+</form>

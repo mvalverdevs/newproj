@@ -1,0 +1,17 @@
+{
+  "/api": {
+    "target": "http://api:8000",
+    "secure": false,
+    "pathRewrite": {
+      "^/api": "/api"
+    }
+  },
+  "/media": {
+    "target": "http://api:8000",
+    "secure": false,
+    "pathRewrite": {
+      "^/media": "/media"
+    }
+  },
+  "logLevel": "debug"
+}

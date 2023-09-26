@@ -1,0 +1,11 @@
+.git
+.idea
+.envs
+.editorconfig
+.gitignore
+.dockerignore
+node_modules/
+cache/
+Dockerfile
+**/Dockerfile
+docker-compose.yml

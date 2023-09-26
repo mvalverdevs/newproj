@@ -1,0 +1,64 @@
+<mat-accordion 
+    fxFlex="100"
+    fxLayoutGap="20px"
+    *ngIf="samplePointsForm"
+>
+    <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <span i18n> Punts de mostreig</span>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div fxLayout="column">
+            <form
+                #formServiceSP
+                fxLayout="row"
+                fxFlex="100"
+                name="formServiceSP"
+                [formGroup]="samplePointsForm">
+                    <div fxLayoutAlign="start center" fxFlex="100" >
+                        <mat-form-field  fxFlex.sm="50" fxFlex.gt-sm="70"  [disabled]="!InputformService.form.get('data.is_active').value">
+                            <mat-label>Nom punt de mostreig</mat-label>
+
+                            <input matInput type="text" formControlName="name" placeholder="Nom punt de mostreig" aria-placeholder="Nom punt de mostreig">
+                            
+                        </mat-form-field>
+                        <mat-checkbox  [disabled]="!InputformService.form.get('data.is_active').value" formControlName="is_active"fxFlex.sm="40" fxFlex.gt-md="15">Es actiu</mat-checkbox>
+                        <button  [disabled]="!InputformService.form.get('data.is_active').value" mat-button color="accent"  fxFlex.sm="5" fxFlex.gt-md="3"  (click)="addSamplePoint()"><mat-icon>add</mat-icon></button>
+                    </div>
+            </form>
+            <form
+                #formElement
+                fxLayout="row"
+                fxFlex="100"
+                fxLayoutAlign="start"
+                fxLayoutGap.sm="20px"
+                fxLayoutGap.xs="5px"
+                name="formSample"
+                [formGroup]="this.InputformService.form.get('data.circuits.'+circuit_id)">
+
+                    <mat-grid-list class="ml-4 mt-6" formArrayName="sample_points" [cols]="1" [rowHeight]="(200/breakpoint)" fxFlex="100" (window:resize)="onResize($event)">
+                        <mat-grid-tile style="background-color: #f6f6f6;" *ngFor="let sp of this.InputformService.form.get('data.circuits.'+circuit_id+'.sample_points').controls; let i=index" colspan="1" rowspan="1">
+                            <div class="pl-8 pt-4" [formGroupName]="i" fxLayout.xs="column" fxLayoutAlign.xs="start start" fxLayoutAlign="start center" fxFlex="100">
+
+                                <mat-form-field fxFlex.xs="100" fxFlex.gt-sm="50" >
+                                    <mat-label>Nom punt de mostreig</mat-label>
+
+                                    <input matInput [readonly]="this.InputformService.form.get('data.circuits.'+circuit_id+'.sample_points.'+i+'.id').value" type="text" formControlName="name" placeholder="Nom punt de mostreig" aria-placeholder="Nom punt de mostreig">
+                                    <mat-error>
+                                        <app-bcn-error [serverErrors]="this.errors?.name">
+                                        </app-bcn-error>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-checkbox fxFlex.xs="100" fxFlex.gt.sm="15" formControlName="is_active" [readOnly]="true">Es actiu</mat-checkbox>
+                                <button  [disabled]="!InputformService.form.get('data.is_active').value" *ngIf="!this.InputformService.form.get('data.circuits.'+circuit_id+'.sample_points.'+i+'.id').value"  fxFlex.xs="100" fxFlex.gt.sm="3" mat-button (click)="removeSamplePoint(i)"><mat-icon>delete</mat-icon></button>
+                            </div>
+                        </mat-grid-tile>
+                    </mat-grid-list>
+                    
+            </form>
+
+            </div>
+    </mat-expansion-panel>
+</mat-accordion>
+

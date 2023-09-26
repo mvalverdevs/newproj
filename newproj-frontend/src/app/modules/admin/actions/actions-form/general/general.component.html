@@ -1,0 +1,352 @@
+<form
+    *ngIf="this.formService.form.get('data') && userList.length>0"
+    #formElement
+    fxLayout="column"
+    fxLayoutAlign="start"
+    fxFlex="100"
+    name="form"
+    class="card"
+    [formGroup]="formService.form.get('data')"
+    fxLayoutGap="20px"
+>
+    <div fxLayoutAlign="start center" class="mt-4 mb-4" style="min-height: 100px;" fxLayoutGap="20px">
+        <div
+            fxLayout="column"
+            fxFlex="70"
+            fxFlex.lt-sm="100"
+            fxLayoutAlign="start start"
+            fxLayoutGap="5px"
+        >
+            <div class="mb-2">
+                <mat-label>Indret *</mat-label>
+            </div>
+            <app-indrets-autocomplete
+                placeholder="{{ 'Seleccioni un indret' }}"
+                fxFlex="100"
+                class="w-full"
+                [required]="true"
+                [bgWhite]="true"
+                [multiple]="false"
+                [nameLabel]="true"
+                [canCreate]="false"
+                formControlName="indret"
+                [serverErrors]="(this.formService.serverErrors$ | async)?.indret"
+                [control]="formService.form.controls['data']['controls'].indret"
+                [hasNoCircuits]="false"
+                id="indretSelect"
+                [matMinLength]="0"
+                (change)="getCircuits($event)"
+            >
+            </app-indrets-autocomplete>
+        </div>
+        <div
+            fxLayout="column"
+            fxFlex="30"
+            fxFlex.lt-sm="100"
+            fxLayoutAlign="start start"
+            fxLayoutGap="10px"
+        >
+            <div class="mb-2">
+                <mat-label>Estat *</mat-label>
+            </div>
+            <app-select-autocomplete
+                #selectStatus
+                fxFlex="100"
+                class="w-full"
+                placeholder="{{ 'Triï un estat' }}"
+                formControlName="status"
+                [bgWhite]="true"
+                [required]="true"
+                [multiple]="false"
+                [serverErrors]="(this.formService.serverErrors$ | async)?.status"
+                [control]="formService.form.controls['data']['controls'].status"
+                [data]="this.dataStatus"
+            >
+            </app-select-autocomplete>
+        </div>
+    </div>
+    <div
+        fxLayoutAlign="start center"
+        *ngIf="
+            this.formService.form.get('data.indret').value &&
+            (this.circuits$ | async)
+        "
+        fxLayoutGap="20px"
+    >
+        <div
+            fxLayout="column"
+            fxFlex="100"
+            fxFlex.lt-sm="100"
+            fxLayoutAlign="start start"
+            fxLayoutGap="5px"
+        >
+            <div class="mb-2">
+                <mat-label>Circuit *</mat-label>
+            </div>
+            <app-select-autocomplete
+                #selectCircuits
+                fxFlex="100"
+                class="w-full"
+                placeholder="Seleccioni un circuit"
+                formControlName="indret_circuits"
+                [bgWhite]="true"
+                [multiple]="true"
+                [required]="true"
+                [control]="
+                    formService.form.controls['data']['controls']
+                        .indret_circuits
+                "
+                [serverErrors]="(this.formService.serverErrors$ | async)?.indret_circuits"
+                [data]="this.circuits$ | async"
+                formControlName="indret_circuits"
+            >
+            </app-select-autocomplete>
+        </div>
+    </div>
+
+    <mat-accordion fxFlex="100">
+        <mat-expansion-panel fxFlex="100" fxLayoutGap="20px" [expanded]="true">
+            <mat-expansion-panel-header>
+                <mat-panel-title> Dades actuació </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div fxLayout="column">
+                <div class="w-full" fxFlex="100" fxLayoutGap="20px">
+                    <mat-form-field fxFlex="30" fxFlex.lt-sm="100">
+                        <mat-label>Data programada</mat-label>
+                        <input
+                            matInput
+                            [matDatepicker]="date_scheduled"
+                            formControlName="date_scheduled"
+                        />
+                        <mat-datepicker-toggle
+                            matIconSuffix
+                            [for]="date_scheduled"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #date_scheduled></mat-datepicker>
+                        <mat-error>
+                            <app-bcn-error
+                                [serverErrors]="(this.formService.serverErrors$ | async)?.date_scheduled"
+                                [control]="formService.form.date_scheduled"
+                            ></app-bcn-error>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="30" fxFlex.lt-sm="100">
+                        <mat-label>Data actuació</mat-label>
+
+                        <input
+                            matInput
+                            [matDatepicker]="action_date"
+                            formControlName="action_date"
+                        />
+                        <mat-datepicker-toggle
+                            matIconSuffix
+                            [for]="action_date"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #action_date></mat-datepicker>
+                        <mat-error>
+                            <app-bcn-error
+                                [serverErrors]="(this.formService.serverErrors$ | async)?.action_date"
+                                [control]="formService.form.action_date"
+                            ></app-bcn-error>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="w-full" fxFlex="100" fxLayoutGap="20px">
+                    <div
+                        fxLayout="column"
+                        fxFlex="100"
+                        fxFlex.lt-sm="100"
+                        fxLayoutAlign="start start"
+                    >
+                        <div class="mb-2">
+                            <mat-label>Motiu d'inspecció *</mat-label>
+                        </div>
+                        <app-area-autocomplete
+                            #selectmotiu
+                            placeholder="{{ 'Seleccioni un motiu' }}"
+                            fxFlex="50"
+                            style="width: 100%"
+                            [required]="true"
+                            [bgWhite]="true"
+                            [multiple]="false"
+                            [type]="'action_inspection_reason'"
+                            [canCreate]="false"
+                            [serverErrors]="(this.formService.serverErrors$ | async)?.inspection_reason"
+                            [control]="
+                                this.formService.form.controls['data'][
+                                    'controls'
+                                ].inspection_reason
+                            "
+                            formControlName="inspection_reason"
+                            id="inspection_reason"
+                            [matMinLength]="0"
+                        >
+                        </app-area-autocomplete>
+                    </div>
+                    <div
+                        fxLayout="column"
+                        fxFlex="40"
+                        fxFlex.lt-sm="100"
+                        fxLayoutAlign="start start"
+                    >
+                        <div class="mb-2">
+                            <mat-label>Motiu d'inspecció SIAPS</mat-label>
+                        </div>
+                        <app-area-autocomplete
+                            placeholder="Seleccioni un motiu d'inspecció SIAPS"
+                            class="w-full"
+                            [required]="false"
+                            [bgWhite]="true"
+                            [multiple]="false"
+                            [type]="'indret_type'"
+                            id="inspection_reason"
+                            [matMinLength]="0"
+                            readonly="true"
+                        >
+                            <!-- formControlName="" -->
+                        </app-area-autocomplete>
+                    </div>
+                </div>
+                <div fxFlex="100" class="w-full" fxLayoutGap="20px">
+                    <mat-form-field
+                        class="textarea"
+                        fxFlex="100"
+                        fxFlex.lt-sm="100"
+                    >
+                        <mat-label>Observaciones</mat-label>
+
+                        <textarea
+                            matInput
+                            type="text"
+                            formControlName="observations"
+                        ></textarea>
+                        <mat-error>
+                            <app-bcn-error
+                                [serverErrors]="(this.formService.serverErrors$ | async)?.observations"
+                                [control]="
+                                    this.formService.form.controls['data'][
+                                        'controls'
+                                    ].observations
+                                "
+                            ></app-bcn-error>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div
+                    fxFlex="100"
+                    fxLayout="column"
+                    class="w-full"
+                >
+                    <mat-label>Modalitat *</mat-label>
+                    <div fxFlex class="flex-col">
+                        <mat-radio-group
+                            aria-label="Modalitat"
+                            [formControlName]="'is_presencial'"
+                            fxFlex
+                            class="flex-col"
+                            fxLayoutGap="10px"
+                        >
+                            <mat-radio-button [value]="true"
+                                >Presencial</mat-radio-button
+                            >
+                            <mat-radio-button [value]="false"
+                                >Telemàtica</mat-radio-button
+                            >
+                        </mat-radio-group>
+                        <mat-error>
+                            <app-bcn-error
+                                [serverErrors]="(this.formService.serverErrors$ | async)?.is_presencial"
+                                [control]="this.formService.form.controls['data']['controls'].is_presencial"
+                            ></app-bcn-error>
+                        </mat-error>
+                    </div>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+
+    <div fxLayoutAlign="justify-between center" class="mt-4" >
+        <div fxLayout="row" fxFlex="60" fxLayoutGap="30px">
+            <div
+                fxLayout="column"
+                fxFlex="100"
+                fxFlex.lt-sm="50"
+                fxLayoutGap="10px"
+            >
+                <div class="mb-2">
+                    <mat-label>Asignar Tècnic *</mat-label>
+                </div>
+                <app-users-autocomplete
+                    placeholder="{{ 'Seleccioni un tècnic' }}"
+                    fxFlex="100"
+                    class="w-full"
+                    [required]="true"
+                    [bgWhite]="true"
+                    [multiple]="false"
+                    [nameLabel]="true"
+                    [canCreate]="false"
+                    [serverErrors]="(this.formService.serverErrors$ | async)?.indret_circuits"
+                    id="technicians"
+                    [matMinLength]="0"
+                    (change)="selectTech($event)"
+                >
+                </app-users-autocomplete>
+            </div>
+
+            <div
+                fxLayout="column"
+                fxFlex.lt-sm="100"
+                fxLayoutAlign="center center"
+            >
+                <button mat-raised-button (click)="this.addUsers(modelUser)">
+                    <mat-icon>add</mat-icon> Afegir tècnic
+                </button>
+            </div>
+        </div>
+    </div>
+    <mat-error>
+        <app-bcn-error
+            [serverErrors]="(this.formService.serverErrors$ | async)?.technicians"
+            [control]="formService.form.technicians"
+        ></app-bcn-error>
+    </mat-error>
+    <div fxLayout="row"
+        fxFlex="60"
+        style="border-bottom: 1px solid #F1F1F1; padding-bottom: 5px;"
+        *ngIf="
+            formService.form.get('data.technicians').value &&
+            formService.form.get('data.technicians').value.length > 0
+        "
+    >
+        <h1> Llistat de Tècnics </h1>
+    </div>
+    <div fxLayout="column" *ngIf="userList.length>0" fxFlex="100" fxLayoutAlign="start start">
+        <mat-list
+            fxLayout="row"
+            fxFlex="100"
+            fxFlex.lt-sm="100"
+            *ngFor="let tech of formService.form.get('data.technicians').value; let i=index"
+        >
+            <div class="w-full" fxLayoutAlign="justify-between center">
+                <div fxFlex="100" fxLayoutAlign="start center">
+                    <mat-icon
+                        class="mr-2 mt-0 mb-0"
+                        [svgIcon]="'heroicons_solid:envelope'"
+                    ></mat-icon>
+                    <span
+                        >{{ userDict[tech]?.email }} -
+                        {{ userDict[tech]?.first_name }}
+                        {{ userDict[tech]?.last_name }}</span
+                    >
+                </div>
+                <button
+                    type="button"
+                    mat-icon-button
+                    (click)="removeUser(i)"
+                >
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </mat-list>
+    </div>
+</form>

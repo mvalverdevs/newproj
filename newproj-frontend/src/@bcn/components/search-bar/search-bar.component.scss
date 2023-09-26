@@ -1,0 +1,92 @@
+@import "src/@bcn/scss/bcn";
+@import "src/@bcn/scss/core";
+
+:host {
+
+    .bcn-search-bar {
+        display: flex;
+        flex: 0 1 auto;
+        min-width: 60px;
+        height: $toolbar-height;
+        font-size: 13px;
+
+        @include media-breakpoint-down('sm') {
+            height: $toolbar-height - 1;
+        }
+
+        .bcn-search-bar-content {
+            display: flex;
+            flex: 1 1 auto;
+            align-items: center;
+            justify-content: flex-start;
+
+            .bcn-search-bar-expander,
+            .bcn-search-bar-collapser {
+                cursor: pointer;
+                padding: 0 20px;
+                margin: 0;
+                width: $toolbar-height - 1 !important;
+                height: $toolbar-height - 1 !important;
+                line-height: $toolbar-height - 1 !important;
+
+                @include media-breakpoint-down('sm') {
+                    height: $toolbar-height - 1 !important;
+                    line-height: $toolbar-height - 1 !important;
+                }
+            }
+
+            .bcn-search-bar-loader {
+                width: $toolbar-height - 1 !important;
+                height: $toolbar-height - 1 !important;
+                line-height: $toolbar-height - 1 !important;
+
+                @include media-breakpoint-down('sm') {
+                    height: $toolbar-height - 1 !important;
+                    line-height: $toolbar-height - 1 !important;
+                }
+            }
+
+            .bcn-search-bar-collapser {
+                display: none;
+            }
+
+            #bcn-search-bar-input {
+                display: none;
+                flex: 1 0 auto;
+                min-height: $toolbar-height - 1;
+                background-color: transparent;
+                font-size: 16px;
+            }
+        }
+
+        &.expanded {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 10;
+
+            .bcn-search-bar-content {
+
+                #bcn-search-bar-input {
+                    display: flex;
+                }
+
+                .bcn-search-bar-collapser {
+                    display: flex;
+                }
+            }
+        }
+    }
+
+    body {
+
+        &.bcn-search-bar-expanded {
+
+            #toolbar {
+                z-index: 999 !important;
+            }
+        }
+    }
+}

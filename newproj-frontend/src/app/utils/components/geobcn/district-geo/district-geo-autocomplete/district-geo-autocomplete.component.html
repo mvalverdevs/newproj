@@ -1,0 +1,30 @@
+<ng-select
+    appendTo="body"
+    (change)="setDistrictGeo($event)"
+    [placeholder]="placeholder+(required ? ' *':'')"
+    [attr.aria-label]="placeholder"
+    [attr.required]="required"
+    [items]="districtGeo$ | async"
+    [multiple]="multiple"
+    [hideSelected]="true"
+    bindLabel="descripcio"
+    bindValue="codi"
+    [(ngModel)]="modelDistrictGeo"
+    [closeOnSelect]="true"
+    [loading]="districtGeoLoading"
+    [typeahead]="districtGeoInput$"
+    [ngClass]="{'ng-select-error': (control && serverErrors && control.invalid)}"
+>
+    <ng-template ng-label-tmp ng-option-tmp let-item="item">
+        <span fxLayout="row" fxLayoutAlign="start center">
+            <span>{{item.descripcio}}</span>
+        </span>
+    </ng-template>
+</ng-select>
+<div class="ng-select-error-message" *ngIf="control && serverErrors">
+    <app-bcn-error
+        [serverErrors]="serverErrors"
+        [control]="control"
+    ></app-bcn-error>
+</div>
+

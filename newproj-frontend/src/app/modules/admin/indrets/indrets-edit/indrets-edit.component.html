@@ -1,0 +1,20 @@
+<div class="page-layout simple full-width p-10">
+    <!-- CONTENT -->
+    <div class="container" style="height: 100%;">
+
+        <ng-template #loading>
+            <app-fake-loading
+                *ngIf="loading"
+                [type]="'simple-form'"
+            ></app-fake-loading>
+        </ng-template>
+
+        <!-- Contact form -->
+        <div style="height: 100%;" *ngIf="indret$ | async as indret; else loading">
+            <app-indrets-form
+                [indret]="indret"
+                [isNew]="false"
+            ></app-indrets-form>
+        </div>
+    </div>
+</div>

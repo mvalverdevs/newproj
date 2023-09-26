@@ -1,0 +1,30 @@
+<div fxLayout="column" fxLayoutAlign="start start" class="w-full">
+    <ng-select class="custom-tags"
+               appendTo="body"
+               (change)="setRoadtypeGeo($event)"
+               [placeholder]="placeholder+(required ? ' *':'')"
+               [attr.aria-label]="placeholder"
+               [attr.required]="required"
+               [items]="roadtypeGeo$ | async"
+               [multiple]="multiple"
+               [hideSelected]="true"
+               bindLabel="nom"
+               bindValue="codi"
+               [(ngModel)]="modelRoadtypeGeo"
+               [closeOnSelect]="true"
+               [loading]="roadtypeGeoLoading"
+               [typeahead]="roadtypeGeoInput$"
+               [ngClass]="{'ng-select-error': (control && serverErrors && control.invalid)}">
+        <ng-template ng-label-tmp ng-option-tmp let-item="item">
+        <span fxLayout="row" fxLayoutAlign="start center">
+            <span>{{item.nom}}</span>
+        </span>
+        </ng-template>
+    </ng-select>
+    <mat-error class="ng-select-error-message" *ngIf="control && serverErrors">
+        <app-bcn-error
+            [serverErrors]="serverErrors"
+        ></app-bcn-error>
+    </mat-error>
+</div>
+

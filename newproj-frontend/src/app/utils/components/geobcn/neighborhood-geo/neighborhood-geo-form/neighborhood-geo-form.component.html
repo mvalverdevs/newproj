@@ -1,0 +1,10 @@
+<div>
+  <app-neighborhood-geo-autocomplete [placeholder]="placeholder" i18n-placeholder (change)="setValue()"
+                                     [required]="required" [multiple]="multiple" [matMinLength]="0"
+                                     [serverErrors]="errors" [(ngModel)]="model"
+                                     [control]="form.get(field + '_' + fields[0].nfge)"
+                                     [data]="form.get(field + '_' + fields[0].nfge)?.value"
+                                     [district]="district ? form.get(district).value : null">
+  </app-neighborhood-geo-autocomplete>
+</div>
+

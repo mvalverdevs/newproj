@@ -1,0 +1,18 @@
+<button mat-button style="min-width: auto; padding: 0 5px;"
+        [matMenuTriggerFor]="orderingMenu" title="Ordre">
+    <mat-icon *ngIf="!selected">sort_by_alpha</mat-icon>
+    <mat-icon *ngIf="selected && order=='asc'">keyboard_arrow_down</mat-icon>
+    <mat-icon *ngIf="selected && order=='desc'">keyboard_arrow_up</mat-icon>
+    {{ selected }}
+</button>
+<mat-menu #orderingMenu="matMenu">
+    <button *ngFor="let method of orderingMethods"
+            mat-menu-item (click)="ordering(method)"
+            [ngClass]="{
+              'ordering-selected': [method.field, '-' + method.field].includes(formServices[0].form.value.ordering)
+          }">
+        <mat-icon *ngIf="formServices[0].form.value.ordering !== method.field">keyboard_arrow_down</mat-icon>
+        <mat-icon *ngIf="formServices[0].form.value.ordering == method.field">keyboard_arrow_up</mat-icon>
+        {{ method.name }}
+    </button>
+</mat-menu>

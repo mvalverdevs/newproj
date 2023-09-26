@@ -1,0 +1,41 @@
+<div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+    <ng-select fxFlex class="custom-tags"
+               (change)="setIndretsCircuits($event)"
+               [placeholder]="placeholder+(required ? ' *':'')"
+               [attr.required]="required"
+               [items]="circuits$ | async"
+               [multiple]="multiple"
+               [hideSelected]="true"
+               bindLabel="name"
+               bindValue="id"
+               [(ngModel)]="modelIndretsCircuits"
+               [closeOnSelect]="true"
+               [loading]="circuitsLoading"
+               [typeahead]="circuitsInput$"
+               [disabled]="disabled"
+               [ngClass]="{'ng-select-error': (control && serverErrors && control.invalid), 'bgcolor_white': bgWhite, 'multiple':multiple}">
+        <ng-template ng-optgroup-tmp let-item="item">
+        <span fxLayout="row" fxLayoutAlign="start center">
+                <span>{{item.name}}</span>
+        </span>
+        </ng-template>
+        <ng-template ng-label-tmp let-item="item" let-clear="clear" *ngIf="multiple">
+            <mat-chip-listbox aria-label="Selecció circuit">
+                <mat-chip [removable]="true"
+                          (removed)="clear(item)">
+                    {{item.name}}
+                    <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+            </mat-chip-listbox>
+        </ng-template>
+        <ng-template ng-label-tmp ng-option-tmp let-item="item" *ngIf="!multiple">
+                {{item.name}}
+        </ng-template>
+    </ng-select>
+</div>
+<div class="ng-select-error-message" *ngIf="control && serverErrors">
+    <app-bcn-error
+        [serverErrors]="serverErrors"
+        [control]="control"
+    ></app-bcn-error>
+</div>

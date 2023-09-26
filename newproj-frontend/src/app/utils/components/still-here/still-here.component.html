@@ -1,0 +1,15 @@
+<div>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="30px" class="title_container">
+<!--        <img width="120px" src="assets/images/logos/logo.svg">-->
+        <h1 i18n>{{data.title}}</h1>
+    </div>
+    <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="30px">
+        <div fxLayout="column" fxLayoutAlign="start center" class="container">
+            <span id="number">{{seconds}}</span>
+            <span id="label">segons</span>
+        </div>
+        <span>{{data.text}}</span>
+        <button mat-button [mat-dialog-close]="false" mat-raised-button color="accent">Segueixo aquí
+        </button>
+    </div>
+</div>

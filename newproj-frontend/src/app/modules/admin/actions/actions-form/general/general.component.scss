@@ -1,0 +1,69 @@
+mat-icon.error {
+    color: #f7bbbb;
+}
+
+h1{
+    color: #334767;
+    font-weight: 500;
+}
+
+mat-panel-title{
+    color: #334767;
+}
+
+app-area-autocomplete {
+    margin-bottom: 20px;
+}
+
+mat-label {
+    font-weight: 500;
+}
+
+::ng-deep {
+
+    .mat-mdc-tab-group .mat-mdc-tab-body-content {
+        padding: 0 !important;
+    }
+}
+
+
+.inputTime{
+    min-height: 48px;
+    border: 1px solid #cbd5e1;
+    border-radius: 5px;
+    padding: 0 15px;
+}
+
+mat-label{
+    color: #334767;
+}
+
+.hint_info{
+    color: #334767AA;
+    font-weight: 400;
+    font-size: 0.7rem;
+}
+
+mat-accordion {
+    overflow: visible;
+}
+
+
+mat-expansion-panel {
+    overflow:visible;
+}
+
+.card {
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #FEFEFE;
+    box-shadow: #334767;
+}
+mat-list {
+    width: 50%;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border-bottom: 1px solid #F1F1F1;
+    background-color: #F9F9F9;
+    box-shadow: #334767;
+}

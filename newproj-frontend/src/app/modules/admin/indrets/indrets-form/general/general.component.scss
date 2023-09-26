@@ -1,0 +1,41 @@
+mat-icon.error {
+    color: #f7bbbb;
+}
+
+app-area-autocomplete {
+    margin-bottom: 20px;
+}
+
+mat-label {
+    font-weight: 500;
+}
+
+::ng-deep {
+
+    .mat-mdc-tab-group .mat-mdc-tab-body-content {
+        padding: 0 !important;
+    }
+}
+
+
+.inputTime{
+    min-height: 48px;
+    border: 1px solid #cbd5e1;
+    border-radius: 5px;
+    padding: 0 15px;
+}
+
+mat-label{
+    color: #334767;
+}
+
+.hint_info{
+    color: #334767AA;
+    font-weight: 400;
+    font-size: 0.7rem;
+}
+
+
+mat-expansion-panel {
+    overflow-y: none;
+}

@@ -1,0 +1,137 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+
+# --------------------------------------------------------------------
+# functions ----------------------------------------------------------
+# --------------------------------------------------------------------
+# Run django migrate script and set dummy table
+django_migrate() {
+    echo "*** Running migrate (and answer 'yes' to all questions)"
+    python manage.py migrate --no-input || exit 1
+}
+
+django_compilemessages() {
+    # Django compilemessages
+    echo "*** Running compilemessages"
+    python manage.py makemessages -l es | tail -1
+}
+
+django_collectstatic() {
+    echo "*** Running collectstatic"
+    python manage.py collectstatic --link --no-input | tail -1
+}
+postgres_ready() {
+  python <<END
+import sys
+import psycopg2
+
+try:
+    conn = psycopg2.connect(
+        dbname="${POSTGRES_DB}",
+        user="${POSTGRES_USER}",
+        password="${POSTGRES_PASSWORD}",
+        host="${POSTGRES_HOST}",
+        port="${POSTGRES_PORT}",
+    )
+    conn.close()
+except psycopg2.OperationalError as e:
+    print(e)
+    sys.exit(-1)
+sys.exit(0)
+
+END
+}
+
+loop_postgres_ready() {
+  until postgres_ready; do
+    echo >&2 'Waiting for PostgreSQL to become available...'
+    sleep 1
+  done
+  echo >&2 'PostgreSQL is available'
+}
+
+prepare_redis_url() {
+  local protocol
+  local rest_of_url
+
+  # Prepare REDIS_URL
+  if [ -n "${REDIS_PASSWORD:-}" ]; then
+    #Extract the protocol and the rest of the URL
+    protocol="${REDIS_URL%%://*}://"
+    rest_of_url="${REDIS_URL#*://}"
+
+    # Construct the new URL with the password
+    export REDIS_URL="${protocol}:${REDIS_PASSWORD}@${rest_of_url}"
+  fi
+}
+
+# --------------------------------------------------------------------
+# main ---------------------------------------------------------------
+# --------------------------------------------------------------------
+prepare_redis_url
+
+case "$1" in
+dev-webserver-api)
+  loop_postgres_ready
+  django_migrate
+  django_compilemessages
+  echo "Run development webserver"
+  python manage.py runserver 0.0.0.0:8000
+  ;;
+  
+uwsgi-api)
+  loop_postgres_ready
+  set +u
+  if [ "${ENTRYPOINT_DJANGO_MIGRATE:-yes}" == "yes" ]; then
+    django_migrate
+  else
+    echo "NOTICE: Skipping django migrations (env var ENTRYPOINT_DJANGO_MIGRATE!=yes)"
+  fi
+  set -u
+  django_compilemessages
+  echo "*** Launching uWSGI application server"
+  uwsgi --ini /etc/uwsgi/uwsgi.ini
+  ;;
+
+celery-worker-concurrent)
+  loop_postgres_ready
+  django_compilemessages
+  # common celery argyments
+  celeryargs="-A main.celery worker -l INFO -Ofair"
+  set +u
+  if [ -n "$CELERY_CONCURRENCY" ]; then
+    echo "*** Starting Celery Worker. Using CELERY_CONCURRENCY=${CELERY_CONCURRENCY}"
+    celeryargs="$celeryargs --concurrency=${CELERY_CONCURRENCY}"
+  else
+    echo "*** Starting Celery Worker. No CELERY_CONCURRENCY set, using default value (equal to number of CPUs)"
+  fi
+  set -u
+  echo "*** invokinkg 'celery $celeryargs'"
+  celery $celeryargs
+  ;;
+
+celery-worker-non-concurrent)
+  loop_postgres_ready
+  django_compilemessages
+  # common celery argyments
+  celeryargs="-A main.celery worker -l INFO -Ofair"
+  set +u
+  echo "*** Starting Celery Worker \"non concurrent\". Using CELERY_CONCURRENCY=1"
+  celeryargs="$celeryargs --concurrency=1 -Q non_concurrent"
+  set -u
+  echo "*** invokinkg 'celery $celeryargs'"
+  celery $celeryargs
+  ;;
+
+celery-beat)
+  loop_postgres_ready
+  rm -f './celerybeat.pid'
+  celery -A main.celery beat -l INFO
+  ;;
+
+*)
+  exec "$@"
+  ;;
+esac

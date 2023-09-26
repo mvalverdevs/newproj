@@ -1,0 +1,21 @@
+<div class="page-layout simple full-width p-10">
+    <!-- CONTENT -->
+    <div class="content">
+        <div class="header" fxLayout="row" fxLayoutAlign="space-between top">
+            <div class="hero-text">
+            </div>
+            <!--             *ifAllowed="'user.create'">-->
+            <div class="actions" fxLayoutGap="10px" fxFlex="40">
+                <button [routerLink]="['/users/new']" *ifAllowed="'user.create'"
+                        mat-raised-button color="accent" id="create_new">
+                    <mat-icon aria-label="nou contacte">add</mat-icon>
+                    Crear
+                </button>
+    
+            </div>
+        </div>
+        <app-users-table></app-users-table>
+    </div>
+    <!-- / CONTENT -->
+
+</div>

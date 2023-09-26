@@ -1,0 +1,51 @@
+<div class="page-layout simple full-width p-10">
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content">
+        <ng-template #loading>
+            <app-fake-loading
+                *ngIf="loading"
+                [type]="'simple-form'"
+            ></app-fake-loading>
+        </ng-template>
+
+        <!-- HEADER -->
+        <div
+            class="header"
+            fxLayout="row"
+            fxLayoutAlign="space-between center"
+            fxLayout.lt-sm="column"
+        >
+            <div class="hero-text">
+                <h1>{{ (user$ | async)?.email }}</h1>
+            </div>
+
+            <div fxLayoutGap="10px" fxLayoutAlign="start center">
+                <go-back-button></go-back-button>
+                <button
+                    mat-raised-button
+                    (click)="deactivateUser(user.is_active)"
+                    [color]="user?.is_active ? 'warn' : 'primary'"
+                >
+                    {{ user?.is_active ? "Desactivar" : "Activar" }}
+                </button>
+            </div>
+
+            <!--            <button *ifAllowed="'ContactDeleteFormService'" -->
+        </div>
+        <!-- Contact form -->
+        <div *ngIf="user$ | async as user; else loading">
+            <app-users-form [user]="user" [isNew]="isNew"></app-users-form>
+
+            <!-- Error loading event -->
+            <p *ngIf="error" class="alert alert-danger">
+                <strong>Error:</strong> No s'ha trobat cap usuari amb l'id
+                indicat
+                <a routerLink=".." class="alert-link"
+                    >Tornar al llistat de Usuaris</a
+                >
+            </p>
+        </div>
+    </div>
+</div>

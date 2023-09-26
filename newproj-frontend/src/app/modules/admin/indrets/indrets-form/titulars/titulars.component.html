@@ -1,0 +1,912 @@
+<form
+    *ngIf="this.formTitular.form.get('data')"
+    #formElement
+    fxLayout="column"
+    fxLayoutAlign="start"
+    fxFlex="100"
+    name="form"
+    [formGroup]="formTitular.form.get('data')"
+>
+    <mat-accordion>
+        <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon class="error" *ngIf="this.errors" [svgIcon]="'heroicons_outline:exclamation-circle'"></mat-icon>
+                    Titular
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="flex flex-col">
+                <div
+                    class="flex gap-4 items-center"
+                    *ngIf="autocompleteTitularData"
+                    style="color: orange"
+                    fxLayoutAlign="space-between center"
+                >
+                    <mat-hint fxLayoutAlign="start center" fxLayoutGap="20px">
+                        <mat-icon
+                            style="color: orange"
+                            [svgIcon]="'heroicons_solid:exclamation-triangle'"
+                        ></mat-icon>
+                        Dades emplenades del titular ({{
+                            formTitular.form.get("data.identification").value
+                        }})
+                    </mat-hint>
+
+                    <button
+                        mat-raised-button
+                        color="warn"
+                        (click)="removeTitular()"
+                    >
+                        Desvincular titular
+                    </button>
+                </div>
+                <div class="flex gap-4" fxLayout.lt-sm="column">
+                    <div fxFlex="50" class="flex-col w-full">
+                        <mat-label>Tipus de persona</mat-label>
+                        <div fxFlex class="flex-col">
+                            <mat-radio-group
+                                [formControlName]="'is_legal_entity'"
+                                (change)="changeIsLegalEntity()"
+                                fxFlex
+                                class="flex-col"
+                            >
+                                <mat-radio-button [value]="false"
+                                    >Fisica</mat-radio-button
+                                >
+                                <mat-radio-button [value]="true"
+                                    >Jurídica</mat-radio-button
+                                >
+                            </mat-radio-group>
+                            <mat-error>
+                                <app-bcn-error
+                                    [serverErrors]="serverError?.is_legal_entity"
+                                    [control]="formTitular.form.controls['data']['controls'].is_legal_entity"
+                                ></app-bcn-error>
+                            </mat-error>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-4" fxLayout.lt-sm="column">
+                    <mat-form-field
+                        fxFlex=""
+                        class="w-full"
+                        *ngIf="
+                            formTitular.form.get('data').get('is_legal_entity')
+                                .value === false
+                        "
+                    >
+                        <mat-icon
+                            class="mr-2"
+                            [svgIcon]="'heroicons_solid:user-circle'"
+                        ></mat-icon>
+                        <mat-label>Nom</mat-label>
+
+                        <input
+                            matInput
+                            type="text"
+                            formControlName="first_name"
+                        />
+                        <app-bcn-error
+                            [serverErrors]="this.errors?.first_name"
+                            [control]="formTitular.form.controls['data']['controls'].first_name"
+                        ></app-bcn-error>
+                    </mat-form-field>
+
+                    <mat-form-field
+                        fxFlex
+                        class="w-full"
+                        *ngIf="
+                            formTitular.form.get('data').get('is_legal_entity')
+                                .value === false
+                        "
+                    >
+                        <mat-label>Cognom 1</mat-label>
+
+                        <input
+                            matInput
+                            type="text"
+                            formControlName="last_name"
+                            (change)="checkTitular('last_name')"
+                        />
+                        <mat-error>
+                            <app-bcn-error
+                                [serverErrors]="this.errors?.last_name"
+                                [control]="formTitular.form.controls['data']['controls'].last_name"
+                            ></app-bcn-error>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field
+                        fxFlex
+                        class="w-full"
+                        *ngIf="
+                            formTitular.form.get('data').get('is_legal_entity')
+                                .value === false
+                        "
+                    >
+                        <mat-label>Cognom 2</mat-label>
+
+                        <input
+                            matInput
+                            type="text"
+                            formControlName="second_last_name"
+                        />
+                        <mat-error>
+                            <app-bcn-error
+                                [serverErrors]="this.errors?.second_last_name"
+                                [control]="formTitular.form.controls['data']['controls'].second_last_name"
+                            ></app-bcn-error>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field
+                        fxFlex="50"
+                        class="w-full"
+                        *ngIf="
+                            formTitular.form.get('data').get('is_legal_entity')
+                                .value === true
+                        "
+                    >
+                        <mat-label>Raó social</mat-label>
+
+                        <input
+                            matInput
+                            type="text"
+                            formControlName="social_reason"
+                            (change)="checkTitular('social_reason');toUpper('social_reason')"
+                            #input
+                            [value]="changeUpperCase(input)"
+
+                        />
+                        <app-bcn-error
+                            [serverErrors]="this.errors?.social_reason"
+                            [control]="formTitular.form.controls['data']['controls'].social_reason"
+                        ></app-bcn-error>
+                    </mat-form-field>
+
+                    <mat-form-field
+                        fxFlex="30"
+                        class="w-full"
+                        *ngIf="
+                            formTitular.form.get('data').get('is_legal_entity')
+                                .value === true
+                        "
+                    >
+                        <mat-label>NIF</mat-label>
+
+                        <input
+                            matInput
+                            type="text"
+                            formControlName="CIF"
+                            (change)="changeCIF(); checkTitular('CIF')"
+                        />
+                        <mat-error>
+                            <app-bcn-error
+                                [serverErrors]="this.errors?.CIF"
+                                [control]="formTitular.form.controls['data']['controls'].CIF"
+                            ></app-bcn-error>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="flex gap-4 mb-5" fxLayout.lt-sm="column">
+                    <div
+                        *ngIf="
+                            formTitular.form.get('data').get('CIF').value &&
+                            formTitular.form.get('data').get('is_legal_entity')
+                                .value === true &&
+                            titularyIndret.length
+                        "
+                    >
+                        <h1>Llistat d'indret d'aquest mateix titular</h1>
+
+                        <mat-list
+                            class="w-6/12"
+                            *ngFor="let indret of titularyIndret"
+                        >
+                            <div class="flex items-center justify-between">
+                                <span>{{
+                                    indret.id +
+                                        (indret.name === null
+                                            ? ""
+                                            : "-" + indret.name)
+                                }}</span>
+                            </div>
+                        </mat-list>
+                    </div>
+                </div>
+
+                <div class="flex gap-4" fxLayout.lt-sm="column">
+                    <div
+                        fxLayout="column"
+                        *ngIf="
+                            formTitular.form.get('data').get('is_legal_entity')
+                                .value === false
+                        "
+                        fxFlex="15"
+                        fxFlex.lt-sm="100"
+                        fxLayoutAlign="start start"
+                        fxLayoutGap="10px"
+                    >
+                        <div class="mb-0">
+                            <mat-label>Tipo*</mat-label>
+                        </div>
+                        <app-select-autocomplete
+                            class="w-full"
+                            placeholder="{{ 'Seleccioni un valor' }}"
+                            formControlName="identification_type"
+                            [disabled]="!this.formIndret.form.get('data.is_active').value"
+                            [required]="true"
+                            [bgWhite]="true"
+                            [multiple]="false"
+                            [data]="[
+                                { id: 'dni', name: 'DNI' },
+                                { id: 'nie', name: 'NIE' },
+                                { id: 'passport', name: 'Passaport' }
+                            ]"
+                            [serverErrors]="this.errors?.identification_type"
+                            [control]="formTitular.form.controls['data']['controls'].identification_type
+                            "
+                            [matMinLength]="0"
+                        >
+                        </app-select-autocomplete>
+                    </div>
+
+                    <mat-form-field
+                        fxFlex="20"
+                        class="w-full"
+                        *ngIf="
+                            formTitular.form.get('data').get('is_legal_entity')
+                                .value === false
+                        "
+                    >
+                        <mat-icon
+                            class="mr-2"
+                            [svgIcon]="'heroicons_solid:identification'"
+                        ></mat-icon>
+                        <mat-label>Document identificatiu</mat-label>
+                        <input
+                            matInput
+                            type="text"
+                            formControlName="identification"
+                            (change)="
+                                checkTitular('identification')
+                            "
+                        />
+                        <mat-error>
+                            <app-bcn-error
+                                [serverErrors]="this.errors?.identification"
+                                [control]="formTitular.form.controls['data']['controls'].identification"
+                            ></app-bcn-error>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field fxFlex="20" class="w-full">
+                        <mat-icon
+                            class="mr-2"
+                            [svgIcon]="'heroicons_solid:phone'"
+                        ></mat-icon>
+                        <mat-label>Telèfon principal</mat-label>
+                        <input
+                            matInput
+                            type="text"
+                            formControlName="primary_phone"
+                        />
+                        <mat-error>
+                            <app-bcn-error
+                                [serverErrors]="this.errors?.primary_phone"
+                                [control]="formIndret.form.controls['data']['controls']['titularity']['controls'].primary_phone"
+                            ></app-bcn-error>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field fxFlex="20" class="w-full">
+                        <mat-icon
+                            class="mr-2"
+                            [svgIcon]="'heroicons_solid:phone'"
+                        ></mat-icon>
+                        <mat-label>Telèfon secundari</mat-label>
+                        <input
+                            matInput
+                            type="text"
+                            formControlName="secondary_phone"
+                        />
+                        <mat-error>
+                            <app-bcn-error
+                                [serverErrors]="this.errors?.secondary_phone"
+                                [control]="formTitular.form.controls['data']['controls'].secondary_phone"
+                            ></app-bcn-error>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field
+                        class="mr-2"
+                        fxFlex="30"
+                        fxFlex.lt-sm="100"
+                        *ngIf="
+                            formTitular.form.get('data').get('is_legal_entity')
+                                .value === true
+                        "
+                    >
+                        <mat-label>Alta</mat-label>
+                        <input
+                            matInput
+                            [ngxMatDatetimePicker]="from"
+                            formControlName="registration_date"
+                        />
+                        <mat-datepicker-toggle
+                            matSuffix
+                            [for]="from"
+                        ></mat-datepicker-toggle>
+                        <ngx-mat-datetime-picker
+                            #from
+                        ></ngx-mat-datetime-picker>
+
+                        <mat-error>
+                            <app-bcn-error
+                                [serverErrors]="this.errors?.registration_date"
+                                [control]="formTitular.form.controls['data']['controls'].registration_date"
+                            ></app-bcn-error>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <div *ngIf="formTitular.form.get('data').get('is_legal_entity').value === true"
+                    fxLayout="column" fxFlex="20" fxFlex.lt-sm="50">
+                        <mat-label>Titularitat</mat-label>
+                        <div fxFlex class="flex-col">
+                            <mat-radio-group
+                                fxFlex
+                                class="flex-col"
+                                formControlName="is_public"
+                                required
+                                (change)="changeIsPublic()"
+                            >
+                                <mat-radio-button [value]="true">
+                                    Públic
+                                </mat-radio-button>
+                                <mat-radio-button [value]="false">
+                                    Privat
+                                </mat-radio-button>
+                            </mat-radio-group>
+                            <mat-error>
+                                <app-bcn-error
+                                    [serverErrors]="this.errors?.is_public"
+                                    [control]="formTitular.form.controls['data']['controls'].is_public"
+                                ></app-bcn-error>
+                            </mat-error>
+                        </div>
+                    </div>
+                    <div class="flex flex-col" fxFlex="10" fxFlex.lt-sm="50">
+                        <mat-label>Exempt de taxes</mat-label>
+                        <mat-checkbox
+                            [disabled]="
+                                formTitular.form.get('data.is_public').value
+                            "
+                            formControlName="tax_exempt"
+                        ></mat-checkbox>
+                        <mat-error>
+                            <app-bcn-error
+                                [serverErrors]="this.errors?.tax_exempt"
+                                [control]="formTitular.form.controls['data']['controls'].tax_exempt"
+                            ></app-bcn-error>
+                        </mat-error>
+                    </div>
+                </div>
+                <div
+                    class="mb-5"
+                    *ngIf="
+                        formTitular.form.get('data').get('identification')
+                            .value &&
+                        formTitular.form.get('data').get('is_legal_entity')
+                            .value === false &&
+                        titularyIndret.length
+                    "
+                >
+                    <h1>Llistat d'indret d'aquest mateix titular</h1>
+
+                    <mat-list
+                        class="w-6/12"
+                        *ngFor="let indret of titularyIndret"
+                    >
+                        <div class="flex items-center justify-between">
+                            <span>{{
+                                indret.id +
+                                    (indret.name === null
+                                        ? ""
+                                        : "-" + indret.name)
+                            }}</span>
+                        </div>
+                    </mat-list>
+                </div>
+                <div
+                    class="flex gap-4"
+                    fxLayout.lt-sm="column"
+                    *ngIf="
+                        formTitular.form.get('data').get('is_legal_entity')
+                            .value === false
+                    "
+                >
+                    <mat-form-field fxFlex="60" class="w-full">
+                        <mat-label>Grup</mat-label>
+
+                        <input
+                            matInput
+                            type="text"
+                            formControlName="group"
+                        />
+                    </mat-form-field>
+                    <mat-error>
+                        <app-bcn-error
+                            [serverErrors]="this.errors?.group"
+                            [control]="formTitular.form.controls['data']['controls'].group"
+                        ></app-bcn-error>
+                    </mat-error>
+
+                    <mat-form-field class="mr-2" fxFlex="20" fxFlex.lt-sm="100">
+                        <mat-label>Alta</mat-label>
+                        <input
+                            matInput
+                            [ngxMatDatetimePicker]="from"
+                            formControlName="registration_date"
+                        />
+                        <mat-datepicker-toggle
+                            matSuffix
+                            [for]="from"
+                        ></mat-datepicker-toggle>
+                        <ngx-mat-datetime-picker
+                            #from
+                        ></ngx-mat-datetime-picker>
+
+                    </mat-form-field>
+                    <mat-error>
+                        <app-bcn-error
+                            [serverErrors]="this.errors?.registration_date"
+                            [control]="formTitular.form.controls['data']['controls'].registration_date"
+                        ></app-bcn-error>
+                    </mat-error>
+                </div>
+
+                <div class="flex gap-4" fxLayout.lt-sm="column">
+                    <div class="flex gap-4" fxFlex="50" fxLayout="column">
+                        <div class="items-center">
+                            <mat-form-field fxFlex="80" class="border-red">
+                                <mat-icon
+                                    class="mr-2"
+                                    [svgIcon]="'heroicons_solid:envelope'"
+                                ></mat-icon>
+                                <mat-label>Correu electrònic</mat-label>
+                                <input
+                                    matInput
+                                    type="email"
+                                    [required]="
+                                        formTitular.form
+                                            .get('data')
+                                            .get('is_legal_entity').value ===
+                                        true
+                                    "
+                                    name="emailInput"
+                                    [ngModel]="emailInput.value"
+                                    email="true"
+                                    #emailInput="ngModel"
+                                    [ngModelOptions]="{ standalone: true }"
+                                />
+                                <mat-hint>
+                                    <app-bcn-error style="color: red;"
+                                        [serverErrors]="this.errors?.emails"
+                                    ></app-bcn-error>
+                                </mat-hint>
+                        
+                            </mat-form-field>
+                            <button
+                                type="button"
+                                mat-icon-button
+                                [disabled]="
+                                    !emailInput.valid ||
+                                    emailInput.value === '' ||
+                                    emailInput.value === null ||
+                                    !this.formIndret.form.get('data.is_active').value
+                                "
+                                (click)="
+                                    addDataEmails(emailInput.value);
+                                    emailInput.reset('')
+                                "
+                            >
+                                <mat-icon>add</mat-icon>
+                            </button>
+                        </div>
+                        <h1
+                            *ngIf="
+                                formTitular.form.get('data').get('emails')
+                                    .value &&
+                                formTitular.form.get('data').get('emails').value
+                                    .length > 0
+                            "
+                        >
+                            Llistat d'emails
+                        </h1>
+                        <mat-list
+                            class="flex flex-col"
+                            fxFlex="30"
+                            fxFlex.lt-sm="100"
+                            *ngFor="
+                                let email of formTitular.form
+                                    .get('data')
+                                    .get('emails').value
+                            "
+                        >
+                            <div
+                                class="flex"
+                                fxLayoutAlign="justify-between center"
+                            >
+                                <div fxFlex="100" fxLayoutAlign="start center">
+                                    <mat-icon
+                                        class="mr-2 mt-0 mb-0"
+                                        [svgIcon]="'heroicons_solid:envelope'"
+                                    ></mat-icon>
+                                    <span>{{ email }}</span>
+                                </div>
+                                <button
+                                    type="button"
+                                    mat-icon-button
+                                    [disabled]="!this.formIndret.form.get('data.is_active').value"
+                                    (click)="removeDataEmails(email)"
+                                >
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </div>
+                        </mat-list>
+                    </div>
+                    <div fxLayout="column" fxFlex="50" fxLayout.lt-sm="column">
+                        <mat-form-field
+                            fxFlex="50"
+                            class="w-full"
+                            *ngIf="
+                                formTitular.form
+                                    .get('data')
+                                    .get('is_legal_entity').value === true
+                            "
+                        >
+                            <mat-label>Grup</mat-label>
+
+                            <input
+                                matInput
+                                type="text"
+                                formControlName="group"
+                            />
+                        </mat-form-field>
+                        <mat-error>
+                            <app-bcn-error
+                                [serverErrors]="this.errors?.group"
+                                [control]="formTitular.form.controls['data']['controls'].group"
+                            ></app-bcn-error>
+                        </mat-error>
+                    </div>
+                </div>
+            </div>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel *ngIf="!(formTitular.loading$| async)">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon class="error" *ngIf="getErrorsAddress()"
+                              [svgIcon]="'heroicons_outline:exclamation-circle'"></mat-icon>
+                    Direcció
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="flex gap-4" fxLayout.lt-sm="column" fxLayoutGap="10px">
+                <mat-form-field fxFlex="30" class="w-full">
+                    <mat-label>Província</mat-label>
+                    <input matInput type="text" formControlName="province" />
+                    <mat-error>
+                        <app-bcn-error
+                            [serverErrors]="this.errors?.province"
+                            [control]="formTitular.form.controls['data']['controls'].province"
+                        ></app-bcn-error>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field fxFlex="40" class="w-full">
+                    <mat-label>Municipi</mat-label>
+                    <input matInput type="text" formControlName="population" />
+                    <mat-error>
+                        <app-bcn-error
+                            [serverErrors]="this.errors?.population"
+                            [control]="formTitular.form.controls['data']['controls'].population"
+                        ></app-bcn-error>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex="10" fxFlex.lt-sm="100">
+                    <mat-label>Codi postal</mat-label>
+
+                    <input
+                        matInput
+                        type="text"
+                        formControlName="zip_code"
+                        [readonly]="formTitular.form.get('data.population').value == 'Barcelona'"
+                    />
+                    <mat-error>
+                        <app-bcn-error
+                            [serverErrors]="this.errors?.zip_code"
+                            [control]="formTitular.form.controls['data']['controls'].zip_code"
+                        ></app-bcn-error>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div
+                class="flex gap-4"
+                *ngIf="
+                    formTitular.form.get('data.population').value != 'Barcelona'
+                "
+                fxLayout.lt-sm="column"
+                fxLayoutGap="10px"
+            >
+                <mat-form-field fxFlex="20" class="w-full">
+                    <mat-label>Tipus via</mat-label>
+                    <input
+                        matInput
+                        type="text"
+                        formControlName="type_of_road_name"
+                        placeholder="Ex: Avinguda"
+                    />
+                    <mat-error>
+                        <app-bcn-error
+                            [serverErrors]="this.errors?.type_of_road_name"
+                        ></app-bcn-error>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex="50" class="w-full">
+                    <mat-label>Via</mat-label>
+                    <input
+                        matInput
+                        type="text"
+                        formControlName="street_name"
+                        placeholder="Ex: Gran Vía"
+                    />
+                    <mat-error>
+                        <app-bcn-error
+                            [serverErrors]="this.errors?.street_name"
+                        ></app-bcn-error>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field fxFlex="10" class="w-full">
+                    <mat-label>Número</mat-label>
+                    <input
+                        matInput
+                        type="text"
+                        formControlName="start_number_name"
+                        placeholder="#"
+                    />
+                    <mat-error>
+                        <app-bcn-error
+                            [serverErrors]="this.errors?.start_number_name"
+                        ></app-bcn-error>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div
+                class="flex gap-4"
+                *ngIf="
+                    formTitular.form.get('data.population').value == 'Barcelona'
+                "
+                fxLayout.lt-sm="column"
+                fxLayoutGap="10px"
+            >
+            <div
+            fxLayout="column"
+            fxFlex="40"
+            fxFlex.lt-sm="100"
+            fxLayoutAlign="start start"
+        >   
+            <div class="mb-1 bold">
+                <mat-label>Tipus via</mat-label>
+            </div>
+            <app-roadtype-geo-form
+                class="w-full"
+                placeholder="Seleccioni un valor"
+                i18n-placeholder
+                [form]="formTitular.form"
+                [required]="true"
+                [disabled]="!this.formIndret.form.get('data.is_active').value"
+                [multiple]="false"
+                [matMinLength]="0"
+                [serverErrors]="this.errors"
+                [field]="'data.type_of_road'"
+            >
+            </app-roadtype-geo-form>
+        </div>
+
+        <div
+            fxLayout="column"
+            fxFlex="40"
+            fxFlex.lt-sm="100"
+            fxLayoutAlign="start start"
+        >
+            <div class="mb-1 bold">
+                <mat-label>Via</mat-label>
+            </div>
+            <app-road-geo-form
+                class="w-full"
+                placeholder="Seleccioni un valor"
+                i18n-placeholder
+                [form]="formTitular.form"
+                [required]="true"
+                [multiple]="false"
+                [disabled]="!this.formIndret.form.get('data.is_active').value"
+                [matMinLength]="0"
+                [serverErrors]="this.errors"
+                [field]="'data.street'"
+                [typeRoad]="'data.type_of_road_id'"
+            >
+            </app-road-geo-form>
+        </div>
+
+        <div
+            fxLayout="column"
+            fxFlex="10"
+            fxFlex.lt-sm="100"
+            fxLayoutAlign="start start"
+        >
+            <div class="mb-1 bold">
+                <mat-label>Número</mat-label>
+            </div>
+            <app-address-geo-form
+                class="w-full"
+                placeholder="Triï un numero"
+                i18n-placeholder
+                [form]="formTitular.form"
+                [required]="true"
+                [multiple]="false"
+                [disabled]="!this.formIndret.form.get('data.is_active').value"
+                [matMinLength]="0"
+                [serverErrors]="this.errors"
+                [field]="'data.start_number'"
+                [road]="'data.street_id'"
+            >
+            </app-address-geo-form>
+        </div>
+            </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel
+            *ngIf="
+                formIndret.form.get('data.indret_contacts').value &&
+                formIndret.form.get('data.indret_contacts').value.length>0
+            "
+            [formGroup]="formIndret.form.get('data.indret_contacts.0')"
+        >
+            <mat-expansion-panel-header>
+                <mat-panel-title> 
+                    <mat-icon class="error" *ngIf="!!this.errors?.indret_contacts"
+                    [svgIcon]="'heroicons_outline:exclamation-circle'"></mat-icon>
+                    Representant legal 
+                </mat-panel-title>
+                
+            </mat-expansion-panel-header>
+            <div class="flex gap-4 mt-5" fxLayout.lt-sm="column">
+                <div fxFlex="60" fxLayoutGap="20px">
+                    <mat-form-field fxFlex="40" class="w-full">
+                        <mat-icon
+                            class="mr-2"
+                            [svgIcon]="'heroicons_solid:user-circle'"
+                        ></mat-icon>
+                        <mat-label>Nom</mat-label>
+                        <input
+                            matInput
+                            type="text"
+                            formControlName="first_name"
+                        />
+                        <mat-error>
+                            <app-bcn-error
+                                [serverErrors]="this.errors?.indret_contacts?.first_name"
+                                [control]="formIndret.form.controls['data']['controls']['indret_contacts']['controls'][0]['controls'].first_name
+                                "
+                            ></app-bcn-error>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="60">
+                        <mat-label>Cognoms</mat-label>
+
+                        <input
+                            matInput
+                            type="text"
+                            formControlName="last_name"
+                        />
+                        <mat-error>
+                            <app-bcn-error
+                                [serverErrors]="this.errors?.indret_contacts?.last_name"
+                                [control]="formIndret.form.controls['data']['controls']['indret_contacts']['controls'][0]['controls'].last_name"
+                            ></app-bcn-error>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxFlex="30" fxLayoutGap="20px">
+                    <div
+                        fxLayout="column"
+                        fxFlex="40"
+                        fxFlex.lt-sm="100"
+                        fxLayoutAlign="start start"
+                        fxLayoutGap="10px"
+                    >
+                        <div class="mb-0">
+                            <mat-label>Tipus de document*</mat-label>
+                        </div>
+                        <app-select-autocomplete
+                            class="w-full"
+                            placeholder="{{ 'Triï un tipus' }}"
+                            fxFlex="20"
+                            formControlName="identification_type"
+                            [bgWhite]="true"
+                            [multiple]="false"
+                            #selectDNI
+                            [data]="[
+                                { id: 'dni', name: 'DNI' },
+                                { id: 'nie', name: 'NIE' },
+                                { id: 'passport', name: 'Passaport' }
+                            ]"
+                            [control]="
+                                formIndret.form.get('data.indret_contacts.0')
+                                    .identification_type
+                            "
+                            [matMinLength]="0"
+                            [serverErrors]="this.errors?.indret_contacts?.identification_type"
+                        >
+                        </app-select-autocomplete>
+                    </div>
+
+                    <mat-form-field fxFlex="50">
+                        <mat-icon
+                            class="mr-2"
+                            [svgIcon]="'heroicons_solid:identification'"
+                        ></mat-icon>
+                        <mat-label>Document identificatiu</mat-label>
+                        <input
+                            matInput
+                            type="text"
+                            formControlName="identification"
+                            required="true"
+                        />
+                        <mat-error>
+                            <app-bcn-error
+                                [serverErrors]="this.errors?.indret_contacts?.identification"
+                                [control]="formIndret.form.controls['data']['controls']['indret_contacts']['controls'][0]['controls'].identification"
+                            ></app-bcn-error>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="flex gap-4" fxLayout.lt-sm="column">
+                <mat-form-field fxFlex="50">
+                    <mat-icon
+                        class="mr-2"
+                        [svgIcon]="'heroicons_solid:envelope'"
+                    ></mat-icon>
+                    <mat-label>Correu electrònic</mat-label>
+                    <input matInput type="email" formControlName="email" />
+                    <mat-error>
+                        <app-bcn-error
+                            [serverErrors]="this.errors?.indret_contacts?.email"
+                            [control]="formIndret.form.controls['data']['controls']['indret_contacts']['controls'][0]['controls'].email"
+                        ></app-bcn-error>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field fxFlex="30">
+                    <mat-icon
+                        class="mr-2"
+                        [svgIcon]="'heroicons_solid:phone'"
+                    ></mat-icon>
+                    <mat-label>Telèfon</mat-label>
+
+                    <input matInput type="text" formControlName="phone" />
+                    <mat-error>
+                        <app-bcn-error
+                            [serverErrors]="this.errors?.indret_contacts?.phone"
+                            [control]="formIndret.form.controls['data']['controls']['indret_contacts']['controls'][0]['controls'].phone"
+                        ></app-bcn-error>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</form>

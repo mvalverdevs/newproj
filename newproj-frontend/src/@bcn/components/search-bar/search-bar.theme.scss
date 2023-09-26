@@ -1,0 +1,11 @@
+@mixin bcn-search-bar-theme($theme) {
+
+    $background: map-get($theme, background);
+
+    .bcn-search-bar {
+
+        &.expanded {
+            background-color: map-get($background, background);
+        }
+    }
+}

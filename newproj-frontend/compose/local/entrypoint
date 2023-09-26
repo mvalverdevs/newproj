@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+export PATH="/app/node_modules/.bin:$PATH"
+
+echo "*** Set npm cache"
+npm config set cache /npm-cache --global
+
+case "$1" in
+dev-webserver)
+
+    echo "*** Contents of .npmrc"
+    cat .npmrc
+
+    echo "*** Verify npm cache"
+    npm --global cache verify
+
+    echo "*** Updating node_modules"
+    npm install --loglevel verbose
+
+    echo "*** Rebuilding node-sass"
+    npm rebuild node-sass
+
+    echo "*** Setting strict-ssl to false"
+    npm config set strict-ssl false
+
+    echo "*** Running 'ng serve --host 0.0.0.0'"
+    ng serve --host 0.0.0.0
+    ;;
+
+*)
+    echo "** Executing custom command: $@"
+    exec "$@"
+    ;;
+esac

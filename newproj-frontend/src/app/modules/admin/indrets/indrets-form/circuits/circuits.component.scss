@@ -1,0 +1,30 @@
+mat-icon.error {
+    color: #f7bbbb;
+}
+
+mat-accordion {
+    margin-top: 20px;
+}
+
+mat-expansion-panel {
+    overflow-y: none;
+}
+
+mat-label{
+    color:#334767;
+}
+
+.inputTime{
+    min-height: 48px;
+    border: 1px solid #cbd5e1;
+    border-radius: 5px;
+    padding: 0 15px;
+}
+
+
+mat-mdc-chip-option{
+    background-color: green !important;
+    // .mat-mdc-chip-selected {
+    //     color: green !important;
+    // }
+}   

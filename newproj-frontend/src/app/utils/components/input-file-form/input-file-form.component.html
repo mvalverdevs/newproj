@@ -1,0 +1,18 @@
+<div fxLayout="row">
+    <button mat-raised-button (click)="fileInput.click()" class="fit-content">
+        <mat-icon>insert_drive_file</mat-icon>
+        <span *ngIf="!file" i18n>{{placeholder + (required ? ' *' : '')}}</span>
+        <span *ngIf="file">{{ file.name }}</span>
+    </button>
+    <button mat-icon-button color="warn" *ngIf="file" (click)="clear()">
+        <mat-icon>clear</mat-icon>
+    </button>
+</div>
+<input fxHide type="file" [accept]="accept" (click)="fileInput.value = null" (change)="onFileChanged($event)"
+       #fileInput>
+<div class="ng-select-error-message mt-4" *ngIf="control && serverErrors">
+    <app-bcn-error
+        [serverErrors]="serverErrors"
+        [control]="control"
+    ></app-bcn-error>
+</div>

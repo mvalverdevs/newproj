@@ -1,0 +1,42 @@
+<ng-template #loading>
+    <app-fake-loading *ngIf="loading" [type]="'simple-form'"></app-fake-loading>
+</ng-template>
+
+<div *ngIf="formService; else loading">
+
+    <div fxLayout="row" class="mb-2" fxLayoutAlign="end center" fxLayoutGap="20px">
+        <button mat-icon-button (click)="goBack()" title="Tornar">
+            <mat-icon aria-label="Tornar">arrow_back</mat-icon>
+        </button>
+        <button id="save_button" type="submit" mat-raised-button color="accent"
+                (click)="submit()">
+            <mat-icon aria-label="nou usuari">save</mat-icon>
+            {{submitBtnText}}
+        </button>
+    </div>
+
+
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
+        <mat-tab label="General">
+            <ng-template mat-tab-label>
+                <mat-icon class="error" *ngIf="(formService.serverErrors$ | async)"
+                          [svgIcon]="'heroicons_outline:exclamation-circle'"></mat-icon>
+                General
+            </ng-template>
+            <app-actions-general [isEdit]="this.isEdit"></app-actions-general>
+        </mat-tab>
+        <mat-tab label="Documents">
+            <ng-template mat-tab-label>
+                <mat-icon class="error" *ngIf="errorDocument"
+                          [svgIcon]="'heroicons_outline:exclamation-circle'"></mat-icon>
+                Documents addicionals
+            </ng-template>
+            <app-actions-document [documentsErrors]="document"
+                (returnDocument)="setDocument($event)"
+                style="min-height: 500px"
+                [isEdit]="this.isEdit"
+                [action]="this.action"
+                ></app-actions-document>
+        </mat-tab>
+    </mat-tab-group>
+</div>

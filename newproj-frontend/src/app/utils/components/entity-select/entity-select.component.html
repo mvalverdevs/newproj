@@ -1,0 +1,53 @@
+<div class="selector entitySelectComponent" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="30px">
+    <div fxFlex>
+        <ng-select
+            appendTo="body"
+                (change)="setEntity($event)"
+                fxFlex="grow"
+                i18n-placeholder
+                placeholder="Entitats..."
+                [multiple]="false"
+                [hideSelected]="true"
+                bindLabel="name"
+                bindValue="id"
+                [(ngModel)]="modelEntity"
+                [closeOnSelect]="true"
+                [typeahead]="entityInput$">
+        </ng-select>
+        <!--        [items]="entity$ | async"-->
+        <!--        [loading]="entityListFS.loading$ | async"-->
+
+        <mat-hint *ngIf="hint">
+            <span class="font-size-16">
+                <mat-icon aria-label="info">info</mat-icon>
+            </span>
+            {{hint}}
+        </mat-hint>
+        <input matInput style="display: none">
+    </div>
+
+    <div class="clear">
+        <button
+                mat-raised-button
+                color="accent"
+                (click)="selectEntity(selectedEntity)">
+            Afegir
+        </button>
+    </div>
+</div>
+
+
+<div class="mt-16" fxLayout="column" *ngIf="entity.length > 0">
+    <mat-list class="p-0 mb-24">
+        <mat-list-item *ngFor="let entity of entity; index as i">
+            <div fxLayout="row" fxFlex="grow" fxLayoutAlign="start center">
+                {{entityData[entity]?.name}}
+            </div>
+            <button mat-icon-button (click)="removeNode(entity)">
+                <mat-icon class="secondary-text" aria-label="Eliminar" title="Delete">close</mat-icon>
+            </button>
+            <mat-divider></mat-divider>
+        </mat-list-item>
+    </mat-list>
+</div>
+

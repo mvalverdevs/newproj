@@ -1,0 +1,33 @@
+span.fieldname {
+    font-size: large;
+    font-weight: bold;
+}
+
+.contentainer {
+    border-top: 1px solid #e5e5e5;
+}
+
+.header {
+    padding-bottom: 15px !important;
+}
+
+.inputAutocomplete{
+    margin-bottom: -23px !important;
+}
+
+::ng-deep {
+    #userview {
+        .mdc-checkbox .mdc-checkbox__native-control[disabled]:checked ~ .mdc-checkbox__background, .mdc-checkbox .mdc-checkbox__native-control[disabled]:indeterminate ~ .mdc-checkbox__background, .mdc-checkbox .mdc-checkbox__native-control[data-indeterminate=true][disabled] ~ .mdc-checkbox__background {
+            border-color: transparent;
+            background-color: rgb(0 0 0 / 17%) !important;
+        }
+    //
+    //    .mdc-checkbox {
+    //        margin: -20px -25px 0px -10px !important;
+    //        padding: 5px 0 !important;
+    //    }
+    //
+    }
+
+
+}

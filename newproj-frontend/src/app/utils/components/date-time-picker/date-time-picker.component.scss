@@ -1,0 +1,61 @@
+.content-date-time-picker{
+  position: relative;
+  font-size: 16px;
+  .mat-form-field-subscript-wrapper{
+    margin-top: 2px;
+  }
+}
+
+.datetime-danger {
+  ::ng-deep.mat-form-field-underline {
+    /*change color of underline*/
+    background-color: #e53935 !important;
+  } 
+  
+  ::ng-deep .mat-form-field-label {
+    /*change color of label*/
+    color: #e53935 !important;
+  }
+
+  &.hint {
+    color: #e53935;
+  }
+}
+
+.datetime-warn {
+  ::ng-deep.mat-form-field-underline {
+    /*change color of underline*/
+    background-color: #fb8c00 !important;
+  } 
+  
+  ::ng-deep .mat-form-field-label {
+    /*change color of label*/
+    color: #fb8c00 !important;
+  }
+
+  &.hint {
+    color: #fb8c00;
+  }
+}
+
+.datetime-ok {
+  ::ng-deep.mat-form-field-underline {
+    /*change color of underline*/
+    background-color: #43a047 !important;
+  } 
+  
+  ::ng-deep .mat-form-field-label {
+    /*change color of label*/
+    color: #43a047 !important;
+  }
+
+  &.hint {
+    color: #43a047;
+  }
+}
+
+.no-padding {
+  ::ng-deep.mat-form-field-wrapper{
+   // margin-bottom: -1.25em;
+ }
+}

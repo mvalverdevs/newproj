@@ -1,0 +1,103 @@
+<form *ngIf="generalMasterTables || !isEdit"
+      #formElement
+      fxLayout="column"
+      fxLayoutAlign="start"
+      fxFlex
+      class="w-full"
+      name="form"
+      [formGroup]="formService.form.get('data')">
+
+    <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px"
+         class="w-full mt-5">
+        <app-types-autocomplete
+            class="w-full"
+            *ifAllowed="'general_master_tables.list'"
+            placeholder="{{'Tipus de taula mestra'}}"
+            fxFlex="100"
+            formControlName="type"
+            [required]="false"
+            [bgWhite]="true"
+            [multiple]="false"
+            [serverErrors]="serverErrors?.type"
+            [control]="formService.form.controls['data']['controls'].type"
+            [matMinLength]="0">
+        </app-types-autocomplete>
+
+        <app-area-autocomplete
+            placeholder="{{'Triï pare de la taula mestra'}}"
+            fxFlex="50"
+            style="width: 100%"
+            [required]="false"
+            [bgWhite]="true"
+            [multiple]="true"
+            [canCreate]="false"
+            [serverErrors]="serverErrors?.parent_table"
+            [control]="
+            formService.form.controls['data']['controls']
+                    .parent_table
+            "
+            formControlName="parent_table"
+            [matMinLength]="0"
+        >
+    </app-area-autocomplete>
+
+        <mat-checkbox fxFlex="100"
+                      *ngIf="!isEdit"
+                      style="min-height: 95px; !important"
+                      [color]="'primary'"
+                      formControlName="is_multiple">
+            Afegir múltiple
+        </mat-checkbox>
+
+        <mat-form-field fxFlex="100" class="w-full"
+                        *ngIf="!formService.form.get('data.is_multiple')?.value">
+            <mat-label>Nom</mat-label>
+            <input matInput type="text"
+                   placeholder="Nom"
+                   formControlName="name">
+            <mat-error>
+                <app-bcn-error [serverErrors]="serverErrors?.name"
+                               [control]="formService.form.controls['data']['controls'].name"></app-bcn-error>
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="100" class="w-full textarea"
+                        *ngIf="formService.form.get('data.is_multiple')?.value">
+            <mat-label>Nom</mat-label>
+            <textarea matInput type="text"
+                      placeholder="Nom"
+                      formControlName="name"></textarea>
+            <mat-error>
+                <app-bcn-error [serverErrors]="serverErrors?.name"
+                               [control]="formService.form.controls['data']['controls'].name"></app-bcn-error>
+            </mat-error>
+        </mat-form-field>
+
+        <div class="flex justify-center"
+            *ngIf="formService.form.get('data.is_multiple')?.value">
+            <mat-icon class="mr-2" [svgIcon]="'heroicons_outline:information-circle'"></mat-icon>
+            <mat-hint>Afegeix/Enganza llistat de valors separats per salts de linia</mat-hint>
+        </div>
+
+        <mat-checkbox fxFlex="100"
+                      style="min-height: 95px; !important"
+                      [color]="'primary'"
+                      formControlName="is_visible">
+            És visible?
+        </mat-checkbox>
+
+
+        <div fxLayout="row" class="mt-5 w-full" fxLayoutAlign="end center" fxLayoutGap="20px">
+                        <button mat-button (click)="cancelEdit($event)">
+                            Cancel·lar
+                        </button>
+            <button id="save_button" type="submit" mat-raised-button color="accent"
+
+                    (click)="submit()">
+                <mat-icon aria-label="nou usuari">save</mat-icon>
+                {{submitBtnText}}
+            </button>
+        </div>
+
+    </div>
+</form>

@@ -1,0 +1,64 @@
+<mat-drawer-container style="height:100%" [hasBackdrop]="false">
+  <mat-drawer #drawer mode="over">
+    <mat-action-list dense class="addresses"  fxLayout="column" *ngIf="false">
+      <div #closeButton fxLayoutAlign="end center" (click)="drawer.close()" class="close-button">
+        <button mat-icon-button><mat-icon>close</mat-icon></button>
+      </div>
+      <div fxFlex="100" fxLayout="column" *ngIf="addresses?.length===0" fxLayoutAlign="center center">
+          <span class="no-location-text">No s'han trobat adreces <br> en aquest punt</span>
+          <mat-icon class="no-location-icon">location_off</mat-icon>
+      </div>
+      <button (mouseenter)="drawGeometry($event, addresses[0].districte.geometria)" (mouseleave)="clearAllFeatures($event)" *ngIf="addresses?.length>0" mat-list-item (click)="selectDistrict(addresses[0].districte)">
+        <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+          <span> Districte: {{addresses[0].districte.descripcio}} </span>
+          <mat-icon>chevron_right</mat-icon>
+        </div>
+      </button>
+      <button (mouseenter)="drawGeometry($event, addresses[0].barri.geometria)" (mouseleave)="clearAllFeatures($event)" *ngIf="addresses?.length>0" mat-list-item (click)="selectNeighbourghood(addresses[0].districte, addresses[0].barri)">
+        <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+          <span> Barri: {{addresses[0].barri.nom}} </span>
+          <mat-icon>chevron_right</mat-icon>
+        </div>
+      </button>
+      <!--
+      <button (mouseenter)="drawGeometry($event, addresses[0].illa.geometria)" (mouseleave)="clearAllFeatures($event)" *ngIf="addresses?.length>0" mat-list-item (click)="selectIsland(addresses[0].districte, addresses[0].barri, addresses[0].illa)">
+        <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+          <span> Illa: {{addresses[0].illa.codi}} </span>
+          <mat-icon>chevron_right</mat-icon>
+        </div>
+      </button>
+      -->
+      <button (mouseenter)="drawMarker($event, address.localitzacio)" (mouseleave)="clearAllFeatures($event)"  *ngFor="let address of addresses" mat-list-item (click)="selectAddress(address)">
+        <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+          <span>{{address.nomComplet}} <span class="distance">({{address.extraInfo['distancia']}}m.)</span> </span>
+          <mat-icon>chevron_right</mat-icon>
+        </div>
+      </button>
+    </mat-action-list>
+  </mat-drawer>
+  <mat-drawer-content style="height:100%">
+    <div class="map" style="height:100%"  #container>
+      <div class="buttons">
+        <div class="button-group">
+          <div class="button satellite" (click)="toggleSatellite()">
+          </div>
+        </div>
+
+        <div class="button-group"  *ngIf="!readOnly" >
+          <div class="button selectAddress" [ngClass]="{enabled: addressSelectionEnabled}"
+            (click)="toggleAddressSelection()">
+          </div>
+        </div>
+        <div class="button-group"  *ngIf="!readOnly" >
+          <div class="button spritesheet addPoint" (click)="enableInteraction(InteractionType.Point)"></div>
+          <div class="button spritesheet addLine" (click)="enableInteraction(InteractionType.Line)"></div>
+          <div class="button spritesheet addPolygon" (click)="enableInteraction(InteractionType.Polygon)"></div>
+          <!--<div class="button spritesheet addCircle" (click)="enableInteraction('circle')"></div>
+          <div class="button spritesheet addRectangle" (click)="enableInteraction('rectangle')"></div>-->
+          <div class="button spritesheet delete" (click)="deleteSelectedFeature()"></div>
+
+        </div>
+      </div>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

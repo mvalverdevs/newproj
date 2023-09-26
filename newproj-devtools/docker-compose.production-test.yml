@@ -1,0 +1,82 @@
+version: '3'
+
+volumes:
+  postgres_data: {}
+  postgres_data_backups: {}
+
+services:
+  api: &django
+    build:
+      context: ./newproj-backend/
+      dockerfile: ./compose/production/Dockerfile
+    restart: always
+    depends_on:
+      - redis
+      - postgres
+      - celeryworker-concurrent
+      - celeryworker-non-concurrent
+    environment:
+      - DJANGO_DEBUG=False
+      - DJANGO_SETTINGS_MODULE=main.settings.production
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=newproj
+      - POSTGRES_USER=newproj
+      - POSTGRES_PASSWORD=newproj
+    ports:
+      - "8000:8000"
+    command: uwsgi-api
+
+  celeryworker-concurrent:
+    <<: *django
+    depends_on:
+      - redis
+      - postgres
+      - celerybeat
+    ports: []
+    command: celery-worker-concurrent
+
+  celeryworker-non-concurrent:
+    <<: *django
+    depends_on:
+      - redis
+      - postgres
+      - celerybeat
+    ports: []
+    command: celery-worker-non-concurrent
+
+  celerybeat:
+    <<: *django
+    depends_on:
+      - redis
+      - postgres
+    ports: []
+    command: celery-beat
+
+  postgres:
+    image: postgis/postgis:15-3.3
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_backups:/backups
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=newproj
+      - POSTGRES_USER=newproj
+      - POSTGRES_PASSWORD=newproj
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7
+
+  frontend:
+    build:
+      context: ./newproj-frontend/
+      dockerfile: ./compose/production/Dockerfile
+#    environment:
+#      - API_SERVICE_HOSTNAME=api
+    ports:
+      - '80:80'
+    depends_on:
+      - api

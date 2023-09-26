@@ -1,0 +1,357 @@
+<div class="flex flex-col">
+    <form
+        *ngIf="showSearch"
+        autocomplete="off"
+        [formGroup]="formService.form"
+        fxFlex="90"
+    >
+        <div fxLayout="column" fxLayoutGap="12px"> 
+            <div fxLayout="row" class="mt-5" fxLayoutAlign="space-between top" fxLayoutGap="20px">
+                <div fxLayout="column" fxFlex="40" class="w-full"  fxFlex.lt-sm="100">
+                    <div class="search-wrapper mb-2 w-full">
+                        <div
+                            class="search w-full"
+                            fxFlex
+                            fxLayout="row"
+                            fxLayoutAlign="start center"
+                        >
+                            <mat-icon>search</mat-icon>
+                            <input
+                                #filter
+                                placeholder="Cerca"
+                                formControlName="search"
+                                id="search"
+                                #quickSearchInput
+                            />
+
+                            <button
+                                mat-button
+                                matSuffix
+                                id="clear_search"
+                                *ngIf="quickSearchInput.value"
+                                title="Borrar"
+                                aria-label="Borrar"
+                                (click)="clearSearch()"
+                            >
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="hint_info" fxLayoutAlign="start center">
+                        <mat-icon
+                            class="mr-1"
+                            [svgIcon]="'heroicons_outline:information-circle'"
+                        ></mat-icon>
+                        <mat-hint>Aquí podràs buscar per nom, centre,...</mat-hint>
+                    </div>
+                </div>
+           
+                <div class="actions" fxLayoutGap="10px" fxFlex="40"  fxFlex.lt-sm="20">
+                    <button [routerLink]="['/indrets/new']" *ifAllowed="'indret.create'"
+                            mat-raised-button color="accent" id="create_new">
+                        <mat-icon aria-label="nou indret">add</mat-icon>
+                        Crear
+                    </button>
+                </div>
+                <!-- SEARCH -->
+            </div>
+
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                <div *ngIf="types.length > 0" fxLayout="column" fxFlex="20"  fxFlex.lt-sm="100">
+                    <app-select-autocomplete
+                        class="w-full"
+                        placeholder="Seleccioni un tipus d'indret"
+                        formControlName="types"
+                        [bgWhite]="true"
+                        [multiple]="false"
+                        [data]="types"
+                        [control]="formService.form.controls.types"
+                        [matMinLength]="0"
+                        (change)="changesFilters($event)"
+                    >
+                    </app-select-autocomplete>
+                </div>
+                
+                <div *ngIf="categories.length > 0" fxLayout="column" fxFlex="20"  fxFlex.lt-sm="100">
+                    <app-select-autocomplete
+                        class="w-full"
+                        placeholder="{{ 'Seleccioni una categoria' }}"
+                        formControlName="categories"
+                        [bgWhite]="true"
+                        [multiple]="false"
+                        [data]="categories"
+                        [control]="formService.form.controls.categories"
+                        [matMinLength]="0"
+                        (change)="changesFilters($event)"
+                    >
+                    </app-select-autocomplete>
+                </div>
+            
+                <div fxLayout="column" fxFlex="20"  fxFlex.lt-sm="100">
+                    <app-area-autocomplete
+                        placeholder="{{ 'Seleccioneu un centre' }}"
+                        style="width: 100%"
+                        [required]="false"
+                        [bgWhite]="true"
+                        [multiple]="false"
+                        [type]="'indret_center_type'"
+                        [control]="formService.form.controls.center"
+                        formControlName="center"
+                        [matMinLength]="0"
+                        (change)="changesFilters($event)"
+                    >
+                    </app-area-autocomplete>
+                </div>
+                <div fxLayout="column" fxFlex="20"  fxFlex.lt-sm="100">
+                    <app-area-autocomplete
+                        placeholder="{{ 'Seleccioneu un tipus de circuit' }}"
+                        style="width: 100%"
+                        [required]="false"
+                        [bgWhite]="true"
+                        [multiple]="false"
+                        [type]="'indret_circuit_type'"
+                        [control]="formService.form.controls.circuits__type"
+                        formControlName="circuits__type"
+                        [matMinLength]="0"
+                        (change)="changesFilters($event)"
+                    >
+                    </app-area-autocomplete>
+                </div>
+
+                <div fxLayout="column" fxFlex="20"  fxFlex.lt-sm="100">
+                    <mat-form-field
+                    class="w-full mt-5"
+                    >
+                    <input
+                        matInput
+                        type="text"
+                        formControlName="titularity__group"
+                        placeholder="{{ 'Insereixi un grup' }}"
+                        (change)="changesFilters($event)"
+                    />
+                </mat-form-field>
+                    <!-- <app-area-autocomplete
+                        placeholder="{{ 'Seleccioneu un grup' }}"
+                        style="width: 100%"
+                        [required]="false"
+                        [bgWhite]="true"
+                        [multiple]="false"
+                        [type]="'indret_circuit_type'"
+                        [control]="formService.form.controls.titularity__group"
+                        formControlName="titularity__group"
+                        [matMinLength]="0"
+                    >
+                    </app-area-autocomplete> -->
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                <!-- SEARCH -->
+                <div fxLayout="column" fxFlex="10" fxFlex.lt-sm="100">
+
+                <app-roadtype-geo-form
+                    class="w-full"
+                    placeholder="Seleccioni una via"
+                    i18n-placeholder
+                    [form]="formService.form"
+                    [required]="true"
+                    [multiple]="false"
+                    [matMinLength]="0"
+                    [field]="'type_of_road'"
+                    >
+                    </app-roadtype-geo-form>
+                </div>
+                <div fxLayout="column" fxFlex="40"  fxFlex.lt-sm="100">
+                    <app-road-geo-form
+                    class="w-full"
+                    placeholder="Seleccioni una via"
+                    i18n-placeholder
+                    [form]="formService.form"
+                    [required]="true"
+                    [multiple]="false"
+                    [matMinLength]="0"
+                    [field]="'street'"
+                    [typeRoad]="'type_of_road_id'"
+                    (change)="changesFilters($event)"
+                >
+                </app-road-geo-form>
+                </div>
+                <div fxLayout="column" fxFlex="20"  fxFlex.lt-sm="100">
+                    <app-neighborhood-geo-form
+                        class="w-full"
+                        placeholder="Seleccioni un barri"
+                        i18n-placeholder
+                        [form]="formService.form"
+                        [required]="true"
+                        [multiple]="false"
+                        [matMinLength]="0"
+                        [field]="'neighborhood'"
+                        (change)="changesFilters($event)"
+                    >
+                    </app-neighborhood-geo-form>
+                </div>
+                <div fxLayout="column" fxFlex="20"  fxFlex.lt-sm="100">
+                    <app-district-geo-form
+                        class="w-full"
+                        placeholder="Seleccioni un districte"
+                        i18n-placeholder
+                        [form]="formService.form"
+                        [required]="true"
+                        [multiple]="false"
+                        [matMinLength]="0"
+                        [field]="'district'"
+                        (change)="changesFilters($event)"
+                    >
+                    </app-district-geo-form>
+                </div>
+               
+            </div>
+
+        </div>
+    </form>
+    <app-paginated-table
+        class="mt-5"
+        [styleConfig]="styleConfig"
+        [resultsCount]="dataSource.count$ | async"
+        [loading]="dataSource.loading$ | async"
+        #paginatedTable
+    >
+        <table
+            mat-table
+            class="list-table contact-table"
+            [dataSource]="dataSource"
+            paginated-table-table
+            matSort
+        >
+            <ng-container matColumnDef="id">
+                <th style="min-width: 150px" mat-header-cell mat-sort-header *matHeaderCellDef>
+                    ID Interno
+                </th>
+                <td
+                    mat-cell
+                    class="name-cell"
+                    *matCellDef="let indret"
+                    ngClass="{{ 'status' + indret.is_active }}"
+                >
+                    {{ indret.id_intern }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="fue">
+                <th style="min-width: 150px" mat-header-cell  mat-sort-header *matHeaderCellDef>
+                    FUE
+                </th>
+                <td mat-cell class="name-cell" *matCellDef="let indret">
+                    {{ indret.identification }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <th style="min-width: 150px" mat-header-cell mat-sort-header *matHeaderCellDef>
+                    Nom comercial
+                </th>
+                <td mat-cell class="name-cell" *matCellDef="let indret">
+                    {{ this.getName(indret) }}
+                    <!--                    <ng-container *ngIf="indret.last_name && indret.first_name"> ,</ng-container> {{indret.first_name}}-->
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="category">
+                <th style="min-width: 150px" mat-header-cell mat-sort-header *matHeaderCellDef>
+                    Categoria
+                </th>
+                <td mat-cell class="name-cell" *matCellDef="let indret">
+                    <mat-chip-listbox>
+                        <mat-chip
+                            *ngFor="let id of indret.categories"
+                            color="accent"
+                        >
+                            {{ completeCategoryDict[id]?.name }}
+                        </mat-chip>
+                    </mat-chip-listbox>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="type">
+                <th style="min-width: 150px" mat-header-cell mat-sort-header *matHeaderCellDef>
+                    Tipus
+                </th>
+                <td mat-cell class="name-cell" *matCellDef="let indret">
+                    <mat-chip-listbox>
+                        <mat-chip
+                            *ngFor="let id of indret.types"
+                            color="accent"
+                        >
+                            {{ completeTypeDict[id]?.name }}
+                        </mat-chip>
+                    </mat-chip-listbox>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="address">
+                <th style="min-width: 150px" mat-header-cell mat-sort-header *matHeaderCellDef>
+                    Adreça
+                </th>
+                <td mat-cell class="name-cell" *matCellDef="let indret">
+                    {{ indret.address }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="titularity">
+                <th style="min-width: 150px" mat-header-cell mat-sort-header *matHeaderCellDef>
+                    Titular
+                </th>
+                <td mat-cell class="name-cell" *matCellDef="let indret">
+                    <!-- Show 'Persona Jurídica' data -->
+                    <div *ngIf="indret.titularity">
+                        {{this.getTitular(indret.titularity)}}
+                    </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th
+                    style="width: 145px; text-align: center"
+                    mat-header-cell
+                    *matHeaderCellDef
+                >
+                    Accions
+                </th>
+                <td
+                    mat-cell
+                    class="actions-cell text-right"
+                    *matCellDef="let indret"
+                >
+                    <button
+                        mat-icon-button
+                        *ifAllowed="'indret.update'"
+                        [routerLink]="'/indrets/' + indret.id + '/edit'"
+                    >
+                        <mat-icon
+                            class="secondary-text"
+                            title="Edit"
+                            aria-label="Edit"
+                            >edit</mat-icon
+                        >
+                    </button>
+                    <button mat-icon-button *ifAllowed="'indret.read'"
+                    [routerLink]="'/indrets/' + indret.id">
+                        <mat-icon
+                            title="Veure"
+                            aria-label="Veure"
+                            [svgIcon]="'heroicons_solid:eye'"
+                        ></mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <ng-template [ngIf]="showHeaderRow">
+                <tr
+                    mat-header-row
+                    *matHeaderRowDef="displayedColumns; sticky: true"
+                ></tr>
+            </ng-template>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+    </app-paginated-table>
+</div>
