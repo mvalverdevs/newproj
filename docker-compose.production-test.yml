@@ -7,7 +7,7 @@ volumes:
 services:
   api: &django
     build:
-      context: ./newproj-backend/
+      context: ./backend/
       dockerfile: ./compose/production/Dockerfile
     restart: always
     depends_on:
@@ -72,7 +72,7 @@ services:
 
   frontend:
     build:
-      context: ./newproj-frontend/
+      context: ./frontend/
       dockerfile: ./compose/production/Dockerfile
 #    environment:
 #      - API_SERVICE_HOSTNAME=api
