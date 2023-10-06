@@ -1,0 +1,22 @@
+<div id="main" [ngClass]="folded ? 'main-folded' : 'main-unfolded'">
+  <div id="container-1" class="container">
+    <ng-container>
+      <bcn-sidebar name="navbar" [folded]="false" lockedOpen="gt-md">
+        <navbar class="left-navbar"></navbar>
+      </bcn-sidebar>
+    </ng-container>
+    <div id="container-2" class="container">
+      <toolbar></toolbar>
+
+      <div id="container-3" class="container">
+        <div class="page-layout carded right-sidebar tabbed inner-scroll">
+
+          <div id="container-4" class="center m-0" style="overflow: auto">
+            <content></content>
+          </div>
+          <app-global-sidebar (foldevent)="folded = $event" class="sidebar" name="global-sidebar" position="right" style="overflow: auto"></app-global-sidebar>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

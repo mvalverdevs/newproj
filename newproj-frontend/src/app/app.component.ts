@@ -1,75 +1,74 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { BreadcrumbService } from './utils/breadcrumbs.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { IonTabs } from '@ionic/angular';
+import { User } from './api/models';
+import { Router, NavigationEnd } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil, filter } from 'rxjs/operators';
 
 @Component({
-    selector   : 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls  : ['./app.component.scss'],
-    standalone : true,
-    imports    : [RouterOutlet],
+  selector: 'app-root',
+  templateUrl: 'app.component.html',
+  styleUrls: ['app.component.scss'],
 })
-export class AppComponent
-{
-    /**
-     * Constructor
-     */
-    constructor(
-        public _breadcrumbs:BreadcrumbService,
-        private _router:Router,
-        protected activatedRoute: ActivatedRoute,
+export class AppComponent implements OnInit {
 
-    )
-    {   
-        this._router.events.subscribe(value=> {
-            if(value instanceof NavigationEnd){
-               this.parseUrlBreadcrumbs(value.url);
-            } 
-        })
-    }
+  hideTabBar = false;
+  closed$ = new Subject<any>();
+  @ViewChild('tabsElement', { static: false }) tabsElement: IonTabs;
+  
+  pagesNoTabs = [
+    '/login',
+    '/register'
+  ]
 
-    parseUrlBreadcrumbs(url:string){
-        const regexVowel = /[aeiou]/g
-        const regexNumber = /[0-9]/g
-        let value = url.split('/').slice(1);
-        if(value.length > 0){
-            let title = value[0].split('#')[0].replaceAll('_',' ')
-            this._breadcrumbs.setTitle(title);
-            if(value.length==1){
-                if(value[0][0].match(regexVowel)){
-                    this._breadcrumbs.setSubtitle("Llistat d'"+title)
-                }else{
-                    this._breadcrumbs.setSubtitle("Llistat de "+title)
-                }
-            } else {
-                if(value.length==2){
-                    if(value[1].match(regexNumber)){
-                        if(value[0][0].match(regexVowel)){
-                            this._breadcrumbs.setSubtitle("Detall d'"+title);
-                        }else{
-                            this._breadcrumbs.setSubtitle("Detall de "+title);
-                        }
-                    }else{
-                        if(value[0][0].match(regexVowel)){
-                            this._breadcrumbs.setSubtitle("Creació d'"+title);
-                        }else{
-                            this._breadcrumbs.setSubtitle("Creació de "+title);
-                        }
+  tabs:any[] = [
+    {
+      url: "schedule",
+      icon: "calendar-clear-outline",
+      iconSelected: "calendar-clear"
+    },
+    {
+      url: "search",
+      icon: "search-outline",
+      iconSelected: "search"
+    },
+    {
+      url: "meal",
+      icon: "add-outline",
+      iconSelected: "add"
+    },
+    {
+      url: "food",
+      icon: "basket-outline",
+      iconSelected: "basket"
+    },
+    {
+      url: "account",
+      icon: "person-circle-outline",
+      iconSelected: "person-circle"
+    },
+  ]
+  selectedTabName = this.tabs[0].url
 
-                    }
-                } else {
-                    if(value[1].match(regexNumber)){
-                        if(value[0][0].match(regexVowel)){
-                            this._breadcrumbs.setSubtitle("Edició d'"+title);
-                        }else{
-                            this._breadcrumbs.setSubtitle("Edició de "+title);
-                        }
-                    }   
-                }
-            }
-        }else{
-            this._breadcrumbs.setTitle('');
-            this._breadcrumbs.setSubtitle('');
-        }
-    }
+  setCurrentTab() {
+    this.selectedTabName = this.tabsElement.getSelected();
+  }
+  
+  constructor(
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(event => {
+      event = event as NavigationEnd
+      if (this.pagesNoTabs.includes(event.url)) {
+        this.hideTabBar = true;
+      }else{
+        this.hideTabBar = false;
+      }
+    });
+  }
+
 }

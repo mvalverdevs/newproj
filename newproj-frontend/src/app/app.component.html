@@ -1,1 +1,9 @@
-<router-outlet></router-outlet>
+<ion-app>
+  <ion-tabs type="overlay" #tabsElement (ionTabsDidChange)="setCurrentTab()">
+    <ion-tab-bar slot="bottom" [hidden]="hideTabBar">
+      <ion-tab-button *ngFor="let tab of tabs" [tab]="tab.url">
+        <ion-icon [name]="selectedTabName === tab.url ? tab.iconSelected : tab.icon"></ion-icon>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-app>

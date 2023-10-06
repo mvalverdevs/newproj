@@ -11,9 +11,6 @@ DOCKER_PROD := docker compose -p newproj-prod -f docker-compose.production-test.
 help: ## This help.
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z0-9_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
-update: ## Update project repositories (execute update-all.sh script)
-	./update-all.sh
-
 build: build-dev ## build-etl ## Build all developer containers (dev, coverage)
 
 build-dev: ## Build developer containers for services (backend, frontend, ...)
@@ -102,7 +99,7 @@ api-emptymigration: ## Create empty migration expecting app_name and migration_n
 api-squashmigrations: ## Squash migrations into unique migration expecting app_name and migration_number argument
 	$(DOCKER_DEV) run --rm api python manage.py squashmigrations '$(app_name)' '$(migration_number)'
 
-api-populate-db: ## Executes example manage command
+api-example-command: ## Executes example manage command
 	$(DOCKER_DEV) run --rm api python manage.py example
 
 api-createsuperuser: ## Create new superadmin user.
@@ -146,6 +143,14 @@ frontend-build-prod: ## Compile frontend using gulp build
 
 frontend-npm-delete-cache: ## Delete npm package cache
 	docker volume rm -p newproj-dev_aspb-newproj_npm_cache
+
+frontend-newapp: ## Create new frontend app, expects name argument.
+	mkdir ./newproj-frontend/src/app/main/$(name)/
+	mkdir ./newproj-frontend/src/app/main/$(name)/form/
+	mkdir ./newproj-frontend/src/app/main/$(name)/list/
+	mkdir ./newproj-frontend/src/app/main/$(name)/view/
+	mkdir ./newproj-frontend/src/app/main/$(name)/dialogs/
+	mkdir ./newproj-frontend/src/app/main/$(name)/services/
 
 translate: ## Run NPM extract (translate)
 	$(DOCKER_DEV) run --rm frontend npm run extract
