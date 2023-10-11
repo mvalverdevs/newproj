@@ -49,18 +49,18 @@ api-osshell: ## Run interactive bash shell in 'api' developer container
 
 api-makemigrations: ## Run makemigrations command in api container.
 	$(DOCKER_DEV) run --rm api python manage.py makemigrations
-	sudo -S chown -R $(runner):$(runner) -Rf newproj-api/*
+	sudo -S chown -R $(runner):$(runner) -Rf backend/*
 
 api-migrate: ## Run 'migrate' command in 'api' container
 	$(DOCKER_DEV) run --rm api python manage.py migrate
 
 api-mergemigrations: ## Run make merge migrations command in api container.
 	$(DOCKER_DEV) run  --rm api python manage.py makemigrations --merge
-	sudo -S chown -R $(runner):$(runner) -Rf newproj-api/*
+	sudo -S chown -R $(runner):$(runner) -Rf backend/*
 
 api-emptymigration: ## Create empty migration expecting app_name and migration_name argument
 	$(DOCKER_DEV) run --rm api python manage.py makemigrations '$(app_name)' --name '$(migration_name)' --empty
-	sudo -S chown -R $(runner):$(runner) -Rf newproj-api/*
+	sudo -S chown -R $(runner):$(runner) -Rf backend/*
 
 api-squashmigrations: ## Squash migrations into unique migration expecting app_name and migration_number argument
 	$(DOCKER_DEV) run --rm api python manage.py squashmigrations '$(app_name)' '$(migration_number)'
@@ -78,14 +78,14 @@ api-graph-models: ## Generate PDF file with entire E/R project models.
 
 api-newapp: ## Create new backend app, expects name argument.
 	$(DOCKER_DEV) run --rm api python manage.py startapp '$(name)'
-	mkdir ./newproj-backend/src/$(name)/tests/
-	touch ./newproj-backend/src/$(name)/serializers.py
-	touch ./newproj-backend/src/$(name)/tests/test_$(name).py
-	touch ./newproj-backend/src/$(name)/factory.py
-	rm -r ./newproj-backend/src/$(name)/admin.py
-	rm -r ./newproj-backend/src/$(name)/apps.py
-	rm -r ./newproj-backend/src/$(name)/tests.py
-	sudo chown -R $(runner):$(runner) ./newproj-backend/src/$(name)
+	mkdir ./backend/src/$(name)/tests/
+	touch ./backend/src/$(name)/serializers.py
+	touch ./backend/src/$(name)/tests/test_$(name).py
+	touch ./backend/src/$(name)/factory.py
+	rm -r ./backend/src/$(name)/admin.py
+	rm -r ./backend/src/$(name)/apps.py
+	rm -r ./backend/src/$(name)/tests.py
+	sudo chown -R $(runner):$(runner) ./backend/src/$(name)
 
 api-coverage: ## Run pytest with coverage report in the api container.
 	$(DOCKER_DEV) run --rm api pytest --cov-report term-missing --cov=.
@@ -101,32 +101,32 @@ frontend-osshell: ## Run interactive bash shell in 'frontend' developer containe
 	$(DOCKER_DEV) run --rm frontend bash
 
 swagger: ## Generate OpenAPI definition nfge-spa/swagger.json
-	./swagger-update.sh sfile=newproj-frontend/swagger.json surl=http://localhost:8000/swagger.json
+	./swagger-update.sh sfile=frontend/swagger.json surl=http://localhost:8000/swagger.json
 
 apigen: swagger ## Run NPM APIGEN (yasag)
 	$(DOCKER_DEV) run --rm frontend npm run apigen
-	sudo chown -R $(runner):$(runner) ./newproj-spa/src/api
+	sudo chown -R $(runner):$(runner) ./frontend/src/api
 
 frontend-build-prod: ## Compile frontend using gulp build
 	$(DOCKER_DEV) run --rm frontend npm run build-prod
-	sudo chown -R $(runner):$(runner) ./newproj-spa/dist/
+	sudo chown -R $(runner):$(runner) ./frontend/dist/
 
 frontend-npm-delete-cache: ## Delete npm package cache
 	docker volume rm -p newproj-dev_aspb-newproj_npm_cache
 
 frontend-newapp: ## Create new frontend app, expects name argument.
-	mkdir ./newproj-frontend/src/app/main/$(name)/
-	mkdir ./newproj-frontend/src/app/main/$(name)/form/
-	mkdir ./newproj-frontend/src/app/main/$(name)/list/
-	mkdir ./newproj-frontend/src/app/main/$(name)/view/
-	mkdir ./newproj-frontend/src/app/main/$(name)/dialogs/
-	mkdir ./newproj-frontend/src/app/main/$(name)/services/
+	mkdir ./frontend/src/app/main/$(name)/
+	mkdir ./frontend/src/app/main/$(name)/form/
+	mkdir ./frontend/src/app/main/$(name)/list/
+	mkdir ./frontend/src/app/main/$(name)/view/
+	mkdir ./frontend/src/app/main/$(name)/dialogs/
+	mkdir ./frontend/src/app/main/$(name)/services/
 
 translate: ## Run NPM extract (translate)
 	$(DOCKER_DEV) run --rm frontend npm run extract
 
-node-modules-permissions: ## Change permissions to ./newproj-spa/node_modules/
-	sudo chown -R $(runner):$(runner) ./newproj-spa/node_modules/
+node-modules-permissions: ## Change permissions to ./frontend/node_modules/
+	sudo chown -R $(runner):$(runner) ./frontend/node_modules/
 
 
 ### DATABASE
