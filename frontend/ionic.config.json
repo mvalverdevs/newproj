@@ -1,0 +1,7 @@
+{
+  "name": "carpeta",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
