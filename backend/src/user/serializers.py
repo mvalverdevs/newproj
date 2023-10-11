@@ -10,8 +10,12 @@ from rest_framework.exceptions import ValidationError
 from user import models as user_models
 from utils.serializers import DynamicModelSerializer
 
+from drf_spectacular.utils import extend_schema_field
+
 
 class UserSerializer(DynamicModelSerializer):
+    has_login_blocked = serializers.BooleanField()
+
     class Meta:
         model = user_models.User
         fields = (
@@ -65,6 +69,7 @@ class UserLoginSerializer(serializers.ModelSerializer):
             'csrftoken'
         )
 
+    @extend_schema_field(field=serializers.IntegerField)
     def get_csrftoken(self, data):
         request = self.context["request"]
         csrftoken = csrf.get_token(request)
@@ -83,8 +88,8 @@ class EmailSerializer(serializers.Serializer):
     Validate the contact email
     """
     email = serializers.EmailField()
-    
-    
+
+
 class ResetPasswordSerializer(serializers.Serializer):
     """
     Validate the contact email

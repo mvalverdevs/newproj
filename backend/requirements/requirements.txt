@@ -25,6 +25,9 @@ drf-writable-nested==0.7.0  # https://github.com/beda-software/drf-writable-nest
 drf-yasg==1.21.5 # https://drf-yasg.readthedocs.io
 swagger-spec-validator==3.0.3 # https://github.com/Yelp/swagger_spec_validator
 
+drf-spectacular==0.26.0  # https://github.com/tfranzel/drf-spectacular
+drf-spectacular-sidecar==2023.3.1
+
 # Celery
 # ------------------------------------------------------------------------------
 celery==5.3.1  # https://github.com/celery/celery

@@ -51,14 +51,14 @@ THIRD_PARTY_APPS = [
     'django_filters',
     'phonenumber_field',
     'django_redis',
-    'django_extensions'
+    'django_extensions',
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
 ]
 
 LOCAL_APPS = [
     'main',
-    'user',
-    'actionlogging',
-    'document_library',
+    'user'
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -84,7 +84,6 @@ MIDDLEWARE = [
     'drf_yasg.middleware.SwaggerExceptionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'actionlogging.middleware.ActionLoggingMiddleware',
 ]
 
 ROOT_URLCONF = 'main.urls'
@@ -205,35 +204,9 @@ REST_FRAMEWORK = {
         "rest_framework.filters.SearchFilter",
         "django_filters.rest_framework.DjangoFilterBackend",
     ],
-    "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
 }
-
-# ACTIONLOGGING
-# Variable that conditions the storage of all calls to views,
-# if False does not store anything in the registry that is not explicitly indicated in the view
-ACTIONLOGGING_SAVE_LOG = True
-PERSIST_ACTIONLOGGING_ITEMS = config('PERSIST_ACTIONLOGGING_ITEMS', default=True, cast=bool)
-
-# Text that is replaced in the logs when we want to hide another string
-ACTIONLOGGING_TEXT_HIDE_REQUEST = "---HIDE---"
-ACTIONLOGGING_TEXT_HIDE_RESPONSE = "---HIDE---"
-
-# Fields to which the content will be obfuscated
-ACTIONLOGGING_FIELDS_HIDE_REQUEST = ["password", "password1", "password2", "tradename"]
-ACTIONLOGGING_FIELDS_HIDE_RESPONSE = ["password", "password1", "password2", "tradename"]
-
-# List of objects url action whose answer will be ignored [{"actions":["",""]|"","url":""},...]
-ACTIONLOGGING_IGNORE_URL = [
-
-]
-
-# Max number of items of actionlogging cache to take from redis to save into the database in each run
-# of the celery task "db_persist_actionlogging_items"
-ACTIONLOGGING_FLUSH_CHUNK_SIZE = 500
-
-# Celery key cache prefix for actionlogging storage
-ACTIONLOGGING_KEY_CACHE = "actionlogging"
 
 MAX_LOGIN_ATTEMPTS = 5
 

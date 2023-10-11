@@ -32,13 +32,10 @@ app.conf.task_routes = ([
 
 @app.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
-    from actionlogging.tasks import db_persist_actionlogging_items
 
     # Calls test('hello') every 10 seconds.
     sender.add_periodic_task(60.0, debug_task, name='celerybeat debug task')
     sender.add_periodic_task(60.0, debug_mail_task, name='celerybeat mail task')
-    if settings.PERSIST_ACTIONLOGGING_ITEMS:
-        sender.add_periodic_task(schedule=5*60, sig=db_persist_actionlogging_items, priority=2)
 
 @app.task(bind=True)
 def debug_task(self):

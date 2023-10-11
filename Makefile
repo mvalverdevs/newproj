@@ -101,10 +101,10 @@ frontend-osshell: ## Run interactive bash shell in 'frontend' developer containe
 	$(DOCKER_DEV) run --rm frontend bash
 
 swagger: ## Generate OpenAPI definition nfge-spa/swagger.json
-	./swagger-update.sh sfile=frontend/swagger.json surl=http://localhost:8000/swagger.json
+	$(DOCKER_DEV) run --rm frontend wget -O ./schema.yaml http://backend:8000/api/schema/
 
-apigen: swagger ## Run NPM APIGEN (yasag)
-	$(DOCKER_DEV) run --rm frontend npm run apigen
+apigen: swagger ## Run NPM APIGEN (ng-openapi-gen)
+	$(DOCKER_DEV) run --rm frontend ng-openapi-gen --input ./schema.yaml
 	sudo chown -R $(runner):$(runner) ./frontend/src/api
 
 frontend-build-prod: ## Compile frontend using gulp build

@@ -14,16 +14,16 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from actionlogging import views as actionlogging_views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path, re_path
-from document_library import views as document_views
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions, routers
 from user import views as user_views
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -42,17 +42,11 @@ schema_view = get_schema_view(
 router = routers.DefaultRouter()
 
 urlpatterns = [
-    re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
-    re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    # Documentation and definition
+    re_path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    re_path('api/swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    re_path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]
-
-# Actionlogging views
-router.register(
-    r"actionlogging",
-    actionlogging_views.LoggedActionView,
-    basename="actionlogging"
-)
 
 # User views
 router.register(
@@ -67,25 +61,6 @@ router.register(
     basename='user_role'
 )
 
-router.register(
-    r'permissions',
-    user_views.Permissions,
-    basename='permissions'
-)
-
-
-# Document Library
-router.register(
-    r'document_library_category',
-    document_views.DocumentCategoryView,
-    basename="document_library_category"
-)
-
-router.register(
-    r'document_library',
-    document_views.DocumentLibraryView,
-    basename="document_library"
-)
 
 urlpatterns += [
     re_path(r"^api/", include((router.urls, "current"), namespace="current")),

@@ -3,9 +3,9 @@ import user.models as user_models
 
 
 class UserFilter(django_filters.FilterSet):
-    
+
     roles = django_filters.Filter(method="filter_roles")
-    
+
     class Meta:
         model = user_models.User
         fields = (

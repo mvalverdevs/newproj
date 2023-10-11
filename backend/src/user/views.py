@@ -9,6 +9,7 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.schemas import SchemaGenerator
 from utils.imports.views import *
+from drf_spectacular.utils import extend_schema
 
 
 # Create your views here.
@@ -25,16 +26,26 @@ class UserView(
     search_fields = ('first_name', 'last_name', 'email', 'is_active', 'department')
     ordering_fields = ('first_name', 'last_name', 'date_joined')
     serializer_class = user_serializers.UserSerializer
-    queryset = user_models.User.objects.order_by('-date_joined')
+    queryset = user_models.User.objects.all().order_by('-date_joined')
 
     def get_permissions(self):
-        if self.action in ['login', 'logout', 'reset_password', 'change_password', 'reset_confirm_password']:
-            return [AllowAny(), ]
+        permissionsless_views = (
+            'register',
+            'login',
+            'logout',
+            'reset_password',
+            'change_password',
+            'reset_confirm_password'
+        )
+        if self.action in permissionsless_views:
+            return (AllowAny(), )
+        elif self.action in ['permissions']:
+            return (IsAuthenticated(), )
         else:
-            return [DjangoModelPermissions(), ]
+            return (DjangoModelPermissions(), )
 
-    @swagger_auto_schema(
-        request_body=user_serializers.UserLoginSerializer,
+    @extend_schema(
+        request=user_serializers.UserLoginSerializer,
         responses={200: user_serializers.UserSerializer}
     )
     @action(detail=False, methods=['post'])
@@ -42,8 +53,8 @@ class UserView(
         logout(request=request)
         return Response(status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(
-        request_body=user_serializers.UserLoginSerializer,
+    @extend_schema(
+        request=user_serializers.UserLoginSerializer,
         responses={200: user_serializers.UserLoginSerializer}
     )
     @action(detail=False, methods=['post'])
@@ -86,20 +97,20 @@ class UserView(
         return Response(status=status.HTTP_200_OK, data=user_serializers.UserLoginSerializer(user,context={"request": request}).data)
 
 
-    @swagger_auto_schema(
-        request_body=user_serializers.UserCreationSerializer,
+    @extend_schema(
+        request=user_serializers.UserCreationSerializer,
         responses={201: user_serializers.UserSerializer}
     )
-    def create(self, request, *args, **kwargs):
+    @action(detail=False, methods=['post'])
+    def register(self, request, *args, **kwargs):
         """ User register view """
         serializer = user_serializers.UserCreationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = user_models.User.objects.create_user(**request.data)
         return Response(status=status.HTTP_201_CREATED, data=user_serializers.UserSerializer(instance=user).data)
     
-    @swagger_auto_schema(
-        method='post', 
-        request_body=user_serializers.EmailSerializer,
+    @extend_schema(
+        request=user_serializers.EmailSerializer,
     )
     @action(detail=False, methods=['post'])
     def reset_password(self, request):
@@ -137,9 +148,8 @@ class UserView(
 
         return Response(status=status.HTTP_200_OK)
     
-    @swagger_auto_schema(
-        method='post', 
-        request_body=user_serializers.ResetPasswordSerializer,
+    @extend_schema(
+        request=user_serializers.ResetPasswordSerializer,
         responses={200: user_serializers.UserSerializer}
     )
     @action(detail=False, methods=['post'])
@@ -189,27 +199,9 @@ class UserView(
             raise ValidationError(
                 {'non_field_errors': ("Token invalid or already used, re-establish the password again.")})
 
-
-class UserRoleView(
-    viewsets.GenericViewSet,
-    mixins.ListModelMixin
-):
-    authentication_classes = (SessionAuthentication, )
-    serializer_class = user_serializers.UserRoleSerializer
-    queryset = user_models.UserRoles.objects.all()
-    filter_backends = (SearchFilter, )
-    search_fields = ('role', )
-
-
-class Permissions(
-    viewsets.GenericViewSet,
-    mixins.ListModelMixin
-):
-    permission_classes = (IsAuthenticated,)
-    serializer_class = user_serializers.PermissionSerializer
-
-    @swagger_auto_schema(responses={status.HTTP_200_OK: user_serializers.PermissionSerializer})
-    def list(self, request, *args, **kwargs):
+    @extend_schema(responses={status.HTTP_200_OK: user_serializers.PermissionSerializer})
+    @action(detail=False, methods=['get'])
+    def permissions(self, request, *args, **kwargs):
         from django.core.cache import cache
         empty = '-'  # Not "None"
 
@@ -229,7 +221,6 @@ class Permissions(
             #cache.add(cache_key, permissions)
         return Response(permissions)
 
-
     def extract_permissions(self, schema, permissions_list):
         for key in schema:
             if hasattr(schema[key], 'url'):
@@ -242,3 +233,14 @@ class Permissions(
                 self.extract_permissions(schema[key], permissions_list)
 
         return user_serializers.PermissionSerializer(permissions_list, many=True).data
+
+
+class UserRoleView(
+    viewsets.GenericViewSet,
+    mixins.ListModelMixin
+):
+    authentication_classes = (SessionAuthentication, )
+    serializer_class = user_serializers.UserRoleSerializer
+    queryset = user_models.UserRoles.objects.all()
+    filter_backends = (SearchFilter, )
+    search_fields = ('role', )
