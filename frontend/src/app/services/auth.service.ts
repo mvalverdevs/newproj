@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from 'src/api/models/user';
 import { Router } from '@angular/router';
-/*
+import { UserService } from 'src/api/services';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -15,9 +16,9 @@ export class AuthService {
     private userService: UserService,
     private storage: Storage
     ) { 
-      this.storage.create();
+      //this.storage.create();
     }
-
+/*
   // Método para autenticar al usuario
   login(username: string, password: string): Observable<boolean> {
     return new Observable((observer) => {
@@ -62,6 +63,5 @@ export class AuthService {
 
   setUser(user: User){
     this.storage.set('user', user);
-  }
+  }*/
 }
-*/

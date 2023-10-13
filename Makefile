@@ -2,6 +2,7 @@
 
 .DEFAULT_GOAL := help
 runner=$(shell whoami)
+group := $(shell id -gn)
 
 PV := $(shell command -v pv || command -v pipebench || echo cat)
 DBDUMP := postgres-data.tar.bz2
@@ -49,18 +50,18 @@ api-osshell: ## Run interactive bash shell in 'api' developer container
 
 api-makemigrations: ## Run makemigrations command in api container.
 	$(DOCKER_DEV) run --rm api python manage.py makemigrations
-	sudo -S chown -R $(runner):$(runner) -Rf backend/*
+	sudo -S chown -R $(runner):$(group) -Rf backend/*
 
 api-migrate: ## Run 'migrate' command in 'api' container
 	$(DOCKER_DEV) run --rm api python manage.py migrate
 
 api-mergemigrations: ## Run make merge migrations command in api container.
 	$(DOCKER_DEV) run  --rm api python manage.py makemigrations --merge
-	sudo -S chown -R $(runner):$(runner) -Rf backend/*
+	sudo -S chown -R $(runner):$(group) -Rf backend/*
 
 api-emptymigration: ## Create empty migration expecting app_name and migration_name argument
 	$(DOCKER_DEV) run --rm api python manage.py makemigrations '$(app_name)' --name '$(migration_name)' --empty
-	sudo -S chown -R $(runner):$(runner) -Rf backend/*
+	sudo -S chown -R $(runner):$(group) -Rf backend/*
 
 api-squashmigrations: ## Squash migrations into unique migration expecting app_name and migration_number argument
 	$(DOCKER_DEV) run --rm api python manage.py squashmigrations '$(app_name)' '$(migration_number)'
@@ -85,7 +86,7 @@ api-newapp: ## Create new backend app, expects name argument.
 	rm -r ./backend/src/$(name)/admin.py
 	rm -r ./backend/src/$(name)/apps.py
 	rm -r ./backend/src/$(name)/tests.py
-	sudo chown -R $(runner):$(runner) ./backend/src/$(name)
+	sudo chown -R $(runner):$(group) ./backend/src/$(name)
 
 api-coverage: ## Run pytest with coverage report in the api container.
 	$(DOCKER_DEV) run --rm api pytest --cov-report term-missing --cov=.
@@ -101,15 +102,15 @@ frontend-osshell: ## Run interactive bash shell in 'frontend' developer containe
 	$(DOCKER_DEV) run --rm frontend bash
 
 swagger: ## Generate OpenAPI definition nfge-spa/swagger.json
-	$(DOCKER_DEV) run --rm frontend wget -O ./schema.yaml http://backend:8000/api/schema/
+	$(DOCKER_DEV) run --rm frontend wget -O ./schema.yaml http://192.168.1.35:8000/api/schema/
 
-apigen: swagger ## Run NPM APIGEN (ng-openapi-gen)
-	$(DOCKER_DEV) run --rm frontend ng-openapi-gen --input ./schema.yaml
-	sudo chown -R $(runner):$(runner) ./frontend/src/api
+apigen: ## Run NPM APIGEN (ng-openapi-gen)
+	$(DOCKER_DEV) run --rm frontend ng-openapi-gen
+	sudo chown -R $(runner):$(group) ./frontend/src/api
 
 frontend-build-prod: ## Compile frontend using gulp build
 	$(DOCKER_DEV) run --rm frontend npm run build-prod
-	sudo chown -R $(runner):$(runner) ./frontend/dist/
+	sudo chown -R $(runner):$(group) ./frontend/dist/
 
 frontend-npm-delete-cache: ## Delete npm package cache
 	docker volume rm -p newproj-dev_aspb-newproj_npm_cache
@@ -126,7 +127,7 @@ translate: ## Run NPM extract (translate)
 	$(DOCKER_DEV) run --rm frontend npm run extract
 
 node-modules-permissions: ## Change permissions to ./frontend/node_modules/
-	sudo chown -R $(runner):$(runner) ./frontend/node_modules/
+	sudo chown -R $(runner):$(group) ./frontend/node_modules/
 
 
 ### DATABASE
