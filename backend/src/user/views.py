@@ -234,13 +234,3 @@ class UserView(
 
         return user_serializers.PermissionSerializer(permissions_list, many=True).data
 
-
-class UserRoleView(
-    viewsets.GenericViewSet,
-    mixins.ListModelMixin
-):
-    authentication_classes = (SessionAuthentication, )
-    serializer_class = user_serializers.UserRoleSerializer
-    queryset = user_models.UserRoles.objects.all()
-    filter_backends = (SearchFilter, )
-    search_fields = ('role', )

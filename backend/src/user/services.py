@@ -1,4 +1,4 @@
-import timezone
+import datetime
 
 class UserService:
 
@@ -7,7 +7,7 @@ class UserService:
 
     def deactivate_user(self):
         self.instance.is_active = False
-        self.instance.deactivation_datetime = timezone.now()
+        self.instance.deactivation_datetime = datetime.datetime.now()
         self.instance.save()
 
     def activate_user(self):

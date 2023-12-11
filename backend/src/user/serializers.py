@@ -1,12 +1,10 @@
 import re
 
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.models import Permission
 from django.contrib.auth.password_validation import validate_password
 from django.middleware import csrf
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
 from user import models as user_models
 from utils.serializers import DynamicModelSerializer
 
@@ -74,13 +72,6 @@ class UserLoginSerializer(serializers.ModelSerializer):
         request = self.context["request"]
         csrftoken = csrf.get_token(request)
         return csrftoken
-
-
-class UserRoleSerializer(DynamicModelSerializer):
-    role_display = serializers.CharField(source='get_role_display')
-    class Meta:
-        model = user_models.UserRoles
-        fields = '__all__'
 
 
 class EmailSerializer(serializers.Serializer):

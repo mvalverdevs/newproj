@@ -55,13 +55,6 @@ router.register(
     basename='user'
 )
 
-router.register(
-    r'user_role',
-    user_views.UserRoleView,
-    basename='user_role'
-)
-
-
 urlpatterns += [
     re_path(r"^api/", include((router.urls, "current"), namespace="current")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
