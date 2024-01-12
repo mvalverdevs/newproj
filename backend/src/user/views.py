@@ -8,58 +8,45 @@ from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.schemas import SchemaGenerator
-from utils.imports.views import *
 from drf_spectacular.utils import extend_schema
+from utils.views import ModelViewSet
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework import status
 
 
-# Create your views here.
-class UserView(
-    viewsets.GenericViewSet,
-    mixins.UpdateModelMixin,
-    mixins.RetrieveModelMixin,
-    mixins.ListModelMixin,
-    PermissionRequiredMixin
-):
-    authentication_classes = (SessionAuthentication, )
-    filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
+class UserView(ModelViewSet):
+    queryset = user_models.User.objects.all().order_by('-date_joined')
+    serializer_class = user_serializers.UserSerializer
+
     filterset_class = user_filter.UserFilter
     search_fields = ('first_name', 'last_name', 'email', 'is_active', 'department')
     ordering_fields = ('first_name', 'last_name', 'date_joined')
-    serializer_class = user_serializers.UserSerializer
-    queryset = user_models.User.objects.all().order_by('-date_joined')
 
-    def get_permissions(self):
-        permissionsless_views = (
-            'register',
-            'login',
-            'logout',
-            'reset_password',
-            'change_password',
-            'reset_confirm_password'
-        )
-        if self.action in permissionsless_views:
-            return (AllowAny(), )
-        elif self.action in ['permissions']:
-            return (IsAuthenticated(), )
-        else:
-            return (DjangoModelPermissions(), )
+    def get_serializer_class(self):
+            if self.action == 'register':
+                return user_serializers.UserCreationSerializer
+            return self.serializer_class
 
+    @permission_classes([AllowAny])
     @extend_schema(
-        request=user_serializers.UserLoginSerializer,
-        responses={200: user_serializers.UserSerializer}
+        request=user_serializers.UserCreationSerializer,
+        responses={201: user_serializers.UserSerializer}
     )
     @action(detail=False, methods=['post'])
-    def logout(self, request, *args, **kwargs):
-        logout(request=request)
-        return Response(status=status.HTTP_200_OK)
+    def register(self, request, *args, **kwargs):
+        """ User register view """
+        super().create(request, *args, **kwargs)
 
+    @permission_classes([AllowAny])
     @extend_schema(
         request=user_serializers.UserLoginSerializer,
         responses={200: user_serializers.UserLoginSerializer}
     )
     @action(detail=False, methods=['post'])
     def login(self, request, *args, **kwargs):
-        """ User login view """
+        """ User login """
         username = request.data.get('username', None)
         password = request.data.get('password', None)
         LOGIN_BLOCKED_MSG = "Login Blocked. Please contact the administrator for assistance"
@@ -96,24 +83,22 @@ class UserView(
 
         return Response(status=status.HTTP_200_OK, data=user_serializers.UserLoginSerializer(user,context={"request": request}).data)
 
-
     @extend_schema(
-        request=user_serializers.UserCreationSerializer,
-        responses={201: user_serializers.UserSerializer}
+        request=user_serializers.UserLoginSerializer,
+        responses={200: user_serializers.UserSerializer}
     )
     @action(detail=False, methods=['post'])
-    def register(self, request, *args, **kwargs):
-        """ User register view """
-        serializer = user_serializers.UserCreationSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = user_models.User.objects.create_user(**request.data)
-        return Response(status=status.HTTP_201_CREATED, data=user_serializers.UserSerializer(instance=user).data)
-    
+    def logout(self, request, *args, **kwargs):
+        """ User logout """
+        logout(request=request)
+        return Response(status=status.HTTP_200_OK)
+
+    @permission_classes([AllowAny])
     @extend_schema(
         request=user_serializers.EmailSerializer,
     )
     @action(detail=False, methods=['post'])
-    def reset_password(self, request):
+    def request_reset_password(self, request, *args, **kwargs):
         """
         Reset password
         """
@@ -147,7 +132,7 @@ class UserView(
         user_reset.send_reset_password_email()
 
         return Response(status=status.HTTP_200_OK)
-    
+
     @extend_schema(
         request=user_serializers.ResetPasswordSerializer,
         responses={200: user_serializers.UserSerializer}
@@ -233,4 +218,3 @@ class UserView(
                 self.extract_permissions(schema[key], permissions_list)
 
         return user_serializers.PermissionSerializer(permissions_list, many=True).data
-

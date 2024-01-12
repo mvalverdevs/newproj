@@ -22,7 +22,7 @@ class UserSerializer(DynamicModelSerializer):
             'email',
             'first_name',
             'last_name',
-            'roles',
+            'role',
             'phone',
             'is_active',
             'deactivation_datetime',
