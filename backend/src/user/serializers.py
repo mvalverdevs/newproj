@@ -40,6 +40,7 @@ class UserSerializer(DynamicModelSerializer):
             'has_login_blocked',
         )
 
+
 class UserCreationSerializer(serializers.ModelSerializer):
     class Meta:
         model = user_models.User
@@ -98,10 +99,10 @@ class ResetPasswordSerializer(serializers.Serializer):
         """
         Validate if both passwords match
         """
-        password = data.get('new_password1')
-        password2 = data.get('new_password2')
+        password = data.get('new_password1', None)
+        password2 = data.get('new_password2', None)
 
-        if password and password2:
+        if password is not None and password2 is not None:
             validate_password(password)
             if password != password2:
                 raise serializers.ValidationError("Passwords do not match")
@@ -116,4 +117,3 @@ class PermissionSerializer(serializers.Serializer):
 	"""
     url = serializers.CharField()
     action = serializers.CharField()
-

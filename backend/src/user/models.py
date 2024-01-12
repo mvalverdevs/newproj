@@ -15,30 +15,34 @@ from user.constants import ROLE_USER_KEY
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    """ User model """
 
     def __init__(self):
         self.service = UserService(self)
 
-    """ User model """
     username = models.CharField(
         verbose_name='Username',
         unique=True,
         max_length=150,
         validators=[UnicodeUsernameValidator()],
     )
+
     password = models.CharField(
         verbose_name='Password',
         max_length=128,
     )
+
     email = models.EmailField(
         verbose_name='User email',
         unique=True
     )
+
     first_name = models.CharField(
         verbose_name='User first name',
         max_length=30,
         null=True
     )
+
     last_name = models.CharField(
         verbose_name='User last name',
         max_length=150, 
@@ -50,28 +54,34 @@ class User(AbstractBaseUser, PermissionsMixin):
         choices=USER_ROLES,
         default=ROLE_USER_KEY
     )
+
     phone = models.CharField(
         verbose_name='User phone number',
         max_length=16,
         null=True
     )
+
     is_active = models.BooleanField(
         verbose_name='Is user active',
         default=True,
         null=True
     )
+
     deactivation_datetime = models.DateTimeField(
         verbose_name='Datetime when user was deactivated',
         null=True
     )
+
     date_joined = models.DateTimeField(
         verbose_name='User date joined',
         default=timezone.now
     )
+
     login_attempts = models.PositiveIntegerField(
         verbose_name='User login attemps',
         default=0
     )
+
     last_bad_login_attempt_datetime = models.DateTimeField(
         verbose_name='Last bad login attempt datetime',
         null=True
