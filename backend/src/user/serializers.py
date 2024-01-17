@@ -41,25 +41,9 @@ class UserSerializer(DynamicModelSerializer):
         )
 
 
-class UserCreationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = user_models.User
-        fields = '__all__'
-        read_only_fields = (
-            'username',
-            'date_joined',
-            'groups',
-            'user_permissions',
-            'last_login',
-            'is_superuser',
-            'deactivation_datetime',
-            'login_attempts',
-            'last_bad_login_attempt_datetime',
-        )
-
-
 class UserLoginSerializer(serializers.ModelSerializer):
     csrftoken = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = user_models.User
         fields = (

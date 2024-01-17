@@ -10,7 +10,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.schemas import SchemaGenerator
 from drf_spectacular.utils import extend_schema
 from utils.views import ModelViewSet
-from rest_framework.decorators import permission_classes
+from rest_framework.decorators import permission_classes, authentication_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
@@ -24,14 +24,13 @@ class UserView(ModelViewSet):
     search_fields = ('first_name', 'last_name', 'email', 'is_active', 'department')
     ordering_fields = ('first_name', 'last_name', 'date_joined')
 
-    def get_serializer_class(self):
-            if self.action == 'register':
-                return user_serializers.UserCreationSerializer
-            return self.serializer_class
+    def get_permissions(self):
+        if self.action in ('register', 'login'):
+            return (AllowAny(), )
+        return self.permission_classes
 
-    @permission_classes([AllowAny])
     @extend_schema(
-        request=user_serializers.UserCreationSerializer,
+        request=user_serializers.UserSerializer,
         responses={201: user_serializers.UserSerializer}
     )
     @action(detail=False, methods=['post'])
@@ -39,7 +38,6 @@ class UserView(ModelViewSet):
         """ User register view """
         super().create(request, *args, **kwargs)
 
-    @permission_classes([AllowAny])
     @extend_schema(
         request=user_serializers.UserLoginSerializer,
         responses={200: user_serializers.UserLoginSerializer}
