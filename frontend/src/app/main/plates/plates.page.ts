@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   templateUrl: 'plates.page.html',
   styleUrls: ['plates.page.scss']
 })
-export class Tab1Page {
+export class PlatesPage {
 
   constructor() {}
 
