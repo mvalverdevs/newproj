@@ -6,7 +6,7 @@
     <ion-buttons slot="end">
       <ion-button>
         <a [routerLink]="['/tabs/tab2']" router-direction="forward">
-          <ion-icon name="add-outline"></ion-icon>
+          <ion-icon style="font-size: 30px;" name="add-outline"></ion-icon>
         </a>
       </ion-button>
     </ion-buttons>
@@ -28,7 +28,8 @@
 
   <ion-list lines="none">
     <ion-item>
-      <ion-card>
+      <ion-card [routerLink]="['/tabs/tab3']">
+        <ion-ripple-effect></ion-ripple-effect>
         <div class="plate-image"
         style="background-image: url('https://www.muymuygourmet.com/modules/ph_simpleblog/covers/11.jpg');"
         ></div>

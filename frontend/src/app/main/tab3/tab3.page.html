@@ -1,17 +1,90 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 3
+      Plato
     </ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab1" ></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+  <div class="plate-detail-image"
+        style="background-image: url('https://www.muymuygourmet.com/modules/ph_simpleblog/covers/11.jpg');"
+  ></div>
+
+  <div class="plate-content">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="auto">
+          <h2 class="plate-title">
+            Espaguetti boloñesa
+          </h2>
+          <ion-icon name="time-outline" class="plate-time-clock"></ion-icon>
+          15 min
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="plate-description">
+          Para cocinar esta salsa boloñesa:  Coloque una sartén sobre la cocina a fuego medio y cuando esté caliente, añada el aceite.  Agregue la zanahoria, apio, y cebolla y cocine por unos 10 minutos, revolviendo ocasionalmente, hasta que los vegetales se comiencen a dorar. Aumente el fuego a alto.  Tome porciones de carne del tamaño de una cucharada y agréguela de una por una, revolviendo entre una y otra adición.  Cocine, desmenuzando la carne hasta que ya no esté cruda, produzca líquido, y no se pegue más en grumos. Alrededor de 10 minutos.
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-segment color="dark" value="dark" class="plate-segment">
+      <ion-segment-button value="dark">
+        <ion-label>Ingredientes</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="segment">
+        <ion-label>Pasos</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <ion-list lines="none">
+      <ion-item style="margin: 10px auto;">
+        <ion-card style="width: 100%;margin: 0px">
+            <ion-grid>
+              <ion-row>
+                <ion-col size="auto">
+                  <div class="ingredient-image"
+                  style="background-image: url('https://sgfm.elcorteingles.es/SGFM/dctm/MEDIA03/202104/14/00118003501204____7__600x600.jpg');"
+                  ></div>
+                </ion-col>
+                <ion-col>
+                  <h4>Macarrones</h4>
+                </ion-col>
+                <ion-col size="auto">
+                  90 gr
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+        </ion-card>
+      </ion-item>
+
+      <ion-item>
+        <ion-card style="width: 100%;margin: 0px">
+            <ion-grid>
+              <ion-row>
+                <ion-col size="auto">
+                  <div class="ingredient-image"
+                  style="background-image: url('https://petramora.com/cdn/shop/products/W-10000166-picada-de-ternera.jpg?crop=center&height=2433&v=1660228714&width=1946');"
+                  ></div>
+                </ion-col>
+                <ion-col>
+                  <h4>Carne</h4>
+                </ion-col>
+                <ion-col size="auto">
+                  100 gr
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+        </ion-card>
+      </ion-item>
+    </ion-list>
+
+    
+  </div>
+
 </ion-content>
