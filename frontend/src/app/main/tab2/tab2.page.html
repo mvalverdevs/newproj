@@ -1,17 +1,58 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 2
+      Nuevo plato
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button defaultHref="/tabs/tab1" >Hecho</ion-button>
+    </ion-buttons>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab1" ></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+  <div class="image-circle">
+    <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512"><rect x="48" y="80" width="416" height="352" rx="48" ry="48" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><circle cx="336" cy="176" r="32" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M304 335.79l-90.66-90.49a32 32 0 00-43.87-1.3L48 352M224 432l123.34-123.34a32 32 0 0143.11-2L464 368" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>
+  </div>
+
+  <ion-list>
+    <ion-item>
+      <ion-input labelPlacement="fixed" label="Nombre"></ion-input>
+    </ion-item>
+  
+    <ion-item>
+      <ion-textarea style="padding-bottom: 20px;" labelPlacement="fixed" label="Descripcion"></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-input labelPlacement="fixed" type="number" label="Comensales"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Time</ion-label>
+      <div style="height: 45px;">
+        <ion-datetime style="position: relative;top:-77px" presentation="time" [preferWheel]="true" size="cover"></ion-datetime>
+      </div>
+    </ion-item>
+
+    <ion-item>
+      <ion-select labelPlacement="fixed" label="Categorias" [multiple]="true">
+        <ion-select-option value="apples">Apples</ion-select-option>
+        <ion-select-option value="oranges">Oranges</ion-select-option>
+        <ion-select-option value="bananas">Bananas</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-select labelPlacement="fixed" label="Ingredientes" [multiple]="true">
+        <ion-select-option value="apples">Apples</ion-select-option>
+        <ion-select-option value="oranges">Oranges</ion-select-option>
+        <ion-select-option value="bananas">Bananas</ion-select-option>
+      </ion-select>
+    </ion-item>
+  
+  </ion-list>
 </ion-content>

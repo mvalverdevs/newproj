@@ -3,28 +3,117 @@
     <ion-title>
       Platos
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <a [routerLink]="['/tabs/tab2']" router-direction="forward">
+          <ion-icon name="add-outline"></ion-icon>
+        </a>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar show-cancel-button="focus" placeholder="Search"></ion-searchbar>
+    <div class="categories">
+      <ion-chip [outline]="true">Hamburguesa</ion-chip>
+      <ion-chip>Pasta</ion-chip>
+      <ion-chip [outline]="true">Huevo</ion-chip>
+      <ion-chip [outline]="true">Fritos</ion-chip>
+      <ion-chip [outline]="true">Arroz</ion-chip>
+      <ion-chip [outline]="true">Asiatico</ion-chip>
+    </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Platos</ion-title>
-    </ion-toolbar>
-    <ion-toolbar>
-      <ion-searchbar show-cancel-button="focus" placeholder="Search"></ion-searchbar>
-      <div class="categories">
-        <ion-chip [outline]="true">Hamburguesa</ion-chip>
-        <ion-chip>Pasta</ion-chip>
-        <ion-chip [outline]="true">Huevo</ion-chip>
-        <ion-chip [outline]="true">Fritos</ion-chip>
-        <ion-chip [outline]="true">Arroz</ion-chip>
-        <ion-chip [outline]="true">Asiatico</ion-chip>
-      </div>
-    </ion-toolbar>
-  </ion-header>
 
   <ion-list lines="none">
+    <ion-item>
+      <ion-card>
+        <div class="plate-image"
+        style="background-image: url('https://www.muymuygourmet.com/modules/ph_simpleblog/covers/11.jpg');"
+        ></div>
+        <ion-card-header>
+          <ion-card-title>Espaguetti Carbonara</ion-card-title>
+          <ion-card-subtitle>Pasta</ion-card-subtitle>
+        </ion-card-header>
+      
+        <ion-card-content>
+          Espaguetti con autentica salsa carbonara hecha con huevo...
+          <br>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <ion-icon name="bug"></ion-icon>
+                <ion-icon name="bug"></ion-icon>
+                <ion-icon name="bug"></ion-icon>
+              </ion-col>
+              <ion-col size="auto">
+                <ion-icon name="bookmark-outline"></ion-icon>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+
+    <ion-item>
+      <ion-card>
+        <div class="plate-image"
+        style="background-image: url('https://recetasdecocina.elmundo.es/wp-content/uploads/2015/10/canelones-caseros.jpg');"
+        ></div>
+        <ion-card-header>
+          <ion-card-title>Canelones de carne</ion-card-title>
+          <ion-card-subtitle>Pasta</ion-card-subtitle>
+        </ion-card-header>
+      
+        <ion-card-content>
+          Canelones gratinados al horno con bechamel...
+          <br>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <ion-icon name="bug"></ion-icon>
+                <ion-icon name="bug"></ion-icon>
+                <ion-icon name="bug"></ion-icon>
+              </ion-col>
+              <ion-col size="auto">
+                <ion-icon name="bookmark-outline"></ion-icon>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+
+    <ion-item>
+      <ion-card>
+        <div class="plate-image"
+        style="background-image: url('https://es.rc-cdn.community.thermomix.com/recipeimage/pxvivt9t-7d55c-291678-cfcd2-dhih4ugq/d21d3072-7959-4c64-96fb-fd4269675a3e/main/macarrones-a-la-bolonesa.jpg');"
+        ></div>
+        <ion-card-header>
+          <ion-card-title>Macarrones Boloñesa</ion-card-title>
+          <ion-card-subtitle>Pasta</ion-card-subtitle>
+        </ion-card-header>
+      
+        <ion-card-content>
+          Con salsa boloñesa de carne con vino tinto...
+          <br>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <ion-icon name="bug"></ion-icon>
+                <ion-icon name="bug"></ion-icon>
+                <ion-icon name="bug"></ion-icon>
+              </ion-col>
+              <ion-col size="auto">
+                <ion-icon name="bookmark-outline"></ion-icon>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+
     <ion-item>
       <ion-card>
         <div class="plate-image"
