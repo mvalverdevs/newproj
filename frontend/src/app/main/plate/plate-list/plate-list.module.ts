@@ -2,17 +2,17 @@ import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { PlatesPage } from './plates.page';
+import { PlateListPage } from './plate-list.page';
 
-import { PlatesPageRoutingModule } from './plates-routing.module';
+import { PlateListPageRoutingModule } from './plate-list-routing.module';
 
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
     FormsModule,
-    PlatesPageRoutingModule
+    PlateListPageRoutingModule
   ],
-  declarations: [PlatesPage]
+  declarations: [PlateListPage]
 })
-export class PlatesPageModule {}
+export class PlateListPageModule {}

@@ -16,5 +16,6 @@ class Command(BaseCommand):
                 from food.initial_values.food_category import initial_values
                 from food.models import RecipeCategory
                 for i in initial_values:
+                    print(f'Creating RecipeCategory {i["name"]}...')
                     RecipeCategory.objects.create(**i)
         print('Run command successfully')

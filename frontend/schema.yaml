@@ -7,6 +7,14 @@ paths:
     get:
       operationId: recipe_list
       parameters:
+      - in: query
+        name: category
+        schema:
+          type: array
+          items:
+            type: integer
+        explode: true
+        style: form
       - name: limit
         required: false
         in: query
@@ -35,6 +43,7 @@ paths:
       - recipe
       security:
       - tokenAuth: []
+      - {}
       responses:
         '200':
           content:
@@ -60,6 +69,7 @@ paths:
         required: true
       security:
       - tokenAuth: []
+      - {}
       responses:
         '201':
           content:
@@ -81,6 +91,7 @@ paths:
       - recipe
       security:
       - tokenAuth: []
+      - {}
       responses:
         '200':
           content:
@@ -113,6 +124,7 @@ paths:
         required: true
       security:
       - tokenAuth: []
+      - {}
       responses:
         '200':
           content:
@@ -144,6 +156,7 @@ paths:
               $ref: '#/components/schemas/PatchedRecipe'
       security:
       - tokenAuth: []
+      - {}
       responses:
         '200':
           content:
@@ -164,6 +177,7 @@ paths:
       - recipe
       security:
       - tokenAuth: []
+      - {}
       responses:
         '204':
           description: No response body
@@ -199,6 +213,7 @@ paths:
       - recipe_category
       security:
       - tokenAuth: []
+      - {}
       responses:
         '200':
           content:
@@ -224,6 +239,7 @@ paths:
         required: true
       security:
       - tokenAuth: []
+      - {}
       responses:
         '201':
           content:
@@ -245,6 +261,7 @@ paths:
       - recipe_category
       security:
       - tokenAuth: []
+      - {}
       responses:
         '200':
           content:
@@ -277,6 +294,7 @@ paths:
         required: true
       security:
       - tokenAuth: []
+      - {}
       responses:
         '200':
           content:
@@ -308,6 +326,7 @@ paths:
               $ref: '#/components/schemas/PatchedRecipeCategory'
       security:
       - tokenAuth: []
+      - {}
       responses:
         '200':
           content:
@@ -328,6 +347,7 @@ paths:
       - recipe_category
       security:
       - tokenAuth: []
+      - {}
       responses:
         '204':
           description: No response body
@@ -363,6 +383,7 @@ paths:
       - recipe_ingredient
       security:
       - tokenAuth: []
+      - {}
       responses:
         '200':
           content:
@@ -388,6 +409,7 @@ paths:
         required: true
       security:
       - tokenAuth: []
+      - {}
       responses:
         '201':
           content:
@@ -409,6 +431,7 @@ paths:
       - recipe_ingredient
       security:
       - tokenAuth: []
+      - {}
       responses:
         '200':
           content:
@@ -441,6 +464,7 @@ paths:
         required: true
       security:
       - tokenAuth: []
+      - {}
       responses:
         '200':
           content:
@@ -472,6 +496,7 @@ paths:
               $ref: '#/components/schemas/PatchedRecipeIngredient'
       security:
       - tokenAuth: []
+      - {}
       responses:
         '200':
           content:
@@ -492,6 +517,7 @@ paths:
       - recipe_ingredient
       security:
       - tokenAuth: []
+      - {}
       responses:
         '204':
           description: No response body

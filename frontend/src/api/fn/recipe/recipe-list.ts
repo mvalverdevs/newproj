@@ -9,6 +9,7 @@ import { RequestBuilder } from '../../request-builder';
 import { PaginatedRecipeList } from '../../models/paginated-recipe-list';
 
 export interface RecipeList$Params {
+  category?: Array<number>;
 
 /**
  * Number of results to return per page.
@@ -34,6 +35,7 @@ export interface RecipeList$Params {
 export function recipeList(http: HttpClient, rootUrl: string, params?: RecipeList$Params, context?: HttpContext): Observable<StrictHttpResponse<PaginatedRecipeList>> {
   const rb = new RequestBuilder(rootUrl, recipeList.PATH, 'get');
   if (params) {
+    rb.query('category', params.category, {"style":"form","explode":true});
     rb.query('limit', params.limit, {});
     rb.query('offset', params.offset, {});
     rb.query('ordering', params.ordering, {});

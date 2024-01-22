@@ -7,6 +7,7 @@ from food.serializers import RecipeSerializer, RecipeCategorySerializer, RecipeI
 class RecipeView(ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
+    filterset_fields = ('category', )
 
 
 class RecipeCategoryView(ModelViewSet):

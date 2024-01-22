@@ -2,16 +2,16 @@ import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { PlateEditPage } from './plateEdit.page';
-import { PlateEditPageRoutingModule } from './plateEdit-routing.module';
+import { PlateDetailPage } from './plate-detail.page';
+import { PlateDetailPageRoutingModule } from './plate-detail-routing.module';
 
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
     FormsModule,
-    PlateEditPageRoutingModule
+    PlateDetailPageRoutingModule
   ],
-  declarations: [PlateEditPage]
+  declarations: [PlateDetailPage]
 })
-export class PlateEditPageModule {}
+export class PlateDetailPageModule {}

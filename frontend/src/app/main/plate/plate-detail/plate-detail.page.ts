@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-plate-detail',
-  templateUrl: 'plateDetail.page.html',
-  styleUrls: ['plateDetail.page.scss']
+  templateUrl: 'plate-detail.page.html',
+  styleUrls: ['plate-detail.page.scss']
 })
 export class PlateDetailPage {
 

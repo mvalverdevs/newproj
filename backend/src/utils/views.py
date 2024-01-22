@@ -13,10 +13,10 @@ class ModelViewSet(
     mixins.RetrieveModelMixin,
     mixins.ListModelMixin,
     mixins.DestroyModelMixin,
-    PermissionRequiredMixin
+    # PermissionRequiredMixin
 ):
     authentication_classes = (TokenAuthentication, )
-    permission_classes = (DjangoModelPermissions, )
+    # permission_classes = (DjangoModelPermissions, )
     filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
     # filterset_class = ClassName
     # search_fields = (field, )

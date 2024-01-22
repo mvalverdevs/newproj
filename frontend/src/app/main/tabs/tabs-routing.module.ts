@@ -4,24 +4,24 @@ import { TabsPage } from './tabs.page';
 
 const routes: Routes = [
   {
-    path: 'tabs',
+    path: '',
     component: TabsPage,
     children: [
       {
-        path: 'tab1',
-        loadChildren: () => import('../plates/plates.module').then(m => m.PlatesPageModule)
+        path: 'plates',
+        loadChildren: () => import('../plate/plate-list/plate-list.module').then(m => m.PlateListPageModule)
       },
       {
         path: 'tab2',
-        loadChildren: () => import('../plateEdit/plateEdit.module').then(m => m.PlateEditPageModule)
+        loadChildren: () => import('../plate/plate-form/plate-form.module').then(m => m.PlateFormPageModule)
       },
       {
         path: 'tab3',
-        loadChildren: () => import('../plateDetail/plateDetail.module').then(m => m.PlateDetailPageModule)
+        loadChildren: () => import('../plate/plate-detail/plate-detail.module').then(m => m.PlateDetailPageModule)
       },
       {
         path: '',
-        redirectTo: '/tabs/tab1',
+        redirectTo: '/plates',
         pathMatch: 'full'
       }
     ]

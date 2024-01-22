@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PlateDetailPage } from './plateDetail.page';
+import { PlateDetailPage } from './plate-detail.page';
 
 const routes: Routes = [
   {

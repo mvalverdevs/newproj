@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
-import { PlatesPage } from './plates.page';
+import { PlateFormPage } from './plate-form.page';
 
-describe('PlatesPage', () => {
-  let component: PlatesPage;
-  let fixture: ComponentFixture<PlatesPage>;
+describe('PlateFormPage', () => {
+  let component: PlateFormPage;
+  let fixture: ComponentFixture<PlateFormPage>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PlatesPage],
-      imports: [IonicModule.forRoot()]
+      declarations: [PlateFormPage],
+      imports: [IonicModule.forRoot(),]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(PlatesPage);
+    fixture = TestBed.createComponent(PlateFormPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

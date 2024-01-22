@@ -24,9 +24,13 @@
 }
 
 .plate-image{
-    width:370px;
+    width:100%;
     height:170px;
     background-size:cover;
     background-position:center;
     background-repeat:no-repeat;
+}
+
+.plate-item{
+    width: 378px;
 }

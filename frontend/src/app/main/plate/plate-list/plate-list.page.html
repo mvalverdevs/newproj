@@ -5,7 +5,7 @@
     </ion-title>
     <ion-buttons slot="end">
       <ion-button>
-        <a [routerLink]="['/tabs/tab2']" router-direction="forward">
+        <a [routerLink]="['/plates']" router-direction="forward">
           <ion-icon style="font-size: 30px;" name="add-outline"></ion-icon>
         </a>
       </ion-button>
@@ -14,12 +14,12 @@
   <ion-toolbar>
     <ion-searchbar show-cancel-button="focus" placeholder="Search"></ion-searchbar>
     <div class="categories">
-      <ion-chip [outline]="true">Hamburguesa</ion-chip>
-      <ion-chip>Pasta</ion-chip>
-      <ion-chip [outline]="true">Huevo</ion-chip>
-      <ion-chip [outline]="true">Fritos</ion-chip>
-      <ion-chip [outline]="true">Arroz</ion-chip>
-      <ion-chip [outline]="true">Asiatico</ion-chip>
+      <ion-chip 
+      *ngFor="let category of recipeCategories"
+      (click)="getRecipes([category.id])"
+      [outline]="selectedCategory != category.id">
+      {{category.name}}
+    </ion-chip>
     </div>
   </ion-toolbar>
 </ion-header>
@@ -28,7 +28,7 @@
 
   <ion-list lines="none">
     <ion-item>
-      <ion-card [routerLink]="['/tabs/tab3']">
+      <ion-card [routerLink]="['/tabs/tab3']" class="plate-item">
         <ion-ripple-effect></ion-ripple-effect>
         <div class="plate-image"
         style="background-image: url('https://www.muymuygourmet.com/modules/ph_simpleblog/covers/11.jpg');"
