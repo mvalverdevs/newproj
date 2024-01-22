@@ -29,7 +29,7 @@ export interface UserList$Params {
  */
   ordering?: string;
   phone?: string;
-  roles?: number;
+  roles?: string;
 
 /**
  * A search term.

@@ -3,15 +3,9 @@
 
 /**
  * * `superadmin` - Superadministrador
- * * `admin` - Administrador
- * * `referent` - Referent
- * * `manager` - Gestor
- * * `query` - Consulta
+ * * `user` - User
  */
 export enum RoleEnum {
   Superadmin = 'superadmin',
-  Admin = 'admin',
-  Referent = 'referent',
-  Manager = 'manager',
-  Query = 'query'
+  User = 'user'
 }

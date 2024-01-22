@@ -6,16 +6,17 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
+import { Email } from '../../models/email';
 import { User } from '../../models/user';
 
-export interface UserResetPasswordCreate$Json$Params {
-      body: User
+export interface UserRequestResetPasswordCreate$FormData$Params {
+      body: Email
 }
 
-export function userResetPasswordCreate$Json(http: HttpClient, rootUrl: string, params: UserResetPasswordCreate$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
-  const rb = new RequestBuilder(rootUrl, userResetPasswordCreate$Json.PATH, 'post');
+export function userRequestResetPasswordCreate$FormData(http: HttpClient, rootUrl: string, params: UserRequestResetPasswordCreate$FormData$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
+  const rb = new RequestBuilder(rootUrl, userRequestResetPasswordCreate$FormData.PATH, 'post');
   if (params) {
-    rb.body(params.body, 'application/json');
+    rb.body(params.body, 'multipart/form-data');
   }
 
   return http.request(
@@ -28,4 +29,4 @@ export function userResetPasswordCreate$Json(http: HttpClient, rootUrl: string, 
   );
 }
 
-userResetPasswordCreate$Json.PATH = '/api/user/reset_password/';
+userRequestResetPasswordCreate$FormData.PATH = '/api/user/request_reset_password/';

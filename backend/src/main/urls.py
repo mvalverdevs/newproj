@@ -23,6 +23,7 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions, routers
 from user import views as user_views
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+from food import views as food_views
 
 
 schema_view = get_schema_view(
@@ -54,6 +55,26 @@ router.register(
     user_views.UserView,
     basename='user'
 )
+
+# Food views
+router.register(
+    r'recipe',
+    food_views.RecipeView,
+    basename='recipe'
+)
+
+router.register(
+    r'recipe_category',
+    food_views.RecipeCategoryView,
+    basename='recipe_category'
+)
+
+router.register(
+    r'recipe_ingredient',
+    food_views.RecipeIngredientView,
+    basename='recipe_ingredient'
+)
+
 
 urlpatterns += [
     re_path(r"^api/", include((router.urls, "current"), namespace="current")),

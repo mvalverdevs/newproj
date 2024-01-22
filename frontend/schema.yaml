@@ -3,9 +3,9 @@ info:
   title: ''
   version: 0.0.0
 paths:
-  /api/permissions/:
+  /api/recipe/:
     get:
-      operationId: permissions_list
+      operationId: recipe_list
       parameters:
       - name: limit
         required: false
@@ -19,6 +19,12 @@ paths:
         description: The initial index from which to return the results.
         schema:
           type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
       - name: search
         required: false
         in: query
@@ -26,17 +32,469 @@ paths:
         schema:
           type: string
       tags:
-      - permissions
+      - recipe
       security:
-      - cookieAuth: []
       - tokenAuth: []
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedPermissionList'
+                $ref: '#/components/schemas/PaginatedRecipeList'
           description: ''
+    post:
+      operationId: recipe_create
+      tags:
+      - recipe
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+          description: ''
+  /api/recipe/{id}/:
+    get:
+      operationId: recipe_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this recipe.
+        required: true
+      tags:
+      - recipe
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+          description: ''
+    put:
+      operationId: recipe_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this recipe.
+        required: true
+      tags:
+      - recipe
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Recipe'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+          description: ''
+    patch:
+      operationId: recipe_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this recipe.
+        required: true
+      tags:
+      - recipe
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedRecipe'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedRecipe'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedRecipe'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+          description: ''
+    delete:
+      operationId: recipe_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this recipe.
+        required: true
+      tags:
+      - recipe
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/recipe_category/:
+    get:
+      operationId: recipe_category_list
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - recipe_category
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRecipeCategoryList'
+          description: ''
+    post:
+      operationId: recipe_category_create
+      tags:
+      - recipe_category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeCategory'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RecipeCategory'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RecipeCategory'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeCategory'
+          description: ''
+  /api/recipe_category/{id}/:
+    get:
+      operationId: recipe_category_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this recipe category.
+        required: true
+      tags:
+      - recipe_category
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeCategory'
+          description: ''
+    put:
+      operationId: recipe_category_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this recipe category.
+        required: true
+      tags:
+      - recipe_category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeCategory'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RecipeCategory'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RecipeCategory'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeCategory'
+          description: ''
+    patch:
+      operationId: recipe_category_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this recipe category.
+        required: true
+      tags:
+      - recipe_category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedRecipeCategory'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedRecipeCategory'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedRecipeCategory'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeCategory'
+          description: ''
+    delete:
+      operationId: recipe_category_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this recipe category.
+        required: true
+      tags:
+      - recipe_category
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/recipe_ingredient/:
+    get:
+      operationId: recipe_ingredient_list
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - recipe_ingredient
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRecipeIngredientList'
+          description: ''
+    post:
+      operationId: recipe_ingredient_create
+      tags:
+      - recipe_ingredient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeIngredient'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RecipeIngredient'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RecipeIngredient'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeIngredient'
+          description: ''
+  /api/recipe_ingredient/{id}/:
+    get:
+      operationId: recipe_ingredient_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this recipe ingredient.
+        required: true
+      tags:
+      - recipe_ingredient
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeIngredient'
+          description: ''
+    put:
+      operationId: recipe_ingredient_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this recipe ingredient.
+        required: true
+      tags:
+      - recipe_ingredient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeIngredient'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RecipeIngredient'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RecipeIngredient'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeIngredient'
+          description: ''
+    patch:
+      operationId: recipe_ingredient_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this recipe ingredient.
+        required: true
+      tags:
+      - recipe_ingredient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedRecipeIngredient'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedRecipeIngredient'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedRecipeIngredient'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeIngredient'
+          description: ''
+    delete:
+      operationId: recipe_ingredient_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this recipe ingredient.
+        required: true
+      tags:
+      - recipe_ingredient
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/schema/:
     get:
       operationId: schema_retrieve
@@ -227,7 +685,7 @@ paths:
       - in: query
         name: roles
         schema:
-          type: integer
+          type: string
       - name: search
         required: false
         in: query
@@ -241,7 +699,7 @@ paths:
       tags:
       - user
       security:
-      - cookieAuth: []
+      - tokenAuth: []
       responses:
         '200':
           content:
@@ -251,7 +709,6 @@ paths:
           description: ''
     post:
       operationId: user_create
-      description: User register view
       tags:
       - user
       requestBody:
@@ -267,7 +724,7 @@ paths:
               $ref: '#/components/schemas/User'
         required: true
       security:
-      - cookieAuth: []
+      - tokenAuth: []
       responses:
         '201':
           content:
@@ -288,7 +745,7 @@ paths:
       tags:
       - user
       security:
-      - cookieAuth: []
+      - tokenAuth: []
       responses:
         '200':
           content:
@@ -320,7 +777,7 @@ paths:
               $ref: '#/components/schemas/User'
         required: true
       security:
-      - cookieAuth: []
+      - tokenAuth: []
       responses:
         '200':
           content:
@@ -351,7 +808,7 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedUser'
       security:
-      - cookieAuth: []
+      - tokenAuth: []
       responses:
         '200':
           content:
@@ -359,37 +816,95 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
           description: ''
+    delete:
+      operationId: user_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - user
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/user/login/:
     post:
       operationId: user_login_create
-      description: User login view
+      description: User login
       tags:
       - user
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserLogin'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserLogin'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserLogin'
         required: true
       security:
-      - cookieAuth: []
+      - tokenAuth: []
       - {}
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserLogin'
           description: ''
   /api/user/logout/:
     post:
       operationId: user_logout_create
+      description: User logout
+      tags:
+      - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLogin'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserLogin'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserLogin'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/user/permissions/:
+    get:
+      operationId: user_permissions_retrieve
+      tags:
+      - user
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Permission'
+          description: ''
+  /api/user/register/:
+    post:
+      operationId: user_register_create
+      description: User register view
       tags:
       - user
       requestBody:
@@ -405,8 +920,35 @@ paths:
               $ref: '#/components/schemas/User'
         required: true
       security:
-      - cookieAuth: []
+      - tokenAuth: []
       - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/user/request_reset_password/:
+    post:
+      operationId: user_request_reset_password_create
+      description: Reset password
+      tags:
+      - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Email'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Email'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Email'
+        required: true
+      security:
+      - tokenAuth: []
       responses:
         '200':
           content:
@@ -424,89 +966,35 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/ResetPassword'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/ResetPassword'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/ResetPassword'
         required: true
       security:
-      - cookieAuth: []
-      - {}
+      - tokenAuth: []
       responses:
         '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-          description: ''
-  /api/user/reset_password/:
-    post:
-      operationId: user_reset_password_create
-      description: Reset password
-      tags:
-      - user
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/User'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/User'
-        required: true
-      security:
-      - cookieAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-          description: ''
-  /api/user_role/:
-    get:
-      operationId: user_role_list
-      parameters:
-      - name: limit
-        required: false
-        in: query
-        description: Number of results to return per page.
-        schema:
-          type: integer
-      - name: offset
-        required: false
-        in: query
-        description: The initial index from which to return the results.
-        schema:
-          type: integer
-      - name: search
-        required: false
-        in: query
-        description: A search term.
-        schema:
-          type: string
-      tags:
-      - user_role
-      security:
-      - cookieAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaginatedUserRoleList'
           description: ''
 components:
   schemas:
-    PaginatedPermissionList:
+    Email:
+      type: object
+      description: Validate the contact email
+      properties:
+        email:
+          type: string
+          format: email
+      required:
+      - email
+    PaginatedRecipeCategoryList:
       type: object
       properties:
         count:
@@ -525,7 +1013,47 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Permission'
+            $ref: '#/components/schemas/RecipeCategory'
+    PaginatedRecipeIngredientList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecipeIngredient'
+    PaginatedRecipeList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Recipe'
     PaginatedUserList:
       type: object
       properties:
@@ -546,26 +1074,86 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/User'
-    PaginatedUserRoleList:
+    PatchedRecipe:
       type: object
+      description: |-
+        A ModelSerializer that takes additional arguments for
+        "fields" and "include" in order to
+        control which fields are displayed, and whether to replace simple values with
+        complex, nested serializations.
       properties:
-        count:
+        id:
           type: integer
-          example: 123
-        next:
+          readOnly: true
+        name:
           type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
+          title: Food name
+        description:
           type: string
-          nullable: true
+          title: Food description
+        image:
+          type: string
           format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
+          nullable: true
+          title: Recipe image
+        diners:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Diners number
+        time:
+          type: string
+          format: time
+          title: Cooking time
+        category:
           type: array
           items:
-            $ref: '#/components/schemas/UserRole'
+            type: integer
+            title: Food categories
+          title: Food categories
+        ingredients:
+          type: array
+          items:
+            type: integer
+            title: Food ingredients
+          title: Food ingredients
+    PatchedRecipeCategory:
+      type: object
+      description: |-
+        A ModelSerializer that takes additional arguments for
+        "fields" and "include" in order to
+        control which fields are displayed, and whether to replace simple values with
+        complex, nested serializations.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Category name
+          maxLength: 16
+    PatchedRecipeIngredient:
+      type: object
+      description: |-
+        A ModelSerializer that takes additional arguments for
+        "fields" and "include" in order to
+        control which fields are displayed, and whether to replace simple values with
+        complex, nested serializations.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Ingredient name
+        quantity:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Ingredient quantity
+        unit:
+          type: string
+          title: Measure unit
     PatchedUser:
       type: object
       description: |-
@@ -583,42 +1171,48 @@ components:
         email:
           type: string
           format: email
+          title: User email
           maxLength: 254
         first_name:
           type: string
           nullable: true
+          title: User first name
           maxLength: 30
         last_name:
           type: string
           nullable: true
+          title: User last name
           maxLength: 150
-        roles:
-          type: array
-          items:
-            type: integer
+        role:
+          allOf:
+          - $ref: '#/components/schemas/RoleEnum'
+          title: User role
         phone:
           type: string
           nullable: true
+          title: User phone number
           maxLength: 16
         is_active:
           type: boolean
           nullable: true
+          title: Is user active
         deactivation_datetime:
           type: string
           format: date-time
           readOnly: true
           nullable: true
+          title: Datetime when user was deactivated
         login_attempts:
           type: integer
           readOnly: true
+          title: User login attemps
         last_bad_login_attempt_datetime:
           type: string
           format: date-time
           readOnly: true
           nullable: true
         has_login_blocked:
-          type: string
-          readOnly: true
+          type: boolean
     Permission:
       type: object
       description: Serialize pydrfpermissions
@@ -630,20 +1224,122 @@ components:
       required:
       - action
       - url
+    Recipe:
+      type: object
+      description: |-
+        A ModelSerializer that takes additional arguments for
+        "fields" and "include" in order to
+        control which fields are displayed, and whether to replace simple values with
+        complex, nested serializations.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Food name
+        description:
+          type: string
+          title: Food description
+        image:
+          type: string
+          format: uri
+          nullable: true
+          title: Recipe image
+        diners:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Diners number
+        time:
+          type: string
+          format: time
+          title: Cooking time
+        category:
+          type: array
+          items:
+            type: integer
+            title: Food categories
+          title: Food categories
+        ingredients:
+          type: array
+          items:
+            type: integer
+            title: Food ingredients
+          title: Food ingredients
+      required:
+      - description
+      - diners
+      - id
+      - name
+      - time
+    RecipeCategory:
+      type: object
+      description: |-
+        A ModelSerializer that takes additional arguments for
+        "fields" and "include" in order to
+        control which fields are displayed, and whether to replace simple values with
+        complex, nested serializations.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Category name
+          maxLength: 16
+      required:
+      - id
+      - name
+    RecipeIngredient:
+      type: object
+      description: |-
+        A ModelSerializer that takes additional arguments for
+        "fields" and "include" in order to
+        control which fields are displayed, and whether to replace simple values with
+        complex, nested serializations.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Ingredient name
+        quantity:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Ingredient quantity
+        unit:
+          type: string
+          title: Measure unit
+      required:
+      - id
+      - name
+      - quantity
+      - unit
+    ResetPassword:
+      type: object
+      description: Validate the contact email
+      properties:
+        token:
+          type: string
+        new_password1:
+          type: string
+        new_password2:
+          type: string
+      required:
+      - new_password1
+      - new_password2
+      - token
     RoleEnum:
       enum:
       - superadmin
-      - admin
-      - referent
-      - manager
-      - query
+      - user
       type: string
       description: |-
         * `superadmin` - Superadministrador
-        * `admin` - Administrador
-        * `referent` - Referent
-        * `manager` - Gestor
-        * `query` - Consulta
+        * `user` - User
     User:
       type: object
       description: |-
@@ -661,42 +1357,48 @@ components:
         email:
           type: string
           format: email
+          title: User email
           maxLength: 254
         first_name:
           type: string
           nullable: true
+          title: User first name
           maxLength: 30
         last_name:
           type: string
           nullable: true
+          title: User last name
           maxLength: 150
-        roles:
-          type: array
-          items:
-            type: integer
+        role:
+          allOf:
+          - $ref: '#/components/schemas/RoleEnum'
+          title: User role
         phone:
           type: string
           nullable: true
+          title: User phone number
           maxLength: 16
         is_active:
           type: boolean
           nullable: true
+          title: Is user active
         deactivation_datetime:
           type: string
           format: date-time
           readOnly: true
           nullable: true
+          title: Datetime when user was deactivated
         login_attempts:
           type: integer
           readOnly: true
+          title: User login attemps
         last_bad_login_attempt_datetime:
           type: string
           format: date-time
           readOnly: true
           nullable: true
         has_login_blocked:
-          type: string
-          readOnly: true
+          type: boolean
       required:
       - deactivation_datetime
       - email
@@ -704,27 +1406,24 @@ components:
       - id
       - last_bad_login_attempt_datetime
       - login_attempts
-      - roles
       - username
-    UserRole:
+    UserLogin:
       type: object
-      description: |-
-        A ModelSerializer that takes additional arguments for
-        "fields" and "include" in order to
-        control which fields are displayed, and whether to replace simple values with
-        complex, nested serializations.
       properties:
-        id:
+        username:
+          type: string
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        password:
+          type: string
+          nullable: true
+          maxLength: 128
+        csrftoken:
           type: integer
           readOnly: true
-        role_display:
-          type: string
-        role:
-          $ref: '#/components/schemas/RoleEnum'
       required:
-      - id
-      - role
-      - role_display
+      - csrftoken
+      - username
   securitySchemes:
     cookieAuth:
       type: apiKey

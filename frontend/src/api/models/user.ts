@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+import { RoleEnum } from '../models/role-enum';
 
 /**
  * A ModelSerializer that takes additional arguments for
@@ -11,13 +12,13 @@ export interface User {
   deactivation_datetime: null | string;
   email: string;
   first_name?: null | string;
-  has_login_blocked: string;
+  has_login_blocked: boolean;
   id: number;
   is_active?: null | boolean;
   last_bad_login_attempt_datetime: null | string;
   last_name?: null | string;
   login_attempts: number;
   phone?: null | string;
-  roles: Array<number>;
+  role?: RoleEnum;
   username: string;
 }

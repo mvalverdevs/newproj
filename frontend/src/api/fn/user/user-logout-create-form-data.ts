@@ -7,9 +7,10 @@ import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
 import { User } from '../../models/user';
+import { UserLogin } from '../../models/user-login';
 
 export interface UserLogoutCreate$FormData$Params {
-      body: User
+      body: UserLogin
 }
 
 export function userLogoutCreate$FormData(http: HttpClient, rootUrl: string, params: UserLogoutCreate$FormData$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {

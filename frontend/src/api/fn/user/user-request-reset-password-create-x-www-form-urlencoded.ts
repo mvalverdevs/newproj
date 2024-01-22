@@ -6,14 +6,15 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
+import { Email } from '../../models/email';
 import { User } from '../../models/user';
 
-export interface UserResetPasswordCreate$XWwwFormUrlencoded$Params {
-      body: User
+export interface UserRequestResetPasswordCreate$XWwwFormUrlencoded$Params {
+      body: Email
 }
 
-export function userResetPasswordCreate$XWwwFormUrlencoded(http: HttpClient, rootUrl: string, params: UserResetPasswordCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
-  const rb = new RequestBuilder(rootUrl, userResetPasswordCreate$XWwwFormUrlencoded.PATH, 'post');
+export function userRequestResetPasswordCreate$XWwwFormUrlencoded(http: HttpClient, rootUrl: string, params: UserRequestResetPasswordCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
+  const rb = new RequestBuilder(rootUrl, userRequestResetPasswordCreate$XWwwFormUrlencoded.PATH, 'post');
   if (params) {
     rb.body(params.body, 'application/x-www-form-urlencoded');
   }
@@ -28,4 +29,4 @@ export function userResetPasswordCreate$XWwwFormUrlencoded(http: HttpClient, roo
   );
 }
 
-userResetPasswordCreate$XWwwFormUrlencoded.PATH = '/api/user/reset_password/';
+userRequestResetPasswordCreate$XWwwFormUrlencoded.PATH = '/api/user/request_reset_password/';
