@@ -6,6 +6,11 @@ const routes: Routes = [
     path: 'plates',
     loadChildren: () => import('./main/plate/plate.module').then(m => m.PlateModule)
   },
+  {
+    path: '',
+    redirectTo: '/plates',
+    pathMatch: 'full',
+  },
 ];
 @NgModule({
   imports: [

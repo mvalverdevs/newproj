@@ -10,22 +10,27 @@ import { RecipeCategoryService, RecipeService } from 'src/api/services';
 })
 export class PlateListPage implements OnInit {
 
+  recipeCategories: RecipeCategory[] = [];
+  recipes: Recipe[] = []
+  selectedCategory: number | undefined = undefined;
+  search: string | undefined = undefined;
+
   constructor(
-    private loadingCtrl: LoadingController,
-    private recipeCategoryService: RecipeCategoryService,
-    private recipeService: RecipeService
+    private _loadingCtrl: LoadingController,
+    private _recipeCategoryService: RecipeCategoryService,
+    private _recipeService: RecipeService
   ) {}
 
   async ngOnInit(){
     // 🚩 Show loading
-    const loading = await this.loadingCtrl.create({
+    const loading = await this._loadingCtrl.create({
       message: 'Loading...',
       duration: 4000,
     });
     loading.present();
 
     // 🚩 Obtaining recipeCategory list
-    this.recipeCategoryService.recipeCategoryList().subscribe({
+    this._recipeCategoryService.recipeCategoryList().subscribe({
       next: (recipeCategories) => {
         if (recipeCategories.results != undefined){
           this.recipeCategories = recipeCategories.results;
@@ -41,22 +46,17 @@ export class PlateListPage implements OnInit {
     this.getRecipes();
   }
 
-  recipeCategories: RecipeCategory[] = [];
-  recipes: Recipe[] = []
-  selectedCategory: number | undefined = undefined;
-  search: string | undefined = undefined;
-
   async getRecipes(
     selectedCategory: number[] | undefined = undefined,
     search: string | undefined = undefined
     ){
-    const loading = await this.loadingCtrl.create({
+    const loading = await this._loadingCtrl.create({
       message: 'Loading...',
       duration: 4000,
     });
     loading.present();
 
-    this.recipeService.recipeList({category: selectedCategory, search: search}).subscribe({
+    this._recipeService.recipeList({category: selectedCategory, search: search}).subscribe({
       next: (recipes) => {
         if (recipes.results != undefined){
           this.recipes = recipes.results;
@@ -80,6 +80,7 @@ export class PlateListPage implements OnInit {
   }
 
   handleSearch(event: any){
+    console.log(event);
     const query = event.target.value.toLowerCase();
     if (this.selectedCategory == undefined){
       this.getRecipes(undefined, query);

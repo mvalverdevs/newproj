@@ -12,14 +12,19 @@
     </ion-buttons>
   </ion-toolbar>
   <ion-toolbar>
-    <ion-searchbar show-cancel-button="focus" placeholder="Search" (ionChange)="handleSearch($event)"></ion-searchbar>
+    <ion-searchbar 
+      show-cancel-button="focus" 
+      placeholder="Search" 
+      (ionChange)="handleSearch($event)">
+      <!--(ionClear)="handleSearch($event)"-->
+    </ion-searchbar>
     <div class="categories">
       <ion-chip 
-      *ngFor="let category of recipeCategories"
-      (click)="getRecipes([category.id])"
-      [outline]="selectedCategory != category.id">
-      {{category.name}}
-    </ion-chip>
+        *ngFor="let category of recipeCategories"
+        (click)="getRecipes([category.id])"
+        [outline]="selectedCategory != category.id">
+        {{category.name}}
+      </ion-chip>
     </div>
   </ion-toolbar>
 </ion-header>

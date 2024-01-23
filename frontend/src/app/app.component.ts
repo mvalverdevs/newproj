@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,22 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {}
+
+  pagesWithTabs = [
+    '/plates'
+  ]
+  showTabs = true
+
+  constructor(
+    private _router: Router
+  ) {
+    // Detect the current route to show tab bar or not
+    this.showTabs = this.pagesWithTabs.includes(this._router.url)
+    this._router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.showTabs = this.pagesWithTabs.includes(this._router.url);
+        console.log('Cambiando a la página:', this._router.url);
+      }
+    });
+  }
 }
