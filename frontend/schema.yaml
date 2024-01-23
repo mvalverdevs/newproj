@@ -1128,9 +1128,10 @@ components:
           minimum: 0
           title: Diners number
         time:
-          type: string
-          format: time
-          title: Cooking time
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Cooking time in minutes
         category:
           type: array
           items:
@@ -1278,9 +1279,10 @@ components:
           minimum: 0
           title: Diners number
         time:
-          type: string
-          format: time
-          title: Cooking time
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Cooking time in minutes
         category:
           type: array
           items:

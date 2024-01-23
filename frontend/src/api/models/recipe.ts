@@ -15,5 +15,5 @@ export interface Recipe {
   image?: null | string;
   ingredients?: Array<number>;
   name: string;
-  time: string;
+  time: number;
 }

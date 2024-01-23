@@ -37,7 +37,8 @@
         <ion-ripple-effect></ion-ripple-effect>
         <div 
         class="plate-image"
-        [ngStyle]="{'background-image': 'url(' + recipe.image + ')'}"
+
+        [ngStyle]="{'background-image': 'url(' + (recipe.image ? recipe.image : 'https://ionicframework.com/docs/img/demos/card-media.png') + ')'}"
         ></div>
         <ion-card-header>
           <ion-card-title>{{recipe.name}}</ion-card-title>

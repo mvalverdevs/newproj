@@ -21,8 +21,8 @@ class Recipe(models.Model):
         verbose_name=u'Diners number'
     )
 
-    time = models.TimeField(
-        verbose_name=u'Cooking time'
+    time = models.PositiveIntegerField(
+        verbose_name=u'Cooking time in minutes'
     )
 
     category = models.ManyToManyField(
