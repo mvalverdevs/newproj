@@ -12,7 +12,7 @@
     </ion-buttons>
   </ion-toolbar>
   <ion-toolbar>
-    <ion-searchbar show-cancel-button="focus" placeholder="Search"></ion-searchbar>
+    <ion-searchbar show-cancel-button="focus" placeholder="Search" (ionChange)="handleSearch($event)"></ion-searchbar>
     <div class="categories">
       <ion-chip 
       *ngFor="let category of recipeCategories"
