@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Camera, CameraResultType } from '@capacitor/camera';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Subscription } from 'rxjs';
 import { Recipe } from 'src/api/models';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RecipeService } from 'src/api/services';
 import { LoadingController } from '@ionic/angular';
-
+import { base64toBlob } from 'src/app/utils/functions';
 
 @Component({
   selector: 'app-plate-edit',
@@ -17,11 +17,13 @@ export class PlateFormPage implements OnInit{
 
   recipeForm: FormGroup;
   routeSub: Subscription;
+  selectedImage = ''
 
   constructor(
     private _loadingCtrl: LoadingController,
     private _formBuilder: FormBuilder,
     private _route: ActivatedRoute,
+    private _router: Router,
     private _recipeService: RecipeService,
   ) {
     // 🚩 Inicite form
@@ -30,6 +32,7 @@ export class PlateFormPage implements OnInit{
       description: [''],
       diners: [0, Validators.min(1)],
       time: [0],
+      image: ['']
     });
   }
 
@@ -64,13 +67,16 @@ export class PlateFormPage implements OnInit{
     const image = await Camera.getPhoto({
       quality: 90,
       allowEditing: true,
-      resultType: CameraResultType.Uri
+      resultType: CameraResultType.DataUrl,
+      source: CameraSource.Photos
     });
-    //image.base64String
+    this.recipeForm.patchValue({
+      image: base64toBlob(image.dataUrl!)
+    });
+    this.selectedImage = image.dataUrl!
   }
 
   async submit(){
-    alert('dios')
     const loading = await this._loadingCtrl.create({
       message: 'Saving...',
       duration: 4000,
@@ -79,14 +85,13 @@ export class PlateFormPage implements OnInit{
     const recipe = this.recipeForm.value as Recipe
     this._recipeService.recipeCreate$FormData$Response({body: recipe}).subscribe({
       next: (response) => {
-        // Add data to form
-        this.recipeForm.patchValue(recipe);
       },
-      error: (e) => console.error(e),
+      error: (e) => 
+      console.error(e),
       complete: () => {
         loading.dismiss();
+        this._router.navigate(['/plates']);
       }
-    }
-  )
+    })
   }
 }

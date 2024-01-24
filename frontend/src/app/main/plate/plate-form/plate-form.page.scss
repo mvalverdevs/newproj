@@ -1,8 +1,16 @@
 .image-circle{
-    width: 100px;
-    height: 100px;
+    width: 100%;
+    height: 300px;
     padding: 30px;
-    margin: 50px auto;
-    border-radius: 100%;
-    border-style: solid;
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+
+.plate-content{
+    position: relative; 
+    top: -60px; 
+    background-color: var(--ion-background-color, white);
+    border-radius: 40px;
+    padding: 50px 20px;
 }

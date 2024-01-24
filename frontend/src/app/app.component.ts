@@ -21,7 +21,6 @@ export class AppComponent {
     this._router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.showTabs = this.pagesWithTabs.includes(this._router.url);
-        console.log('Cambiando a la página:', this._router.url);
       }
     });
   }

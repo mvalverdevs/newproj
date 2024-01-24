@@ -11,7 +11,7 @@ class Recipe(models.Model):
         verbose_name=u'Food description'
     )
 
-    image = models.ImageField(
+    image = models.FileField(
         verbose_name=u'Recipe image',
         upload_to='repice/',
         null=True
