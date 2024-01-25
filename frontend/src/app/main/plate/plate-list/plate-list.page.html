@@ -35,10 +35,9 @@
     <ion-item *ngFor="let recipe of recipes">
       <ion-card [routerLink]="['/plates/'+recipe.id]" class="plate-item">
         <ion-ripple-effect></ion-ripple-effect>
-        <div 
-        class="plate-image"
-
-        [ngStyle]="{'background-image': 'url(' + (recipe.image_data.image ? recipe.image_data.image : 'https://ionicframework.com/docs/img/demos/card-media.png') + ')'}"
+        <div
+          class="plate-image"
+          [ngStyle]="{'background-image': 'url(' + (recipe.image_data && recipe.image_data.image ? recipe.image_data.image: 'https://ionicframework.com/docs/img/demos/card-media.png') + ')'}"
         ></div>
         <ion-card-header>
           <ion-card-title>{{recipe.name}}</ion-card-title>

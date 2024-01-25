@@ -58,6 +58,7 @@ export class PlateListPage implements OnInit {
 
     this._recipeService.recipeList({expand: '~all', category: selectedCategory, search: search}).subscribe({
       next: (recipes) => {
+        console.log(recipes)
         if (recipes.results != undefined){
           this.recipes = recipes.results;
         }

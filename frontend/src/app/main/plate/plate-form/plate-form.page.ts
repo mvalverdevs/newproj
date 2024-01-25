@@ -34,10 +34,10 @@ export class PlateFormPage implements OnInit{
     this.recipeForm = this._formBuilder.group({
       name: new FormControl('', Validators.required),
       description: new FormControl(''),
-      diners: new FormControl(0, Validators.min(1)),
-      time: new FormControl(0, Validators.min(1)),
+      diners: new FormControl('', Validators.min(1)),
+      time: new FormControl('', Validators.min(1)),
       image: new FormControl(''),
-      categories: new FormControl([])
+      category: new FormControl(new FormArray([]))
     });
     this.recipeImageForm = this._formBuilder.group({
       image: [''],
@@ -112,11 +112,7 @@ export class PlateFormPage implements OnInit{
   }
 
   handleChangeCategorySelect(e: any){
-    const categories = this.recipeForm.get('categories') as FormArray;
-    console.log(e.detail.value.length);
-    e.detail.value.forEach((entry: any) => {
-      categories.push(this._formBuilder.control(entry));
-    });
+    this.recipeForm.patchValue({category: e.detail.value});
   }
 
   async submit(){
@@ -133,7 +129,6 @@ export class PlateFormPage implements OnInit{
       console.error(e),
       complete: () => {
         loading.dismiss();
-        console.log('BUENA ')
         this._router.navigate(['/plates']);
       }
     });

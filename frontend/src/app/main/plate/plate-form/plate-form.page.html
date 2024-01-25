@@ -52,27 +52,15 @@
         <ion-item>
             <ion-input
             formControlName="time"
-            label="Tiempo"
+            label="Tiempo (min)"
             type="number"
             labelPlacement="floating">
             </ion-input>
-            <!--
-            <div style="height: 45px;">
-          <ion-datetime
-            formControlName="time"
-            style="position: relative;top:-77px;border-radius: 20px;" 
-            presentation="time" 
-              [preferWheel]="true" 
-              size="cover">
-            </ion-datetime>
-          </div>
-            -->
-          
         </ion-item>
 
         <ion-item>
           <ion-select
-            formControlName="categories"
+            formControlName="category"
             (ionChange)="handleChangeCategorySelect($event)"
             labelPlacement="fixed"
             label="Categorias"
