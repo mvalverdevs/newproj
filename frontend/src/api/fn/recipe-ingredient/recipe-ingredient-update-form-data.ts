@@ -11,6 +11,11 @@ import { RecipeIngredient } from '../../models/recipe-ingredient';
 export interface RecipeIngredientUpdate$FormData$Params {
 
 /**
+ * List of nested objects
+ */
+  expand?: string;
+
+/**
  * A unique integer value identifying this recipe ingredient.
  */
   id: number;
@@ -20,6 +25,7 @@ export interface RecipeIngredientUpdate$FormData$Params {
 export function recipeIngredientUpdate$FormData(http: HttpClient, rootUrl: string, params: RecipeIngredientUpdate$FormData$Params, context?: HttpContext): Observable<StrictHttpResponse<RecipeIngredient>> {
   const rb = new RequestBuilder(rootUrl, recipeIngredientUpdate$FormData.PATH, 'put');
   if (params) {
+    rb.query('expand', params.expand, {});
     rb.path('id', params.id, {});
     rb.body(params.body, 'multipart/form-data');
   }

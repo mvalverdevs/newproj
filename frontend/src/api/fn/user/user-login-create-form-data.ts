@@ -9,12 +9,18 @@ import { RequestBuilder } from '../../request-builder';
 import { UserLogin } from '../../models/user-login';
 
 export interface UserLoginCreate$FormData$Params {
+
+/**
+ * List of nested objects
+ */
+  expand?: string;
       body: UserLogin
 }
 
 export function userLoginCreate$FormData(http: HttpClient, rootUrl: string, params: UserLoginCreate$FormData$Params, context?: HttpContext): Observable<StrictHttpResponse<UserLogin>> {
   const rb = new RequestBuilder(rootUrl, userLoginCreate$FormData.PATH, 'post');
   if (params) {
+    rb.query('expand', params.expand, {});
     rb.body(params.body, 'multipart/form-data');
   }
 

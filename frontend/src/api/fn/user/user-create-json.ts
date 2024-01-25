@@ -9,12 +9,18 @@ import { RequestBuilder } from '../../request-builder';
 import { User } from '../../models/user';
 
 export interface UserCreate$Json$Params {
+
+/**
+ * List of nested objects
+ */
+  expand?: string;
       body: User
 }
 
 export function userCreate$Json(http: HttpClient, rootUrl: string, params: UserCreate$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
   const rb = new RequestBuilder(rootUrl, userCreate$Json.PATH, 'post');
   if (params) {
+    rb.query('expand', params.expand, {});
     rb.body(params.body, 'application/json');
   }
 

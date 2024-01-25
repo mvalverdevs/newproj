@@ -10,12 +10,18 @@ import { Email } from '../../models/email';
 import { User } from '../../models/user';
 
 export interface UserRequestResetPasswordCreate$FormData$Params {
+
+/**
+ * List of nested objects
+ */
+  expand?: string;
       body: Email
 }
 
 export function userRequestResetPasswordCreate$FormData(http: HttpClient, rootUrl: string, params: UserRequestResetPasswordCreate$FormData$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
   const rb = new RequestBuilder(rootUrl, userRequestResetPasswordCreate$FormData.PATH, 'post');
   if (params) {
+    rb.query('expand', params.expand, {});
     rb.body(params.body, 'multipart/form-data');
   }
 

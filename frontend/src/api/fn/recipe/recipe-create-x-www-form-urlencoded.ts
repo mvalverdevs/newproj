@@ -9,12 +9,18 @@ import { RequestBuilder } from '../../request-builder';
 import { Recipe } from '../../models/recipe';
 
 export interface RecipeCreate$XWwwFormUrlencoded$Params {
+
+/**
+ * List of nested objects
+ */
+  expand?: string;
       body: Recipe
 }
 
 export function recipeCreate$XWwwFormUrlencoded(http: HttpClient, rootUrl: string, params: RecipeCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<StrictHttpResponse<Recipe>> {
   const rb = new RequestBuilder(rootUrl, recipeCreate$XWwwFormUrlencoded.PATH, 'post');
   if (params) {
+    rb.query('expand', params.expand, {});
     rb.body(params.body, 'application/x-www-form-urlencoded');
   }
 

@@ -10,6 +10,11 @@ import { RequestBuilder } from '../../request-builder';
 export interface RecipeDestroy$Params {
 
 /**
+ * List of nested objects
+ */
+  expand?: string;
+
+/**
  * A unique integer value identifying this recipe.
  */
   id: number;
@@ -18,6 +23,7 @@ export interface RecipeDestroy$Params {
 export function recipeDestroy(http: HttpClient, rootUrl: string, params: RecipeDestroy$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
   const rb = new RequestBuilder(rootUrl, recipeDestroy.PATH, 'delete');
   if (params) {
+    rb.query('expand', params.expand, {});
     rb.path('id', params.id, {});
   }
 

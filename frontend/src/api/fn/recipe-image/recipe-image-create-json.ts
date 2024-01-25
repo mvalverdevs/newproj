@@ -6,22 +6,15 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { User } from '../../models/user';
-import { UserLogin } from '../../models/user-login';
+import { RecipeImage } from '../../models/recipe-image';
 
-export interface UserLogoutCreate$Json$Params {
-
-/**
- * List of nested objects
- */
-  expand?: string;
-      body: UserLogin
+export interface RecipeImageCreate$Json$Params {
+      body?: RecipeImage
 }
 
-export function userLogoutCreate$Json(http: HttpClient, rootUrl: string, params: UserLogoutCreate$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
-  const rb = new RequestBuilder(rootUrl, userLogoutCreate$Json.PATH, 'post');
+export function recipeImageCreate$Json(http: HttpClient, rootUrl: string, params?: RecipeImageCreate$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<RecipeImage>> {
+  const rb = new RequestBuilder(rootUrl, recipeImageCreate$Json.PATH, 'post');
   if (params) {
-    rb.query('expand', params.expand, {});
     rb.body(params.body, 'application/json');
   }
 
@@ -30,9 +23,9 @@ export function userLogoutCreate$Json(http: HttpClient, rootUrl: string, params:
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<User>;
+      return r as StrictHttpResponse<RecipeImage>;
     })
   );
 }
 
-userLogoutCreate$Json.PATH = '/api/user/logout/';
+recipeImageCreate$Json.PATH = '/api/recipe_image/';

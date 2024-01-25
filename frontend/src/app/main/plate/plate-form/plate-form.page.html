@@ -15,11 +15,10 @@
 <ion-content [fullscreen]="true">
 
   <form [formGroup]="recipeForm">
-    <div 
+    <div
       class="image-circle" 
       (click)="takePicture()"
       [ngStyle]="{'background-image': 'url(' + (selectedImage ? selectedImage : 'https://ionicframework.com/docs/img/demos/card-media.png') + ')'}">
-      
     </div>
     <div class="plate-content">
       <ion-list>
@@ -72,10 +71,18 @@
         </ion-item>
 
         <ion-item>
-          <ion-select labelPlacement="fixed" label="Categorias" [multiple]="true">
-            <ion-select-option value="apples">Apples</ion-select-option>
-            <ion-select-option value="oranges">Oranges</ion-select-option>
-            <ion-select-option value="bananas">Bananas</ion-select-option>
+          <ion-select
+            formControlName="categories"
+            (ionChange)="handleChangeCategorySelect($event)"
+            labelPlacement="fixed"
+            label="Categorias"
+            [multiple]="true">
+            <ion-select-option 
+              *ngFor="let recipeCategory of recipeCategories" 
+              [value]="recipeCategory.id"
+              >
+              {{recipeCategory.name}}
+            </ion-select-option>
           </ion-select>
         </ion-item>
 

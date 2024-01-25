@@ -11,6 +11,11 @@ import { RecipeCategory } from '../../models/recipe-category';
 export interface RecipeCategoryUpdate$Json$Params {
 
 /**
+ * List of nested objects
+ */
+  expand?: string;
+
+/**
  * A unique integer value identifying this recipe category.
  */
   id: number;
@@ -20,6 +25,7 @@ export interface RecipeCategoryUpdate$Json$Params {
 export function recipeCategoryUpdate$Json(http: HttpClient, rootUrl: string, params: RecipeCategoryUpdate$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<RecipeCategory>> {
   const rb = new RequestBuilder(rootUrl, recipeCategoryUpdate$Json.PATH, 'put');
   if (params) {
+    rb.query('expand', params.expand, {});
     rb.path('id', params.id, {});
     rb.body(params.body, 'application/json');
   }

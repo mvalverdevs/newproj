@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+import { RecipeImage } from '../models/recipe-image';
 
 /**
  * A ModelSerializer that takes additional arguments for
@@ -12,7 +13,8 @@ export interface PatchedRecipe {
   description?: string;
   diners?: number;
   id?: number;
-  image?: null | string;
+  image?: null | number;
+  image_data?: RecipeImage;
   ingredients?: Array<number>;
   name?: string;
   time?: number;

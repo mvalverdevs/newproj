@@ -32,7 +32,7 @@ SECRET_KEY = config(
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 # ALLOWED_HOSTS = config("DJANGO_ALLOWED_HOSTS", cast=Csv(), default="*")
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['192.168.1.35', 'localhost', '127.0.0.1']
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True

@@ -6,21 +6,15 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { User } from '../../models/user';
+import { RecipeImage } from '../../models/recipe-image';
 
-export interface UserCreate$XWwwFormUrlencoded$Params {
-
-/**
- * List of nested objects
- */
-  expand?: string;
-      body: User
+export interface RecipeImageCreate$XWwwFormUrlencoded$Params {
+      body?: RecipeImage
 }
 
-export function userCreate$XWwwFormUrlencoded(http: HttpClient, rootUrl: string, params: UserCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
-  const rb = new RequestBuilder(rootUrl, userCreate$XWwwFormUrlencoded.PATH, 'post');
+export function recipeImageCreate$XWwwFormUrlencoded(http: HttpClient, rootUrl: string, params?: RecipeImageCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<StrictHttpResponse<RecipeImage>> {
+  const rb = new RequestBuilder(rootUrl, recipeImageCreate$XWwwFormUrlencoded.PATH, 'post');
   if (params) {
-    rb.query('expand', params.expand, {});
     rb.body(params.body, 'application/x-www-form-urlencoded');
   }
 
@@ -29,9 +23,9 @@ export function userCreate$XWwwFormUrlencoded(http: HttpClient, rootUrl: string,
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<User>;
+      return r as StrictHttpResponse<RecipeImage>;
     })
   );
 }
 
-userCreate$XWwwFormUrlencoded.PATH = '/api/user/';
+recipeImageCreate$XWwwFormUrlencoded.PATH = '/api/recipe_image/';

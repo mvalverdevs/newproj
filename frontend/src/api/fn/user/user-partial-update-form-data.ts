@@ -12,6 +12,11 @@ import { User } from '../../models/user';
 export interface UserPartialUpdate$FormData$Params {
 
 /**
+ * List of nested objects
+ */
+  expand?: string;
+
+/**
  * A unique integer value identifying this user.
  */
   id: number;
@@ -21,6 +26,7 @@ export interface UserPartialUpdate$FormData$Params {
 export function userPartialUpdate$FormData(http: HttpClient, rootUrl: string, params: UserPartialUpdate$FormData$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
   const rb = new RequestBuilder(rootUrl, userPartialUpdate$FormData.PATH, 'patch');
   if (params) {
+    rb.query('expand', params.expand, {});
     rb.path('id', params.id, {});
     rb.body(params.body, 'multipart/form-data');
   }

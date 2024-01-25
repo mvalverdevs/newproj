@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Subscription } from 'rxjs';
-import { Recipe } from 'src/api/models';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RecipeService } from 'src/api/services';
+import { Recipe, RecipeCategory, RecipeImage } from 'src/api/models';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
+import { RecipeCategoryService, RecipeImageService, RecipeService } from 'src/api/services';
 import { LoadingController } from '@ionic/angular';
 import { base64toBlob } from 'src/app/utils/functions';
 
@@ -16,8 +16,10 @@ import { base64toBlob } from 'src/app/utils/functions';
 export class PlateFormPage implements OnInit{
 
   recipeForm: FormGroup;
+  recipeImageForm: FormGroup;
   routeSub: Subscription;
-  selectedImage = ''
+  selectedImage = '';
+  recipeCategories: RecipeCategory[];
 
   constructor(
     private _loadingCtrl: LoadingController,
@@ -25,14 +27,20 @@ export class PlateFormPage implements OnInit{
     private _route: ActivatedRoute,
     private _router: Router,
     private _recipeService: RecipeService,
+    private _recipeCategoryService: RecipeCategoryService,
+    private _recipeImageService: RecipeImageService
   ) {
-    // 🚩 Inicite form
+    // 🚩 Iniciate forms
     this.recipeForm = this._formBuilder.group({
-      name: ['', Validators.required],
-      description: [''],
-      diners: [0, Validators.min(1)],
-      time: [0],
-      image: ['']
+      name: new FormControl('', Validators.required),
+      description: new FormControl(''),
+      diners: new FormControl(0, Validators.min(1)),
+      time: new FormControl(0, Validators.min(1)),
+      image: new FormControl(''),
+      categories: new FormControl([])
+    });
+    this.recipeImageForm = this._formBuilder.group({
+      image: [''],
     });
   }
 
@@ -42,6 +50,19 @@ export class PlateFormPage implements OnInit{
       duration: 4000,
     });
     loading.present();
+
+    // 🚩 Obtaining recipeCategory list
+    this._recipeCategoryService.recipeCategoryList().subscribe({
+      next: (recipeCategories) => {
+        if (recipeCategories.results != undefined){
+          this.recipeCategories = recipeCategories.results;
+        }
+      },
+      error: (e) => console.error(e),
+      complete: () => {
+        loading.dismiss();
+      }
+    });
 
     // 🚩 Take id from url
     this.routeSub = this._route.params.subscribe(params => {
@@ -70,10 +91,32 @@ export class PlateFormPage implements OnInit{
       resultType: CameraResultType.DataUrl,
       source: CameraSource.Photos
     });
-    this.recipeForm.patchValue({
+    this.recipeImageForm.patchValue({
       image: base64toBlob(image.dataUrl!)
     });
     this.selectedImage = image.dataUrl!
+    this._recipeImageService.recipeImageCreate$FormData$Response({
+      body: this.recipeImageForm.value as RecipeImage
+    }).subscribe({
+      next: (response) => {
+        console.log(response)
+        this.recipeForm.patchValue({
+          image: response.body.id
+        });
+      },
+      error: (e) => 
+      console.error(e),
+      complete: () => {
+      }
+    });
+  }
+
+  handleChangeCategorySelect(e: any){
+    const categories = this.recipeForm.get('categories') as FormArray;
+    console.log(e.detail.value.length);
+    e.detail.value.forEach((entry: any) => {
+      categories.push(this._formBuilder.control(entry));
+    });
   }
 
   async submit(){
@@ -83,15 +126,16 @@ export class PlateFormPage implements OnInit{
     });
     loading.present();
     const recipe = this.recipeForm.value as Recipe
-    this._recipeService.recipeCreate$FormData$Response({body: recipe}).subscribe({
+    this._recipeService.recipeCreate$Json$Response({body: recipe}).subscribe({
       next: (response) => {
       },
       error: (e) => 
       console.error(e),
       complete: () => {
         loading.dismiss();
+        console.log('BUENA ')
         this._router.navigate(['/plates']);
       }
-    })
+    });
   }
 }

@@ -6,6 +6,7 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { RecipeService } from './services/recipe.service';
 import { RecipeCategoryService } from './services/recipe-category.service';
+import { RecipeImageService } from './services/recipe-image.service';
 import { RecipeIngredientService } from './services/recipe-ingredient.service';
 import { SchemaService } from './services/schema.service';
 import { UserService } from './services/user.service';
@@ -20,6 +21,7 @@ import { UserService } from './services/user.service';
   providers: [
     RecipeService,
     RecipeCategoryService,
+    RecipeImageService,
     RecipeIngredientService,
     SchemaService,
     UserService,

@@ -10,12 +10,18 @@ import { ResetPassword } from '../../models/reset-password';
 import { User } from '../../models/user';
 
 export interface UserResetConfirmPasswordCreate$Json$Params {
+
+/**
+ * List of nested objects
+ */
+  expand?: string;
       body: ResetPassword
 }
 
 export function userResetConfirmPasswordCreate$Json(http: HttpClient, rootUrl: string, params: UserResetConfirmPasswordCreate$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
   const rb = new RequestBuilder(rootUrl, userResetConfirmPasswordCreate$Json.PATH, 'post');
   if (params) {
+    rb.query('expand', params.expand, {});
     rb.body(params.body, 'application/json');
   }
 

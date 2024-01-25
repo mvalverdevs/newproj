@@ -1,6 +1,8 @@
 from django.conf import settings
 from drf_yasg import openapi
 from drf_yasg.inspectors import SwaggerAutoSchema
+from drf_spectacular.utils import OpenApiParameter
+from drf_spectacular.types import OpenApiTypes
 
 
 class SwaggerAutoSchema(SwaggerAutoSchema):
@@ -28,17 +30,16 @@ class SwaggerAutoSchema(SwaggerAutoSchema):
         """
         operation = super(SwaggerAutoSchema, self).get_operation(operation_keys)
 
-        fields_parameter = openapi.Parameter(
-            "fields",
-            openapi.IN_QUERY,
-            description="List of fields",
-            type=openapi.TYPE_STRING,
+        fields_parameter = OpenApiParameter(
+            name='fields',
+            description='List of fields',
+            type=OpenApiTypes.STR
         )
-        expand_parameter = openapi.Parameter(
-            "expand",
-            openapi.IN_QUERY,
-            description="List of nested objects",
-            type=openapi.TYPE_STRING,
+
+        expand_parameter = OpenApiParameter(
+            name='expand',
+            description='List of nested objects',
+            type=OpenApiTypes.STR
         )
 
         parameters = getattr(operation, "parameters")

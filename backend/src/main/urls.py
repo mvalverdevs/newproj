@@ -26,19 +26,6 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, Spec
 from food import views as food_views
 
 
-schema_view = get_schema_view(
-   openapi.Info(
-      title="newproj API",
-      default_version='1.0.0',
-      description="Test description",
-      terms_of_service="https://www.google.com/policies/terms/",
-      contact=openapi.Contact(email="contact@example.org"),
-      license=openapi.License(name="Custom License"),
-   ),
-   public=True,
-   permission_classes=[permissions.AllowAny],
-)
-
 # To register all the urls, add one for each view created
 router = routers.DefaultRouter()
 
@@ -73,6 +60,12 @@ router.register(
     r'recipe_ingredient',
     food_views.RecipeIngredientView,
     basename='recipe_ingredient'
+)
+
+router.register(
+    r'recipe_image',
+    food_views.RecipeImageView,
+    basename='recipe_image'
 )
 
 

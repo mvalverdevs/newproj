@@ -38,7 +38,7 @@
         <div 
         class="plate-image"
 
-        [ngStyle]="{'background-image': 'url(' + (recipe.image ? recipe.image : 'https://ionicframework.com/docs/img/demos/card-media.png') + ')'}"
+        [ngStyle]="{'background-image': 'url(' + (recipe.image_data.image ? recipe.image_data.image : 'https://ionicframework.com/docs/img/demos/card-media.png') + ')'}"
         ></div>
         <ion-card-header>
           <ion-card-title>{{recipe.name}}</ion-card-title>

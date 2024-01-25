@@ -15,6 +15,11 @@ paths:
             type: integer
         explode: true
         style: form
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       - name: limit
         required: false
         in: query
@@ -53,6 +58,12 @@ paths:
           description: ''
     post:
       operationId: recipe_create
+      parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       tags:
       - recipe
       requestBody:
@@ -81,6 +92,11 @@ paths:
     get:
       operationId: recipe_retrieve
       parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       - in: path
         name: id
         schema:
@@ -102,6 +118,11 @@ paths:
     put:
       operationId: recipe_update
       parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       - in: path
         name: id
         schema:
@@ -135,6 +156,11 @@ paths:
     patch:
       operationId: recipe_partial_update
       parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       - in: path
         name: id
         schema:
@@ -167,6 +193,11 @@ paths:
     delete:
       operationId: recipe_destroy
       parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       - in: path
         name: id
         schema:
@@ -185,6 +216,11 @@ paths:
     get:
       operationId: recipe_category_list
       parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       - name: limit
         required: false
         in: query
@@ -223,6 +259,12 @@ paths:
           description: ''
     post:
       operationId: recipe_category_create
+      parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       tags:
       - recipe_category
       requestBody:
@@ -251,6 +293,11 @@ paths:
     get:
       operationId: recipe_category_retrieve
       parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       - in: path
         name: id
         schema:
@@ -272,6 +319,11 @@ paths:
     put:
       operationId: recipe_category_update
       parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       - in: path
         name: id
         schema:
@@ -305,6 +357,11 @@ paths:
     patch:
       operationId: recipe_category_partial_update
       parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       - in: path
         name: id
         schema:
@@ -337,6 +394,11 @@ paths:
     delete:
       operationId: recipe_category_destroy
       parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       - in: path
         name: id
         schema:
@@ -351,10 +413,61 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/recipe_image/:
+    post:
+      operationId: recipe_image_create
+      tags:
+      - recipe_image
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeImage'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RecipeImage'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RecipeImage'
+      security:
+      - cookieAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeImage'
+          description: ''
+  /api/recipe_image/{id}/:
+    delete:
+      operationId: recipe_image_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this recipe image.
+        required: true
+      tags:
+      - recipe_image
+      security:
+      - cookieAuth: []
+      - tokenAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
   /api/recipe_ingredient/:
     get:
       operationId: recipe_ingredient_list
       parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       - name: limit
         required: false
         in: query
@@ -393,6 +506,12 @@ paths:
           description: ''
     post:
       operationId: recipe_ingredient_create
+      parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       tags:
       - recipe_ingredient
       requestBody:
@@ -421,6 +540,11 @@ paths:
     get:
       operationId: recipe_ingredient_retrieve
       parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       - in: path
         name: id
         schema:
@@ -442,6 +566,11 @@ paths:
     put:
       operationId: recipe_ingredient_update
       parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       - in: path
         name: id
         schema:
@@ -475,6 +604,11 @@ paths:
     patch:
       operationId: recipe_ingredient_partial_update
       parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       - in: path
         name: id
         schema:
@@ -507,6 +641,11 @@ paths:
     delete:
       operationId: recipe_ingredient_destroy
       parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       - in: path
         name: id
         schema:
@@ -675,6 +814,11 @@ paths:
         schema:
           type: string
       - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
+      - in: query
         name: first_name
         schema:
           type: string
@@ -735,6 +879,12 @@ paths:
           description: ''
     post:
       operationId: user_create
+      parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       tags:
       - user
       requestBody:
@@ -762,6 +912,11 @@ paths:
     get:
       operationId: user_retrieve
       parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       - in: path
         name: id
         schema:
@@ -782,6 +937,11 @@ paths:
     put:
       operationId: user_update
       parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       - in: path
         name: id
         schema:
@@ -814,6 +974,11 @@ paths:
     patch:
       operationId: user_partial_update
       parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       - in: path
         name: id
         schema:
@@ -845,6 +1010,11 @@ paths:
     delete:
       operationId: user_destroy
       parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       - in: path
         name: id
         schema:
@@ -862,6 +1032,12 @@ paths:
     post:
       operationId: user_login_create
       description: User login
+      parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       tags:
       - user
       requestBody:
@@ -890,6 +1066,12 @@ paths:
     post:
       operationId: user_logout_create
       description: User logout
+      parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       tags:
       - user
       requestBody:
@@ -916,6 +1098,12 @@ paths:
   /api/user/permissions/:
     get:
       operationId: user_permissions_retrieve
+      parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       tags:
       - user
       security:
@@ -931,6 +1119,12 @@ paths:
     post:
       operationId: user_register_create
       description: User register view
+      parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       tags:
       - user
       requestBody:
@@ -959,6 +1153,12 @@ paths:
     post:
       operationId: user_request_reset_password_create
       description: Reset password
+      parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       tags:
       - user
       requestBody:
@@ -986,6 +1186,12 @@ paths:
     post:
       operationId: user_reset_confirm_password_create
       description: Reset confirm password
+      parameters:
+      - in: query
+        name: expand
+        schema:
+          type: string
+        description: List of nested objects
       tags:
       - user
       requestBody:
@@ -1117,11 +1323,6 @@ components:
         description:
           type: string
           title: Food description
-        image:
-          type: string
-          format: uri
-          nullable: true
-          title: Recipe image
         diners:
           type: integer
           maximum: 2147483647
@@ -1144,6 +1345,14 @@ components:
             type: integer
             title: Food ingredients
           title: Food ingredients
+        image:
+          type: integer
+          nullable: true
+          title: Recipe image
+        image_data:
+          allOf:
+          - $ref: '#/components/schemas/RecipeImage'
+          readOnly: true
     PatchedRecipeCategory:
       type: object
       description: |-
@@ -1268,11 +1477,6 @@ components:
         description:
           type: string
           title: Food description
-        image:
-          type: string
-          format: uri
-          nullable: true
-          title: Recipe image
         diners:
           type: integer
           maximum: 2147483647
@@ -1295,10 +1499,19 @@ components:
             type: integer
             title: Food ingredients
           title: Food ingredients
+        image:
+          type: integer
+          nullable: true
+          title: Recipe image
+        image_data:
+          allOf:
+          - $ref: '#/components/schemas/RecipeImage'
+          readOnly: true
       required:
       - description
       - diners
       - id
+      - image_data
       - name
       - time
     RecipeCategory:
@@ -1319,6 +1532,24 @@ components:
       required:
       - id
       - name
+    RecipeImage:
+      type: object
+      description: |-
+        A ModelSerializer that takes additional arguments for
+        "fields" and "include" in order to
+        control which fields are displayed, and whether to replace simple values with
+        complex, nested serializations.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        image:
+          type: string
+          format: uri
+          nullable: true
+          title: Recipe image
+      required:
+      - id
     RecipeIngredient:
       type: object
       description: |-

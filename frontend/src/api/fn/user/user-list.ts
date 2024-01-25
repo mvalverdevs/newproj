@@ -10,6 +10,11 @@ import { PaginatedUserList } from '../../models/paginated-user-list';
 
 export interface UserList$Params {
   email?: string;
+
+/**
+ * List of nested objects
+ */
+  expand?: string;
   first_name?: string;
   is_active?: boolean;
   last_name?: string;
@@ -42,6 +47,7 @@ export function userList(http: HttpClient, rootUrl: string, params?: UserList$Pa
   const rb = new RequestBuilder(rootUrl, userList.PATH, 'get');
   if (params) {
     rb.query('email', params.email, {});
+    rb.query('expand', params.expand, {});
     rb.query('first_name', params.first_name, {});
     rb.query('is_active', params.is_active, {});
     rb.query('last_name', params.last_name, {});

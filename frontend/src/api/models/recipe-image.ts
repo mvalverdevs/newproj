@@ -1,6 +1,5 @@
 /* tslint:disable */
 /* eslint-disable */
-import { RecipeImage } from '../models/recipe-image';
 
 /**
  * A ModelSerializer that takes additional arguments for
@@ -8,14 +7,7 @@ import { RecipeImage } from '../models/recipe-image';
  * control which fields are displayed, and whether to replace simple values with
  * complex, nested serializations.
  */
-export interface Recipe {
-  category?: Array<number>;
-  description: string;
-  diners: number;
+export interface RecipeImage {
   id: number;
-  image?: null | number;
-  image_data: RecipeImage;
-  ingredients?: Array<number>;
-  name: string;
-  time: number;
+  image?: null | string;
 }

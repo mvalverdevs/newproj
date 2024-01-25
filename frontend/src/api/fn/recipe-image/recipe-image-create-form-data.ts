@@ -6,21 +6,15 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { User } from '../../models/user';
+import { RecipeImage } from '../../models/recipe-image';
 
-export interface UserRegisterCreate$FormData$Params {
-
-/**
- * List of nested objects
- */
-  expand?: string;
-      body: User
+export interface RecipeImageCreate$FormData$Params {
+      body?: RecipeImage
 }
 
-export function userRegisterCreate$FormData(http: HttpClient, rootUrl: string, params: UserRegisterCreate$FormData$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
-  const rb = new RequestBuilder(rootUrl, userRegisterCreate$FormData.PATH, 'post');
+export function recipeImageCreate$FormData(http: HttpClient, rootUrl: string, params?: RecipeImageCreate$FormData$Params, context?: HttpContext): Observable<StrictHttpResponse<RecipeImage>> {
+  const rb = new RequestBuilder(rootUrl, recipeImageCreate$FormData.PATH, 'post');
   if (params) {
-    rb.query('expand', params.expand, {});
     rb.body(params.body, 'multipart/form-data');
   }
 
@@ -29,9 +23,9 @@ export function userRegisterCreate$FormData(http: HttpClient, rootUrl: string, p
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<User>;
+      return r as StrictHttpResponse<RecipeImage>;
     })
   );
 }
 
-userRegisterCreate$FormData.PATH = '/api/user/register/';
+recipeImageCreate$FormData.PATH = '/api/recipe_image/';

@@ -10,12 +10,18 @@ import { User } from '../../models/user';
 import { UserLogin } from '../../models/user-login';
 
 export interface UserLogoutCreate$FormData$Params {
+
+/**
+ * List of nested objects
+ */
+  expand?: string;
       body: UserLogin
 }
 
 export function userLogoutCreate$FormData(http: HttpClient, rootUrl: string, params: UserLogoutCreate$FormData$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
   const rb = new RequestBuilder(rootUrl, userLogoutCreate$FormData.PATH, 'post');
   if (params) {
+    rb.query('expand', params.expand, {});
     rb.body(params.body, 'multipart/form-data');
   }
 

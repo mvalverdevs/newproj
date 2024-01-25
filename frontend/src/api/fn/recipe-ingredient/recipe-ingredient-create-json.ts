@@ -9,12 +9,18 @@ import { RequestBuilder } from '../../request-builder';
 import { RecipeIngredient } from '../../models/recipe-ingredient';
 
 export interface RecipeIngredientCreate$Json$Params {
+
+/**
+ * List of nested objects
+ */
+  expand?: string;
       body: RecipeIngredient
 }
 
 export function recipeIngredientCreate$Json(http: HttpClient, rootUrl: string, params: RecipeIngredientCreate$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<RecipeIngredient>> {
   const rb = new RequestBuilder(rootUrl, recipeIngredientCreate$Json.PATH, 'post');
   if (params) {
+    rb.query('expand', params.expand, {});
     rb.body(params.body, 'application/json');
   }
 

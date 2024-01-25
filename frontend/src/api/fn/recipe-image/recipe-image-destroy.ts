@@ -7,23 +7,17 @@ import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
 
-export interface UserDestroy$Params {
+export interface RecipeImageDestroy$Params {
 
 /**
- * List of nested objects
- */
-  expand?: string;
-
-/**
- * A unique integer value identifying this user.
+ * A unique integer value identifying this recipe image.
  */
   id: number;
 }
 
-export function userDestroy(http: HttpClient, rootUrl: string, params: UserDestroy$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-  const rb = new RequestBuilder(rootUrl, userDestroy.PATH, 'delete');
+export function recipeImageDestroy(http: HttpClient, rootUrl: string, params: RecipeImageDestroy$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+  const rb = new RequestBuilder(rootUrl, recipeImageDestroy.PATH, 'delete');
   if (params) {
-    rb.query('expand', params.expand, {});
     rb.path('id', params.id, {});
   }
 
@@ -37,4 +31,4 @@ export function userDestroy(http: HttpClient, rootUrl: string, params: UserDestr
   );
 }
 
-userDestroy.PATH = '/api/user/{id}/';
+recipeImageDestroy.PATH = '/api/recipe_image/{id}/';

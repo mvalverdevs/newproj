@@ -11,6 +11,11 @@ import { Recipe } from '../../models/recipe';
 export interface RecipeUpdate$XWwwFormUrlencoded$Params {
 
 /**
+ * List of nested objects
+ */
+  expand?: string;
+
+/**
  * A unique integer value identifying this recipe.
  */
   id: number;
@@ -20,6 +25,7 @@ export interface RecipeUpdate$XWwwFormUrlencoded$Params {
 export function recipeUpdate$XWwwFormUrlencoded(http: HttpClient, rootUrl: string, params: RecipeUpdate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<StrictHttpResponse<Recipe>> {
   const rb = new RequestBuilder(rootUrl, recipeUpdate$XWwwFormUrlencoded.PATH, 'put');
   if (params) {
+    rb.query('expand', params.expand, {});
     rb.path('id', params.id, {});
     rb.body(params.body, 'application/x-www-form-urlencoded');
   }

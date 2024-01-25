@@ -95,7 +95,7 @@ api-test: ## Run pytest in the api container.
 	$(DOCKER_DEV) run --rm api pytest
 
 api-populate: ## Run pytest with coverage report in the api container.
-	$(DOCKER_DEV) run --rm api python manage.py populate -m $(module)
+	$(DOCKER_DEV) run --rm api python manage.py populate -m $(model)
 
 
 ### FRONTEND
@@ -106,7 +106,7 @@ frontend-osshell: ## Run interactive bash shell in 'frontend' developer containe
 swagger: ## Generate OpenAPI definition nfge-spa/swagger.json
 	$(DOCKER_DEV) run --rm frontend wget -O ./schema.yaml http://192.168.1.35:8000/api/schema/
 
-apigen: ## Run NPM APIGEN (ng-openapi-gen)
+apigen: swagger ## Run NPM APIGEN (ng-openapi-gen)
 	$(DOCKER_DEV) run --rm frontend ng-openapi-gen
 	sudo chown -R $(runner):$(group) ./frontend/src/api
 

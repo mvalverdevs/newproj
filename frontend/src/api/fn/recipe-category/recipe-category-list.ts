@@ -11,6 +11,11 @@ import { PaginatedRecipeCategoryList } from '../../models/paginated-recipe-categ
 export interface RecipeCategoryList$Params {
 
 /**
+ * List of nested objects
+ */
+  expand?: string;
+
+/**
  * Number of results to return per page.
  */
   limit?: number;
@@ -34,6 +39,7 @@ export interface RecipeCategoryList$Params {
 export function recipeCategoryList(http: HttpClient, rootUrl: string, params?: RecipeCategoryList$Params, context?: HttpContext): Observable<StrictHttpResponse<PaginatedRecipeCategoryList>> {
   const rb = new RequestBuilder(rootUrl, recipeCategoryList.PATH, 'get');
   if (params) {
+    rb.query('expand', params.expand, {});
     rb.query('limit', params.limit, {});
     rb.query('offset', params.offset, {});
     rb.query('ordering', params.ordering, {});

@@ -12,6 +12,7 @@ export { PatchedUser } from './models/patched-user';
 export { Permission } from './models/permission';
 export { Recipe } from './models/recipe';
 export { RecipeCategory } from './models/recipe-category';
+export { RecipeImage } from './models/recipe-image';
 export { RecipeIngredient } from './models/recipe-ingredient';
 export { ResetPassword } from './models/reset-password';
 export { RoleEnum } from './models/role-enum';

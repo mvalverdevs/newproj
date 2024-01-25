@@ -11,6 +11,11 @@ import { User } from '../../models/user';
 export interface UserRetrieve$Params {
 
 /**
+ * List of nested objects
+ */
+  expand?: string;
+
+/**
  * A unique integer value identifying this user.
  */
   id: number;
@@ -19,6 +24,7 @@ export interface UserRetrieve$Params {
 export function userRetrieve(http: HttpClient, rootUrl: string, params: UserRetrieve$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
   const rb = new RequestBuilder(rootUrl, userRetrieve.PATH, 'get');
   if (params) {
+    rb.query('expand', params.expand, {});
     rb.path('id', params.id, {});
   }
 

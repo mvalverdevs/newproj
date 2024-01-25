@@ -9,12 +9,18 @@ import { RequestBuilder } from '../../request-builder';
 import { UserLogin } from '../../models/user-login';
 
 export interface UserLoginCreate$XWwwFormUrlencoded$Params {
+
+/**
+ * List of nested objects
+ */
+  expand?: string;
       body: UserLogin
 }
 
 export function userLoginCreate$XWwwFormUrlencoded(http: HttpClient, rootUrl: string, params: UserLoginCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<StrictHttpResponse<UserLogin>> {
   const rb = new RequestBuilder(rootUrl, userLoginCreate$XWwwFormUrlencoded.PATH, 'post');
   if (params) {
+    rb.query('expand', params.expand, {});
     rb.body(params.body, 'application/x-www-form-urlencoded');
   }
 

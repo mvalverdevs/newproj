@@ -9,12 +9,18 @@ import { RequestBuilder } from '../../request-builder';
 import { RecipeIngredient } from '../../models/recipe-ingredient';
 
 export interface RecipeIngredientCreate$FormData$Params {
+
+/**
+ * List of nested objects
+ */
+  expand?: string;
       body: RecipeIngredient
 }
 
 export function recipeIngredientCreate$FormData(http: HttpClient, rootUrl: string, params: RecipeIngredientCreate$FormData$Params, context?: HttpContext): Observable<StrictHttpResponse<RecipeIngredient>> {
   const rb = new RequestBuilder(rootUrl, recipeIngredientCreate$FormData.PATH, 'post');
   if (params) {
+    rb.query('expand', params.expand, {});
     rb.body(params.body, 'multipart/form-data');
   }
 

@@ -11,6 +11,11 @@ import { User } from '../../models/user';
 export interface UserUpdate$Json$Params {
 
 /**
+ * List of nested objects
+ */
+  expand?: string;
+
+/**
  * A unique integer value identifying this user.
  */
   id: number;
@@ -20,6 +25,7 @@ export interface UserUpdate$Json$Params {
 export function userUpdate$Json(http: HttpClient, rootUrl: string, params: UserUpdate$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
   const rb = new RequestBuilder(rootUrl, userUpdate$Json.PATH, 'put');
   if (params) {
+    rb.query('expand', params.expand, {});
     rb.path('id', params.id, {});
     rb.body(params.body, 'application/json');
   }

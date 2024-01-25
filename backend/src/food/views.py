@@ -1,7 +1,7 @@
 from utils.views import ModelViewSet
-from food.models import Recipe, RecipeCategory, RecipeIngredient
-from food.serializers import RecipeSerializer, RecipeCategorySerializer, RecipeIngredientSerializer
-from rest_framework.parsers import MultiPartParser
+from food.models import Recipe, RecipeCategory, RecipeIngredient, RecipeImage
+from food.serializers import RecipeSerializer, RecipeCategorySerializer, RecipeIngredientSerializer, RecipeImageSerializer
+from rest_framework import mixins, viewsets
 
 # Create your views here.
 
@@ -9,7 +9,15 @@ class RecipeView(ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     filterset_fields = ('category', )
-    parsers = [MultiPartParser]
+
+
+class RecipeImageView(
+    viewsets.GenericViewSet,
+    mixins.CreateModelMixin,
+    mixins.DestroyModelMixin
+):
+    queryset = RecipeImage.objects.all()
+    serializer_class = RecipeImageSerializer
 
 
 class RecipeCategoryView(ModelViewSet):

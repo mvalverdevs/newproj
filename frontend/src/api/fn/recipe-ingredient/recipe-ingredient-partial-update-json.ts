@@ -12,6 +12,11 @@ import { RecipeIngredient } from '../../models/recipe-ingredient';
 export interface RecipeIngredientPartialUpdate$Json$Params {
 
 /**
+ * List of nested objects
+ */
+  expand?: string;
+
+/**
  * A unique integer value identifying this recipe ingredient.
  */
   id: number;
@@ -21,6 +26,7 @@ export interface RecipeIngredientPartialUpdate$Json$Params {
 export function recipeIngredientPartialUpdate$Json(http: HttpClient, rootUrl: string, params: RecipeIngredientPartialUpdate$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<RecipeIngredient>> {
   const rb = new RequestBuilder(rootUrl, recipeIngredientPartialUpdate$Json.PATH, 'patch');
   if (params) {
+    rb.query('expand', params.expand, {});
     rb.path('id', params.id, {});
     rb.body(params.body, 'application/json');
   }

@@ -1,6 +1,14 @@
 from django.db import models
 
-# Create your models here.
+
+class RecipeImage(models.Model):
+    image = models.FileField(
+        verbose_name=u'Recipe image',
+        upload_to='repice/',
+        null=True
+    )
+
+
 class Recipe(models.Model):
     """ Recipe, Plate, Meal """
     name = models.CharField(
@@ -9,12 +17,6 @@ class Recipe(models.Model):
 
     description = models.CharField(
         verbose_name=u'Food description'
-    )
-
-    image = models.FileField(
-        verbose_name=u'Recipe image',
-        upload_to='repice/',
-        null=True
     )
 
     diners = models.PositiveIntegerField(
@@ -36,6 +38,14 @@ class Recipe(models.Model):
         to='RecipeIngredient',
         blank=True
     )
+
+    image = models.ForeignKey(
+        verbose_name=u'Recipe image',
+        to=RecipeImage,
+        null=True,
+        on_delete=models.SET_NULL
+    )
+
 
 
 class RecipeCategory(models.Model):

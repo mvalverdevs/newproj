@@ -11,6 +11,11 @@ import { Recipe } from '../../models/recipe';
 export interface RecipeRetrieve$Params {
 
 /**
+ * List of nested objects
+ */
+  expand?: string;
+
+/**
  * A unique integer value identifying this recipe.
  */
   id: number;
@@ -19,6 +24,7 @@ export interface RecipeRetrieve$Params {
 export function recipeRetrieve(http: HttpClient, rootUrl: string, params: RecipeRetrieve$Params, context?: HttpContext): Observable<StrictHttpResponse<Recipe>> {
   const rb = new RequestBuilder(rootUrl, recipeRetrieve.PATH, 'get');
   if (params) {
+    rb.query('expand', params.expand, {});
     rb.path('id', params.id, {});
   }
 

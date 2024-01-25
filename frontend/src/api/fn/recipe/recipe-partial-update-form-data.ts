@@ -12,6 +12,11 @@ import { Recipe } from '../../models/recipe';
 export interface RecipePartialUpdate$FormData$Params {
 
 /**
+ * List of nested objects
+ */
+  expand?: string;
+
+/**
  * A unique integer value identifying this recipe.
  */
   id: number;
@@ -21,6 +26,7 @@ export interface RecipePartialUpdate$FormData$Params {
 export function recipePartialUpdate$FormData(http: HttpClient, rootUrl: string, params: RecipePartialUpdate$FormData$Params, context?: HttpContext): Observable<StrictHttpResponse<Recipe>> {
   const rb = new RequestBuilder(rootUrl, recipePartialUpdate$FormData.PATH, 'patch');
   if (params) {
+    rb.query('expand', params.expand, {});
     rb.path('id', params.id, {});
     rb.body(params.body, 'multipart/form-data');
   }

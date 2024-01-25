@@ -11,6 +11,11 @@ import { RecipeCategory } from '../../models/recipe-category';
 export interface RecipeCategoryUpdate$FormData$Params {
 
 /**
+ * List of nested objects
+ */
+  expand?: string;
+
+/**
  * A unique integer value identifying this recipe category.
  */
   id: number;
@@ -20,6 +25,7 @@ export interface RecipeCategoryUpdate$FormData$Params {
 export function recipeCategoryUpdate$FormData(http: HttpClient, rootUrl: string, params: RecipeCategoryUpdate$FormData$Params, context?: HttpContext): Observable<StrictHttpResponse<RecipeCategory>> {
   const rb = new RequestBuilder(rootUrl, recipeCategoryUpdate$FormData.PATH, 'put');
   if (params) {
+    rb.query('expand', params.expand, {});
     rb.path('id', params.id, {});
     rb.body(params.body, 'multipart/form-data');
   }

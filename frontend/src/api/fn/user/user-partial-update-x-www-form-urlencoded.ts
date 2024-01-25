@@ -12,6 +12,11 @@ import { User } from '../../models/user';
 export interface UserPartialUpdate$XWwwFormUrlencoded$Params {
 
 /**
+ * List of nested objects
+ */
+  expand?: string;
+
+/**
  * A unique integer value identifying this user.
  */
   id: number;
@@ -21,6 +26,7 @@ export interface UserPartialUpdate$XWwwFormUrlencoded$Params {
 export function userPartialUpdate$XWwwFormUrlencoded(http: HttpClient, rootUrl: string, params: UserPartialUpdate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
   const rb = new RequestBuilder(rootUrl, userPartialUpdate$XWwwFormUrlencoded.PATH, 'patch');
   if (params) {
+    rb.query('expand', params.expand, {});
     rb.path('id', params.id, {});
     rb.body(params.body, 'application/x-www-form-urlencoded');
   }

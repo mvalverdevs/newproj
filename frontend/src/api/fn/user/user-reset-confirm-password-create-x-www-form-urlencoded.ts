@@ -10,12 +10,18 @@ import { ResetPassword } from '../../models/reset-password';
 import { User } from '../../models/user';
 
 export interface UserResetConfirmPasswordCreate$XWwwFormUrlencoded$Params {
+
+/**
+ * List of nested objects
+ */
+  expand?: string;
       body: ResetPassword
 }
 
 export function userResetConfirmPasswordCreate$XWwwFormUrlencoded(http: HttpClient, rootUrl: string, params: UserResetConfirmPasswordCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
   const rb = new RequestBuilder(rootUrl, userResetConfirmPasswordCreate$XWwwFormUrlencoded.PATH, 'post');
   if (params) {
+    rb.query('expand', params.expand, {});
     rb.body(params.body, 'application/x-www-form-urlencoded');
   }
 

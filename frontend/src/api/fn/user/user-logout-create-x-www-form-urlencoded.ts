@@ -10,12 +10,18 @@ import { User } from '../../models/user';
 import { UserLogin } from '../../models/user-login';
 
 export interface UserLogoutCreate$XWwwFormUrlencoded$Params {
+
+/**
+ * List of nested objects
+ */
+  expand?: string;
       body: UserLogin
 }
 
 export function userLogoutCreate$XWwwFormUrlencoded(http: HttpClient, rootUrl: string, params: UserLogoutCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
   const rb = new RequestBuilder(rootUrl, userLogoutCreate$XWwwFormUrlencoded.PATH, 'post');
   if (params) {
+    rb.query('expand', params.expand, {});
     rb.body(params.body, 'application/x-www-form-urlencoded');
   }
 

@@ -11,6 +11,11 @@ import { PaginatedRecipeIngredientList } from '../../models/paginated-recipe-ing
 export interface RecipeIngredientList$Params {
 
 /**
+ * List of nested objects
+ */
+  expand?: string;
+
+/**
  * Number of results to return per page.
  */
   limit?: number;
@@ -34,6 +39,7 @@ export interface RecipeIngredientList$Params {
 export function recipeIngredientList(http: HttpClient, rootUrl: string, params?: RecipeIngredientList$Params, context?: HttpContext): Observable<StrictHttpResponse<PaginatedRecipeIngredientList>> {
   const rb = new RequestBuilder(rootUrl, recipeIngredientList.PATH, 'get');
   if (params) {
+    rb.query('expand', params.expand, {});
     rb.query('limit', params.limit, {});
     rb.query('offset', params.offset, {});
     rb.query('ordering', params.ordering, {});
