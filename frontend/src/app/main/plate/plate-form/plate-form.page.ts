@@ -15,11 +15,11 @@ import { base64toBlob } from 'src/app/utils/functions';
 })
 export class PlateFormPage implements OnInit{
 
-  recipeForm: FormGroup;
-  recipeImageForm: FormGroup;
-  routeSub: Subscription;
-  selectedImage = '';
-  recipeCategories: RecipeCategory[];
+  recipeForm: FormGroup
+  recipeImageForm: FormGroup
+  routeSub: Subscription
+  selectedImage = ''
+  recipeCategories: RecipeCategory[]
 
   constructor(
     private _loadingCtrl: LoadingController,

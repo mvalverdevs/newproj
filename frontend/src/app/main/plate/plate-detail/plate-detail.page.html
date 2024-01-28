@@ -4,7 +4,7 @@
       Plato
     </ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/tabs/tab1" ></ion-back-button>
+      <ion-back-button defaultHref="/plates" ></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -12,23 +12,24 @@
 <ion-content [fullscreen]="true">
 
   <div class="plate-detail-image"
-        style="background-image: url('https://www.muymuygourmet.com/modules/ph_simpleblog/covers/11.jpg');"
-  ></div>
+    [ngStyle]="{'background-image': 'url(' + recipe.image_data.image + ')'}">
+  </div>
+
 
   <div class="plate-content">
     <ion-grid>
       <ion-row>
         <ion-col size="auto">
           <h2 class="plate-title">
-            Espaguetti boloñesa
+            {{recipe.name}}
           </h2>
           <ion-icon name="time-outline" class="plate-time-clock"></ion-icon>
-          15 min
+          {{recipe.time}} min
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col class="plate-description">
-          Para cocinar esta salsa boloñesa:  Coloque una sartén sobre la cocina a fuego medio y cuando esté caliente, añada el aceite.  Agregue la zanahoria, apio, y cebolla y cocine por unos 10 minutos, revolviendo ocasionalmente, hasta que los vegetales se comiencen a dorar. Aumente el fuego a alto.  Tome porciones de carne del tamaño de una cucharada y agréguela de una por una, revolviendo entre una y otra adición.  Cocine, desmenuzando la carne hasta que ya no esté cruda, produzca líquido, y no se pegue más en grumos. Alrededor de 10 minutos.
+          {{recipe.description}}
         </ion-col>
       </ion-row>
     </ion-grid>

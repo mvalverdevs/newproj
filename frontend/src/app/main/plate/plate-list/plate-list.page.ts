@@ -55,6 +55,10 @@ export class PlateListPage implements OnInit {
       duration: 4000,
     });
     loading.present();
+    if (selectedCategory == this.selectedCategory){
+      selectedCategory = undefined;
+      this.selectedCategory = undefined;
+    }
 
     this._recipeService.recipeList({expand: '~all', category: selectedCategory, search: search}).subscribe({
       next: (recipes) => {
