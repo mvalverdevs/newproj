@@ -85,30 +85,32 @@ export class PlateFormPage implements OnInit{
   }
 
   async takePicture() {
-    const image = await Camera.getPhoto({
-      quality: 90,
-      allowEditing: true,
-      resultType: CameraResultType.DataUrl,
-      source: CameraSource.Photos
-    });
-    this.recipeImageForm.patchValue({
-      image: base64toBlob(image.dataUrl!)
-    });
-    this.selectedImage = image.dataUrl!
-    this._recipeImageService.recipeImageCreate$FormData$Response({
-      body: this.recipeImageForm.value as RecipeImage
-    }).subscribe({
-      next: (response) => {
-        console.log(response)
-        this.recipeForm.patchValue({
-          image: response.body.id
-        });
-      },
-      error: (e) => 
-      console.error(e),
-      complete: () => {
-      }
-    });
+    try{
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: true,
+        resultType: CameraResultType.DataUrl,
+        source: CameraSource.Photos
+      });
+      this.recipeImageForm.patchValue({
+        image: base64toBlob(image.dataUrl!)
+      });
+      this.selectedImage = image.dataUrl!
+      this._recipeImageService.recipeImageCreate$FormData$Response({
+        body: this.recipeImageForm.value as RecipeImage
+      }).subscribe({
+        next: (response) => {
+          console.log(response)
+          this.recipeForm.patchValue({
+            image: response.body.id
+          });
+        },
+        error: (e) =>
+        console.error(e),
+        complete: () => {
+        }
+      });
+    }catch {}
   }
 
   handleChangeCategorySelect(e: any){

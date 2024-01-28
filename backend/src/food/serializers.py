@@ -3,6 +3,12 @@ from utils.serializers import DynamicModelSerializer
 from food.models import Recipe, RecipeCategory, RecipeIngredient, RecipeImage
 
 
+class RecipeCategorySerializer(DynamicModelSerializer):
+    class Meta:
+        model = RecipeCategory
+        fields = '__all__'
+
+
 class RecipeImageSerializer(DynamicModelSerializer):
     class Meta:
         model = RecipeImage
@@ -11,6 +17,8 @@ class RecipeImageSerializer(DynamicModelSerializer):
 
 class RecipeSerializer(DynamicModelSerializer):
     image_data = RecipeImageSerializer(read_only=True, source='image')
+    category_data = RecipeCategorySerializer(read_only=True, source='category')
+
     class Meta:
         model = Recipe
         fields = (
@@ -22,18 +30,14 @@ class RecipeSerializer(DynamicModelSerializer):
             'category',
             'ingredients',
             'image',
-            'image_data'
+            'image_data',
+            'category_data'
         )
         read_only_fields = (
             'id',
-            'image_data'
+            'image_data',
+            'category_data'
         )
-
-
-class RecipeCategorySerializer(DynamicModelSerializer):
-    class Meta:
-        model = RecipeCategory
-        fields = '__all__'
 
 
 class RecipeIngredientSerializer(DynamicModelSerializer):
