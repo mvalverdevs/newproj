@@ -17,7 +17,7 @@ class RecipeImageSerializer(DynamicModelSerializer):
 
 class RecipeSerializer(DynamicModelSerializer):
     image_data = RecipeImageSerializer(read_only=True, source='image')
-    category_data = RecipeCategorySerializer(read_only=True, source='category')
+    category_data = RecipeCategorySerializer(many=True, read_only=True, source='category')
 
     class Meta:
         model = Recipe

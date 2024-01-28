@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+import { RecipeCategory } from '../models/recipe-category';
 import { RecipeImage } from '../models/recipe-image';
 
 /**
@@ -10,6 +11,7 @@ import { RecipeImage } from '../models/recipe-image';
  */
 export interface PatchedRecipe {
   category?: Array<number>;
+  category_data?: Array<RecipeCategory>;
   description?: string;
   diners?: number;
   id?: number;

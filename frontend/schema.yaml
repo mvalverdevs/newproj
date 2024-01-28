@@ -1353,6 +1353,11 @@ components:
           allOf:
           - $ref: '#/components/schemas/RecipeImage'
           readOnly: true
+        category_data:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecipeCategory'
+          readOnly: true
     PatchedRecipeCategory:
       type: object
       description: |-
@@ -1507,7 +1512,13 @@ components:
           allOf:
           - $ref: '#/components/schemas/RecipeImage'
           readOnly: true
+        category_data:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecipeCategory'
+          readOnly: true
       required:
+      - category_data
       - description
       - diners
       - id
