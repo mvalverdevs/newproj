@@ -16,11 +16,7 @@
 
   <form [formGroup]="recipeForm">
     <ion-icon name="pencil-outline" class="edit-pencil"></ion-icon>
-    <div
-      class="image-circle" 
-      (click)="takePicture()"
-      [ngStyle]="{'background-image': 'url(' + (selectedImage ? selectedImage : 'https://ionicframework.com/docs/img/demos/card-media.png') + ')'}">
-    </div>
+    <app-image-picker (selectImage)="imageSelected($event)" [imageUrl]="selectedImage"></app-image-picker>
     <div class="plate-content">
       <ion-list>
         <ion-item>

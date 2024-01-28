@@ -6,6 +6,7 @@ import { RecipeDetailPage } from './recipe-retrieve/recipe-retrieve.page';
 import { RecipeRoutingModule } from './recipe-routing.module';
 import { RecipeFormPage } from './recipe-form/recipe-form.page';
 import { RecipeListPage } from './recipe-list/recipe-list.page';
+import { ImagePickerComponent } from 'src/app/components/image-picker/image-picker.component';
 
 @NgModule({
   imports: [
@@ -13,12 +14,13 @@ import { RecipeListPage } from './recipe-list/recipe-list.page';
     CommonModule,
     FormsModule,
     RecipeRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   declarations: [
     RecipeDetailPage,
     RecipeFormPage,
-    RecipeListPage
+    RecipeListPage,
+    ImagePickerComponent
   ]
 })
 export class RecipeModule {}

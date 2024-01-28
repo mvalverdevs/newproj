@@ -100,30 +100,33 @@ api-populate: ## Run pytest with coverage report in the api container.
 
 ### FRONTEND
 
-frontend-osshell: ## Run interactive bash shell in 'frontend' developer container
+front-osshell: ## Run interactive bash shell in 'frontend' developer container
 	$(DOCKER_DEV) run --rm frontend bash
 
-swagger: ## Generate OpenAPI definition nfge-spa/swagger.json
+front-swagger: ## Generate OpenAPI definition nfge-spa/swagger.json
 	$(DOCKER_DEV) run --rm frontend wget -O ./schema.yaml http://192.168.1.35:8000/api/schema/
 
-apigen: swagger ## Run NPM APIGEN (ng-openapi-gen)
+front-apigen: front-swagger ## Run NPM APIGEN (ng-openapi-gen)
 	$(DOCKER_DEV) run --rm frontend ng-openapi-gen
 	sudo chown -R $(runner):$(group) ./frontend/src/api
 
-frontend-build-prod: ## Compile frontend using gulp build
+front-build-prod: ## Compile frontend using gulp build
 	$(DOCKER_DEV) run --rm frontend npm run build-prod
 	sudo chown -R $(runner):$(group) ./frontend/dist/
 
-frontend-npm-delete-cache: ## Delete npm package cache
+front-npm-delete-cache: ## Delete npm package cache
 	docker volume rm -p newproj-dev_aspb-newproj_npm_cache
 
-frontend-newapp: ## Create new frontend app, expects name argument.
+front-newapp: ## Create new frontend app, expects name argument.
 	mkdir ./frontend/src/app/main/$(name)/
 	mkdir ./frontend/src/app/main/$(name)/form/
 	mkdir ./frontend/src/app/main/$(name)/list/
 	mkdir ./frontend/src/app/main/$(name)/view/
 	mkdir ./frontend/src/app/main/$(name)/dialogs/
 	mkdir ./frontend/src/app/main/$(name)/services/
+
+front-newcomponent: ## Create new frontend component, expects 'name' argument
+	$(DOCKER_DEV) run --rm frontend ionic generate component components/$(name)
 
 translate: ## Run NPM extract (translate)
 	$(DOCKER_DEV) run --rm frontend npm run extract

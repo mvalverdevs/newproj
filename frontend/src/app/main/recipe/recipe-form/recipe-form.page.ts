@@ -86,6 +86,26 @@ export class RecipeFormPage implements OnInit{
     loading.dismiss();
   }
 
+  imageSelected(image: any){
+    this.recipeImageForm.patchValue({
+      image: image
+    });
+    this._recipeImageService.recipeImageCreate$FormData$Response({
+        body: this.recipeImageForm.value as RecipeImage
+      }).subscribe({
+        next: (response) => {
+          this.recipeForm.patchValue({
+            image: response.body.id
+          });
+          this.selectedImage = response.body.image!
+        },
+        error: (e) =>
+        console.error(e),
+        complete: () => {
+        }
+      });
+  }
+
   async takePicture() {
     try{
       const image = await Camera.getPhoto({
