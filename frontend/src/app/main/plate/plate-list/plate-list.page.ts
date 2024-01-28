@@ -21,7 +21,7 @@ export class PlateListPage implements OnInit {
     private _recipeService: RecipeService
   ) {}
 
-  async ngOnInit(){
+  async ionViewWillEnter() {
     // 🚩 Show loading
     const loading = await this._loadingCtrl.create({
       message: 'Loading...',
@@ -45,6 +45,7 @@ export class PlateListPage implements OnInit {
     // 🚩 Obtaining recipe list
     this.getRecipes();
   }
+  ngOnInit(){}
 
   async getRecipes(
     selectedCategory: number[] | undefined = undefined,
@@ -62,7 +63,6 @@ export class PlateListPage implements OnInit {
 
     this._recipeService.recipeList({expand: '~all', category: selectedCategory, search: search}).subscribe({
       next: (recipes) => {
-        console.log(recipes)
         if (recipes.results != undefined){
           this.recipes = recipes.results;
         }
@@ -85,7 +85,6 @@ export class PlateListPage implements OnInit {
   }
 
   handleSearch(event: any){
-    console.log(event);
     const query = event.target.value.toLowerCase();
     if (this.selectedCategory == undefined){
       this.getRecipes(undefined, query);

@@ -20,6 +20,7 @@ export class PlateFormPage implements OnInit{
   routeSub: Subscription
   selectedImage = ''
   recipeCategories: RecipeCategory[]
+  recipeId = -1
 
   constructor(
     private _loadingCtrl: LoadingController,
@@ -68,9 +69,9 @@ export class PlateFormPage implements OnInit{
     this.routeSub = this._route.params.subscribe(params => {
       // 🚩 Edit Mode and take the recipe from api
       if (params['id'] != undefined){
-        this._recipeService.recipeRetrieve({id: params['id']}).subscribe({
+        this.recipeId = params['id']
+        this._recipeService.recipeRetrieve({id: params['id'], expand: '~all'}).subscribe({
             next: (recipe) => {
-              // Add data to form
               this.recipeForm.patchValue(recipe);
               this.selectedImage = recipe.image_data.image!;
             },
@@ -101,7 +102,6 @@ export class PlateFormPage implements OnInit{
         body: this.recipeImageForm.value as RecipeImage
       }).subscribe({
         next: (response) => {
-          console.log(response)
           this.recipeForm.patchValue({
             image: response.body.id
           });
@@ -125,15 +125,28 @@ export class PlateFormPage implements OnInit{
     });
     loading.present();
     const recipe = this.recipeForm.value as Recipe
-    this._recipeService.recipeCreate$Json$Response({body: recipe}).subscribe({
-      next: (response) => {
-      },
-      error: (e) => 
-      console.error(e),
-      complete: () => {
-        loading.dismiss();
-        this._router.navigate(['/plates']);
-      }
-    });
+    if (this.recipeId != -1){
+      this._recipeService.recipePartialUpdate$Json$Response({body: recipe, id:this.recipeId}).subscribe({
+        next: (response) => {
+        },
+        error: (e) => 
+        console.error(e),
+        complete: () => {
+          loading.dismiss();
+          this._router.navigate(['/plates/'+this.recipeId]);
+        }
+      });
+    }else{
+      this._recipeService.recipeCreate$Json$Response({body: recipe}).subscribe({
+        next: (response) => {
+        },
+        error: (e) => 
+        console.error(e),
+        complete: () => {
+          loading.dismiss();
+          this._router.navigate(['/plates']);
+        }
+      });
+    }
   }
 }
