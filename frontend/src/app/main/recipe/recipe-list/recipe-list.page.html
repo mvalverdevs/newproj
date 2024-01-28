@@ -33,7 +33,7 @@
 
   <ion-list lines="none">
     <ion-item *ngFor="let recipe of recipes">
-      <ion-card [routerLink]="['/plates/'+recipe.id]" class="plate-item">
+      <ion-card [routerLink]="['/recipes/'+recipe.id]" class="plate-item">
         <ion-ripple-effect></ion-ripple-effect>
         <div
           class="plate-image"

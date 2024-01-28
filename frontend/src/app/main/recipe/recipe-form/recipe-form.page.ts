@@ -9,11 +9,11 @@ import { LoadingController } from '@ionic/angular';
 import { base64toBlob } from 'src/app/utils/functions';
 
 @Component({
-  selector: 'app-plate-edit',
-  templateUrl: 'plate-form.page.html',
-  styleUrls: ['plate-form.page.scss']
+  selector: 'app-recipe-form',
+  templateUrl: 'recipe-form.page.html',
+  styleUrls: ['recipe-form.page.scss']
 })
-export class PlateFormPage implements OnInit{
+export class RecipeFormPage implements OnInit{
 
   recipeForm: FormGroup
   recipeImageForm: FormGroup
@@ -133,7 +133,7 @@ export class PlateFormPage implements OnInit{
         console.error(e),
         complete: () => {
           loading.dismiss();
-          this._router.navigate(['/plates/'+this.recipeId]);
+          this._router.navigate(['/recipes/'+this.recipeId]);
         }
       });
     }else{
@@ -144,7 +144,7 @@ export class PlateFormPage implements OnInit{
         console.error(e),
         complete: () => {
           loading.dismiss();
-          this._router.navigate(['/plates']);
+          this._router.navigate(['/recipes']);
         }
       });
     }

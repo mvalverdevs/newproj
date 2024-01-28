@@ -4,11 +4,11 @@ import { Recipe, RecipeCategory } from 'src/api/models';
 import { RecipeCategoryService, RecipeService } from 'src/api/services';
 
 @Component({
-  selector: 'app-plates',
-  templateUrl: 'plate-list.page.html',
-  styleUrls: ['plate-list.page.scss']
+  selector: 'app-recipe-list',
+  templateUrl: 'recipe-list.page.html',
+  styleUrls: ['recipe-list.page.scss']
 })
-export class PlateListPage implements OnInit {
+export class RecipeListPage implements OnInit {
 
   recipeCategories: RecipeCategory[] = [];
   recipes: Recipe[] = []

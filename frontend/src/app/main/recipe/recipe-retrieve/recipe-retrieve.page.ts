@@ -6,11 +6,11 @@ import { Recipe } from 'src/api/models';
 import { RecipeService } from 'src/api/services';
 
 @Component({
-  selector: 'app-plate-detail',
-  templateUrl: 'plate-detail.page.html',
-  styleUrls: ['plate-detail.page.scss']
+  selector: 'app-recipe-retrieve',
+  templateUrl: 'recipe-retrieve.page.html',
+  styleUrls: ['recipe-retrieve.page.scss']
 })
-export class PlateDetailPage implements OnInit {
+export class RecipeDetailPage implements OnInit {
 
   routeSub: Subscription
   recipe: Recipe = {
