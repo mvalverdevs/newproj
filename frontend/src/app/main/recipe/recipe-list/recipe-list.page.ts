@@ -73,16 +73,6 @@ export class RecipeListPage implements OnInit {
 
     // Selection category
     if (selectedCategory != undefined){
-      // Order categories, first selected category
-      this.recipeCategories.sort((a, b) =>{
-        if (a.id === selectedCategory![0]) {
-          return -1;
-        } else if (b.id === selectedCategory![0]) {
-          return 1;
-        } else {
-          return 0;
-        }
-      });
       if (selectedCategory![0] == this.selectedCategory){
         this.selectedCategory = undefined;
       }else{
