@@ -82,7 +82,13 @@ export class RecipeDetailPage implements OnInit {
     })
   }
 
-  delete(event: any){
+  ionViewWillEnter() {
+    // Oculta la barra de pestañas al entrar en la página 'About'
+    document.querySelector('ion-tab-bar')!.style.display = 'none';
+  }
 
+  ionViewWillLeave() {
+    // Muestra la barra de pestañas al salir de la página 'About'
+    document.querySelector('ion-tab-bar')!.style.display = 'flex';
   }
 }

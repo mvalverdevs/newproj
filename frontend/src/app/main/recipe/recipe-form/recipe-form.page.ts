@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Subscription } from 'rxjs';
 import { Recipe, RecipeCategory, RecipeImage } from 'src/api/models';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { RecipeCategoryService, RecipeImageService, RecipeService } from 'src/api/services';
 import { LoadingController } from '@ionic/angular';
-import { base64toBlob } from 'src/app/utils/functions';
 
 @Component({
   selector: 'app-recipe-form',
@@ -106,34 +104,6 @@ export class RecipeFormPage implements OnInit{
       });
   }
 
-  async takePicture() {
-    try{
-      const image = await Camera.getPhoto({
-        quality: 90,
-        allowEditing: true,
-        resultType: CameraResultType.DataUrl,
-        source: CameraSource.Photos
-      });
-      this.recipeImageForm.patchValue({
-        image: base64toBlob(image.dataUrl!)
-      });
-      this.selectedImage = image.dataUrl!
-      this._recipeImageService.recipeImageCreate$FormData$Response({
-        body: this.recipeImageForm.value as RecipeImage
-      }).subscribe({
-        next: (response) => {
-          this.recipeForm.patchValue({
-            image: response.body.id
-          });
-        },
-        error: (e) =>
-        console.error(e),
-        complete: () => {
-        }
-      });
-    }catch {}
-  }
-
   handleChangeCategorySelect(e: any){
     this.recipeForm.patchValue({category: e.detail.value});
   }
@@ -168,5 +138,15 @@ export class RecipeFormPage implements OnInit{
         }
       });
     }
+  }
+
+  ionViewWillEnter() {
+    // Oculta la barra de pestañas al entrar en la página 'About'
+    document.querySelector('ion-tab-bar')!.style.display = 'none';
+  }
+
+  ionViewWillLeave() {
+    // Muestra la barra de pestañas al salir de la página 'About'
+    document.querySelector('ion-tab-bar')!.style.display = 'flex';
   }
 }

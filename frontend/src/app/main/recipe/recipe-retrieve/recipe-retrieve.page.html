@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Plato
+      Receta
     </ion-title>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/recipes" ></ion-back-button>
@@ -17,7 +17,6 @@
     trigger="present-delete-alert"
     header="¿Estás seguro?"
     [buttons]="alertButtons"
-    (didDismiss)="delete($event)"
   ></ion-alert>
 
   <div class="plate-detail-image"
