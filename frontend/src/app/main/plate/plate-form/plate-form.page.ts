@@ -72,6 +72,7 @@ export class PlateFormPage implements OnInit{
             next: (recipe) => {
               // Add data to form
               this.recipeForm.patchValue(recipe);
+              this.selectedImage = recipe.image_data.image!;
             },
             error: (e) => console.error(e),
             complete: () => {

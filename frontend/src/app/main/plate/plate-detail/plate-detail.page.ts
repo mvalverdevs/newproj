@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 import { Subscription, expand } from 'rxjs';
 import { Recipe } from 'src/api/models';
@@ -29,10 +29,34 @@ export class PlateDetailPage implements OnInit {
     time: 0,
   }
 
+  public alertButtons = [
+    {
+      text: 'No',
+      role: 'cancel',
+      handler: () => {
+      },
+    },
+    {
+      text: 'Sí',
+      role: 'confirm',
+      handler: () => {
+        this._recipeService.recipeDestroy$Response({id: this.recipe.id}).subscribe({
+          next: (response) => {
+          },
+          error: (e) => console.error(e),
+          complete: () => {
+            this._router.navigate(['/plates']);
+          }
+        });
+      },
+    },
+  ];
+
   constructor(
     private _loadingCtrl: LoadingController,
     private _recipeService: RecipeService,
     private _route: ActivatedRoute,
+    private _router: Router,
   ) {}
 
   async ngOnInit() {
@@ -56,5 +80,9 @@ export class PlateDetailPage implements OnInit {
         });
       }
     })
+  }
+
+  delete(event: any){
+
   }
 }

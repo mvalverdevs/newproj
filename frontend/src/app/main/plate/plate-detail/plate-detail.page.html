@@ -6,10 +6,19 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/plates" ></ion-back-button>
     </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/plates/'+recipe.id+'/edit']">Edit</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-alert
+    trigger="present-delete-alert"
+    header="¿Estás seguro?"
+    [buttons]="alertButtons"
+    (didDismiss)="delete($event)"
+  ></ion-alert>
 
   <div class="plate-detail-image"
     [ngStyle]="{'background-image': 'url(' + recipe.image_data.image + ')'}">
@@ -19,10 +28,19 @@
   <div class="plate-content">
     <ion-grid>
       <ion-row>
-        <ion-col size="auto">
+        <ion-col>
           <h2 class="plate-title">
             {{recipe.name}}
           </h2>
+          </ion-col>
+          <ion-col size="auto">
+            <ion-button id="present-delete-alert" fill="outline" color="danger">
+              <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
           <ion-icon name="time-outline" class="plate-time-clock"></ion-icon>
           {{recipe.time}} min
         </ion-col>
