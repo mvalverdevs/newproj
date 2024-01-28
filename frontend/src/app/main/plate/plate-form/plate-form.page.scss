@@ -14,3 +14,14 @@
     border-radius: 40px;
     padding: 50px 20px;
 }
+
+.edit-pencil{
+    background-color: var(--ion-background-color, white);
+    padding: 10px;
+    color: var(--ion-color-primary, white);
+    z-index: 1;
+    position: absolute;
+    right: 1px;
+    margin: 10px;
+    border-radius: 10px;
+}
