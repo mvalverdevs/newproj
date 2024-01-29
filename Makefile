@@ -131,6 +131,27 @@ front-newcomponent: ## Create new frontend component, expects 'name' argument
 translate: ## Run NPM extract (translate)
 	$(DOCKER_DEV) run --rm frontend npm run extract
 
+front-compile-ios:
+	$(DOCKER_DEV) run --rm frontend ionic build
+	$(DOCKER_DEV) run --rm frontend ionic capacitor copy ios --verbose
+	pod deintegrate --project-directory=frontend/ios/App/App --verbose
+	pod install --project-directory=frontend/ios/App/ --verbose
+	ionic capacitor open ios
+
+front-compile-android:
+	# sudo ionic capacitor add android
+	sudo ionic capacitor copy android
+	ionic capacitor run android -l --external
+
+front-configure-android:
+	export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
+	export PATH=$PATH:$ANDROID_SDK_ROOT/tools/bin
+	export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
+	export PATH=$PATH:$ANDROID_SDK_ROOT/emulator
+
+front-devices-android:
+	npx native-run android --list --json
+
 node-modules-permissions: ## Change permissions to ./frontend/node_modules/
 	sudo chown -R $(runner):$(group) ./frontend/node_modules/
 
