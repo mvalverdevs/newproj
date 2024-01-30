@@ -26,7 +26,6 @@ class UserView(ModelViewSet):
             'reset_password',
             'change_password',
             'reset_confirm_password',
-            'list'
         )
         if self.action in no_permission_views:
             return (AllowAny(), )
@@ -51,22 +50,28 @@ class UserView(ModelViewSet):
     @action(detail=False, methods=['post'])
     def login(self, request, *args, **kwargs):
         """ User login view """
-        username = request.data.get('username', None)
+        email = request.data.get('email', None)
         password = request.data.get('password', None)
+
+        user = authenticate(email=email, password=password)
+        if user is not None:
+            print('MANUEL')
+
         LOGIN_BLOCKED_MSG = "Login Blocked. Please contact the administrator for assistance"
 
         # Check if the user has a password
-        user = user_models.User.objects.filter(username=username).first()
-
+        user = user_models.User.objects.filter(email=email).first()
         if user is None or user.password is None:
             return Response(status=status.HTTP_400_BAD_REQUEST, data=["Invalid credentials"])
 
-        user = authenticate(username=username, password=password)
+        print(user)
+        user = authenticate(email=email, password=password)
+        print(user)
 
         if user is None or not user.is_active:
             # Authentication fail and saving bad login attempt
             try:
-                user = user_models.User.objects.get(username=username)
+                user = user_models.User.objects.get(email=email)
                 if user.has_login_blocked:
                     return Response(status=status.HTTP_400_BAD_REQUEST, data=[LOGIN_BLOCKED_MSG])
                 user.login_attempts = user.login_attempts + 1

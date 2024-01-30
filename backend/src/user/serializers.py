@@ -9,6 +9,7 @@ from user import models as user_models
 from utils.serializers import DynamicModelSerializer
 
 from drf_spectacular.utils import extend_schema_field
+from rest_framework.authtoken.models import Token
 
 
 class UserSerializer(DynamicModelSerializer):
@@ -46,7 +47,7 @@ class UserLoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = user_models.User
         fields = (
-            'username',
+            'email',
             'password',
             'csrftoken'
         )
@@ -54,8 +55,11 @@ class UserLoginSerializer(serializers.ModelSerializer):
     @extend_schema_field(field=serializers.IntegerField)
     def get_csrftoken(self, data):
         request = self.context["request"]
-        csrftoken = csrf.get_token(request)
-        return csrftoken
+        token, created = Token.objects.get_or_create(user=self.context.get('request').user)
+        if created:
+            return token.key
+        else:
+            return 'aaaa'
 
 
 class EmailSerializer(serializers.Serializer):

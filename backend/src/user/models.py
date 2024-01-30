@@ -12,7 +12,7 @@ from model_utils.models import TimeStampedModel
 from user.choices import USER_ROLES
 from user.services import UserService
 from user.constants import ROLE_USER_KEY
-from django.contrib.auth.models import UserManager
+from user.managers import UserManager
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -41,7 +41,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     last_name = models.CharField(
         verbose_name=u'User last name',
-        max_length=150, 
+        max_length=150,
         null=True
     )
 
@@ -84,7 +84,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
 
     objects = UserManager()
-    USERNAME_FIELD = 'username'
+    USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
 
     @property
