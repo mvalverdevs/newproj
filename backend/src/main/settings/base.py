@@ -86,6 +86,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 ROOT_URLCONF = 'main.urls'
 
 TEMPLATES = [
@@ -157,10 +161,10 @@ AUTH_PASSWORD_VALIDATORS = [
             'min_length': 8, 
         }
      },
-    {'NAME': 'user.validators.NumberValidator', },
-    {'NAME': 'user.validators.UppercaseValidator', },
-    {'NAME': 'user.validators.LowercaseValidator', },
-    {'NAME': 'user.validators.SymbolValidator', },
+    {'NAME': 'utils.validators.NumberValidator', },
+    {'NAME': 'utils.validators.UppercaseValidator', },
+    {'NAME': 'utils.validators.LowercaseValidator', },
+    {'NAME': 'utils.validators.SymbolValidator', },
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
 ]
 

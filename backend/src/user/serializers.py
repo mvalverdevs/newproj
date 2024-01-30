@@ -7,22 +7,21 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from user import models as user_models
 from utils.serializers import DynamicModelSerializer
-
 from drf_spectacular.utils import extend_schema_field
 
 
 class UserSerializer(DynamicModelSerializer):
-    has_login_blocked = serializers.BooleanField()
 
     class Meta:
         model = user_models.User
         fields = (
             'id',
+            'password',
             'username',
             'email',
             'first_name',
             'last_name',
-            'roles',
+            'role',
             'phone',
             'is_active',
             'deactivation_datetime',
@@ -32,28 +31,11 @@ class UserSerializer(DynamicModelSerializer):
         )
         read_only_fields = (
             'id',
-            'username',
             'date_joined',
-            'deactivation_datetime',
-            'login_attempts', # TODO: Administrator only can update login attempts
-            'last_bad_login_attempt_datetime',
-            'has_login_blocked',
-        )
-
-class UserCreationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = user_models.User
-        fields = '__all__'
-        read_only_fields = (
-            'username',
-            'date_joined',
-            'groups',
-            'user_permissions',
-            'last_login',
-            'is_superuser',
             'deactivation_datetime',
             'login_attempts',
             'last_bad_login_attempt_datetime',
+            'has_login_blocked',
         )
 
 

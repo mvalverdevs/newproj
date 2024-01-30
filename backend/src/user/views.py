@@ -8,36 +8,28 @@ from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.schemas import SchemaGenerator
-from utils.imports.views import *
 from drf_spectacular.utils import extend_schema
+from utils.views import ModelView
+from rest_framework.permissions import AllowAny, IsAuthenticated, DjangoModelPermissions
+from rest_framework import status
+from rest_framework.response import Response
 
 
-# Create your views here.
-class UserView(
-    viewsets.GenericViewSet,
-    mixins.UpdateModelMixin,
-    mixins.RetrieveModelMixin,
-    mixins.ListModelMixin,
-    PermissionRequiredMixin
-):
-    authentication_classes = (SessionAuthentication, )
-    filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
-    filterset_class = user_filter.UserFilter
-    search_fields = ('first_name', 'last_name', 'email', 'is_active', 'department')
-    ordering_fields = ('first_name', 'last_name', 'date_joined')
+class UserView(ModelView):
+    queryset = user_models.User.objects.all()
     serializer_class = user_serializers.UserSerializer
-    queryset = user_models.User.objects.all().order_by('-date_joined')
 
     def get_permissions(self):
-        permissionsless_views = (
-            'register',
+        no_permission_views = (
+            'create',
             'login',
             'logout',
             'reset_password',
             'change_password',
-            'reset_confirm_password'
+            'reset_confirm_password',
+            'list'
         )
-        if self.action in permissionsless_views:
+        if self.action in no_permission_views:
             return (AllowAny(), )
         elif self.action in ['permissions']:
             return (IsAuthenticated(), )
@@ -66,6 +58,7 @@ class UserView(
 
         # Check if the user has a password
         user = user_models.User.objects.filter(username=username).first()
+
         if user is None or user.password is None:
             return Response(status=status.HTTP_400_BAD_REQUEST, data=["Invalid credentials"])
 
@@ -96,19 +89,6 @@ class UserView(
 
         return Response(status=status.HTTP_200_OK, data=user_serializers.UserLoginSerializer(user,context={"request": request}).data)
 
-
-    @extend_schema(
-        request=user_serializers.UserCreationSerializer,
-        responses={201: user_serializers.UserSerializer}
-    )
-    @action(detail=False, methods=['post'])
-    def register(self, request, *args, **kwargs):
-        """ User register view """
-        serializer = user_serializers.UserCreationSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = user_models.User.objects.create_user(**request.data)
-        return Response(status=status.HTTP_201_CREATED, data=user_serializers.UserSerializer(instance=user).data)
-    
     @extend_schema(
         request=user_serializers.EmailSerializer,
     )

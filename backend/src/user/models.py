@@ -1,4 +1,5 @@
 import datetime
+from typing import Any
 import uuid
 
 from django.conf import settings
@@ -8,76 +9,81 @@ from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.db import models
 from django.utils import timezone
 from model_utils.models import TimeStampedModel
-from user import managers as user_managers
 from user.choices import USER_ROLES
 from user.services import UserService
 from user.constants import ROLE_USER_KEY
+from django.contrib.auth.models import UserManager
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-
-    def __init__(self):
-        self.service = UserService(self)
-
     """ User model """
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        service = UserService(self)
+        super().__init__(*args, **kwargs)
+
     username = models.CharField(
-        verbose_name='Username',
+        verbose_name=u'Username',
         unique=True,
         max_length=150,
         validators=[UnicodeUsernameValidator()],
     )
-    password = models.CharField(
-        verbose_name='Password',
-        max_length=128,
-    )
+
     email = models.EmailField(
-        verbose_name='User email',
+        verbose_name=u'User email',
         unique=True
     )
+
     first_name = models.CharField(
-        verbose_name='User first name',
+        verbose_name=u'User first name',
         max_length=30,
         null=True
     )
+
     last_name = models.CharField(
-        verbose_name='User last name',
+        verbose_name=u'User last name',
         max_length=150, 
         null=True
     )
 
     role = models.CharField(
-        verbose_name='User role',
+        verbose_name=u'User role',
         choices=USER_ROLES,
         default=ROLE_USER_KEY
     )
+
     phone = models.CharField(
-        verbose_name='User phone number',
+        verbose_name=u'User phone number',
         max_length=16,
         null=True
     )
+
     is_active = models.BooleanField(
-        verbose_name='Is user active',
+        verbose_name=u'Is user active',
         default=True,
         null=True
     )
+
     deactivation_datetime = models.DateTimeField(
-        verbose_name='Datetime when user was deactivated',
-        null=True
-    )
-    date_joined = models.DateTimeField(
-        verbose_name='User date joined',
-        default=timezone.now
-    )
-    login_attempts = models.PositiveIntegerField(
-        verbose_name='User login attemps',
-        default=0
-    )
-    last_bad_login_attempt_datetime = models.DateTimeField(
-        verbose_name='Last bad login attempt datetime',
+        verbose_name=u'Datetime when user was deactivated',
         null=True
     )
 
-    objects = user_managers.UserManager()
+    date_joined = models.DateTimeField(
+        verbose_name=u'User date joined',
+        default=timezone.now
+    )
+
+    login_attempts = models.PositiveIntegerField(
+        verbose_name=u'User login attemps',
+        default=0
+    )
+
+    last_bad_login_attempt_datetime = models.DateTimeField(
+        verbose_name=u'Last bad login attempt datetime',
+        null=True
+    )
+
+    objects = UserManager()
     USERNAME_FIELD = 'username'
     EMAIL_FIELD = 'email'
 
