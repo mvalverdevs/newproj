@@ -1,21 +1,17 @@
+import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-import { IonicModule } from '@ionic/angular';
-
-import { LoginPageRoutingModule } from './login-routing.module';
-
 import { LoginPage } from './login.page';
-import { LoaderModule } from '../components/loader/loader.module';
+
+import { Tab1PageRoutingModule } from './login-routing.module';
 
 @NgModule({
   imports: [
+    IonicModule,
     CommonModule,
     FormsModule,
-    IonicModule,
-    LoginPageRoutingModule,
-    LoaderModule,
+    Tab1PageRoutingModule
   ],
   declarations: [LoginPage]
 })

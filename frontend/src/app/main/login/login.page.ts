@@ -1,22 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-//import { UserService } from 'src/api/services';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss'],
+  templateUrl: 'login.page.html',
+  styleUrls: ['login.page.scss']
 })
-export class LoginPage implements OnInit {
+export class LoginPage {
 
-  constructor(
-    //private userService: UserService
-  ) { }
-
-  ngOnInit() {
-  }
-
-  login(){
-    
-  }
+  constructor() {}
 
 }
