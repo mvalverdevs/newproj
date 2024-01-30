@@ -13,4 +13,3 @@ class Command(BaseCommand):
         if kwargs['new'] is not None:
             print('Using example command...')
         print('Run command successfully')
-

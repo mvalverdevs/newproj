@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from user import models as user_models
 from utils.serializers import DynamicModelSerializer
+
 from drf_spectacular.utils import extend_schema_field
 
 
@@ -41,6 +42,7 @@ class UserSerializer(DynamicModelSerializer):
 
 class UserLoginSerializer(serializers.ModelSerializer):
     csrftoken = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = user_models.User
         fields = (
@@ -80,10 +82,10 @@ class ResetPasswordSerializer(serializers.Serializer):
         """
         Validate if both passwords match
         """
-        password = data.get('new_password1')
-        password2 = data.get('new_password2')
+        password = data.get('new_password1', None)
+        password2 = data.get('new_password2', None)
 
-        if password and password2:
+        if password is not None and password2 is not None:
             validate_password(password)
             if password != password2:
                 raise serializers.ValidationError("Passwords do not match")
@@ -98,4 +100,3 @@ class PermissionSerializer(serializers.Serializer):
 	"""
     url = serializers.CharField()
     action = serializers.CharField()
-

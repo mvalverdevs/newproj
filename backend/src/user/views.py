@@ -127,7 +127,7 @@ class UserView(ModelView):
         user_reset.send_reset_password_email()
 
         return Response(status=status.HTTP_200_OK)
-    
+
     @extend_schema(
         request=user_serializers.ResetPasswordSerializer,
         responses={200: user_serializers.UserSerializer}
@@ -213,4 +213,3 @@ class UserView(ModelView):
                 self.extract_permissions(schema[key], permissions_list)
 
         return user_serializers.PermissionSerializer(permissions_list, many=True).data
-

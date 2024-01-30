@@ -110,7 +110,7 @@ class UserResetPassword(TimeStampedModel):
         if self.used:
             self.delete()
             return False
-        
+
         now = timezone.make_aware(datetime.datetime.today(), timezone.get_current_timezone())
         creation = self.created
         if creation is not None and (now - creation).days * 24 > settings.DURATION_RESET_TOKEN:
