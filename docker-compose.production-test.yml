@@ -13,8 +13,7 @@ services:
     depends_on:
       - redis
       - postgres
-      - celeryworker-concurrent
-      - celeryworker-non-concurrent
+      - celeryworker
     environment:
       - DJANGO_DEBUG=False
       - DJANGO_SETTINGS_MODULE=main.settings.production
@@ -27,7 +26,7 @@ services:
       - "8000:8000"
     command: uwsgi-api
 
-  celeryworker-concurrent:
+  celeryworker:
     <<: *django
     depends_on:
       - redis
@@ -35,15 +34,6 @@ services:
       - celerybeat
     ports: []
     command: celery-worker-concurrent
-
-  celeryworker-non-concurrent:
-    <<: *django
-    depends_on:
-      - redis
-      - postgres
-      - celerybeat
-    ports: []
-    command: celery-worker-non-concurrent
 
   celerybeat:
     <<: *django

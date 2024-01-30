@@ -95,7 +95,7 @@ uwsgi-api)
   uwsgi --ini /etc/uwsgi/uwsgi.ini
   ;;
 
-celery-worker-concurrent)
+celery-worker)
   loop_postgres_ready
   django_compilemessages
   # common celery argyments
@@ -107,19 +107,6 @@ celery-worker-concurrent)
   else
     echo "*** Starting Celery Worker. No CELERY_CONCURRENCY set, using default value (equal to number of CPUs)"
   fi
-  set -u
-  echo "*** invokinkg 'celery $celeryargs'"
-  celery $celeryargs
-  ;;
-
-celery-worker-non-concurrent)
-  loop_postgres_ready
-  django_compilemessages
-  # common celery argyments
-  celeryargs="-A main.celery worker -l INFO -Ofair"
-  set +u
-  echo "*** Starting Celery Worker \"non concurrent\". Using CELERY_CONCURRENCY=1"
-  celeryargs="$celeryargs --concurrency=1 -Q non_concurrent"
   set -u
   echo "*** invokinkg 'celery $celeryargs'"
   celery $celeryargs

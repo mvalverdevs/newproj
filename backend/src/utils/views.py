@@ -6,7 +6,7 @@ from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.permissions import IsAuthenticated
 
 
-class ModelView(
+class ModelViewSet(
     viewsets.GenericViewSet,
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
@@ -15,6 +15,4 @@ class ModelView(
     mixins.DestroyModelMixin,
     PermissionRequiredMixin
 ):
-    authentication_classes = (TokenAuthentication, )
-    permission_classes = (IsAuthenticated, )
-    filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
+    pass

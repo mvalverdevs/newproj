@@ -14,8 +14,7 @@ services:
     depends_on:
       - redis
       - postgres
-      - celeryworker-concurrent
-      - celeryworker-non-concurrent
+      - celeryworker
     volumes:
       - ./backend/src:/app
     environment:
@@ -28,23 +27,14 @@ services:
       - "8000:8000"
     command: dev-webserver-api
 
-  celeryworker-concurrent:
+  celeryworker:
     <<: *django
     depends_on:
       - redis
       - postgres
       - celerybeat
     ports: []
-    command: celery-worker-concurrent
-
-  celeryworker-non-concurrent:
-    <<: *django
-    depends_on:
-      - redis
-      - postgres
-      - celerybeat
-    ports: []
-    command: celery-worker-non-concurrent
+    command: celery-worker
 
   celerybeat:
     <<: *django

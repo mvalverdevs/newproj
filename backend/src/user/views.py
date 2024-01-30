@@ -1,4 +1,3 @@
-import user.filters as user_filter
 import user.models as user_models
 import user.serializers as user_serializers
 from django.contrib.auth import authenticate, login, logout
@@ -9,13 +8,13 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.schemas import SchemaGenerator
 from drf_spectacular.utils import extend_schema
-from utils.views import ModelView
+from utils.views import ModelViewSet
 from rest_framework.permissions import AllowAny, IsAuthenticated, DjangoModelPermissions
 from rest_framework import status
 from rest_framework.response import Response
 
 
-class UserView(ModelView):
+class UserView(ModelViewSet):
     queryset = user_models.User.objects.all()
     serializer_class = user_serializers.UserSerializer
 
