@@ -6,6 +6,28 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="login-content">
+  <form [formGroup]="loginForm" class="login-form">
+    <ion-list lines="none">
+      <ion-item>
+        <ion-input
+          formControlName="username"
+          label="Username"
+          labelPlacement="floating"
+          fill="solid">
+        </ion-input>
+      </ion-item>
 
+      <ion-item>
+        <ion-input
+          formControlName="password"
+          label="Password"
+          labelPlacement="floating"
+          fill="solid">
+        </ion-input>
+      </ion-item>
+    </ion-list>
+
+    <ion-button class="login-button" type="submit">Sign In</ion-button>
+  </form>
 </ion-content>
