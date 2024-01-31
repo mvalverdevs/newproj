@@ -41,6 +41,14 @@ class UserSerializer(DynamicModelSerializer):
         )
 
 
+class CheckUserSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+
+
+class CheckUserResponse(serializers.Serializer):
+    exists = serializers.BooleanField()
+
+
 class UserLoginSerializer(serializers.ModelSerializer):
     csrftoken = serializers.SerializerMethodField(read_only=True)
 

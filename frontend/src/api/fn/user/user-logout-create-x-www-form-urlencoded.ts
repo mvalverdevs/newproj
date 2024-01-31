@@ -7,9 +7,10 @@ import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
 import { User } from '../../models/user';
+import { UserLogin } from '../../models/user-login';
 
 export interface UserLogoutCreate$XWwwFormUrlencoded$Params {
-      body: User
+      body: UserLogin
 }
 
 export function userLogoutCreate$XWwwFormUrlencoded(http: HttpClient, rootUrl: string, params: UserLogoutCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {

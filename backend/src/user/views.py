@@ -44,6 +44,19 @@ class UserView(ModelViewSet):
         return Response(status=status.HTTP_200_OK)
 
     @extend_schema(
+        request=user_serializers.CheckUserSerializer,
+        responses={200: user_serializers.CheckUserResponse}
+    )
+    @action(detail=False, methods=['post'])
+    def check_user(self, request, *args, **kwargs):
+        email = request.data.get('email', None)
+        if email is not None:
+            data = user_serializers.CheckUserResponse(data={
+                'exists': not self.queryset.objects.filter(email=email).exists()
+            })
+            return Response(status=status.HTTP_200_OK, data=data)
+
+    @extend_schema(
         request=user_serializers.UserLoginSerializer,
         responses={200: user_serializers.UserLoginSerializer}
     )

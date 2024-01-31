@@ -119,11 +119,9 @@ front-npm-delete-cache: ## Delete npm package cache
 
 front-newapp: ## Create new frontend app, expects name argument.
 	mkdir ./frontend/src/app/main/$(name)/
-	mkdir ./frontend/src/app/main/$(name)/form/
-	mkdir ./frontend/src/app/main/$(name)/list/
-	mkdir ./frontend/src/app/main/$(name)/view/
-	mkdir ./frontend/src/app/main/$(name)/dialogs/
-	mkdir ./frontend/src/app/main/$(name)/services/
+	mkdir ./frontend/src/app/main/$(name)/$(name)-form/
+	mkdir ./frontend/src/app/main/$(name)/$(name)-list/
+	mkdir ./frontend/src/app/main/$(name)/$(name)-retrieve/
 
 front-newcomponent: ## Create new frontend component, expects 'name' argument
 	$(DOCKER_DEV) run --rm frontend ionic generate component components/$(name)

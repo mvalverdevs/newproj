@@ -6,15 +6,15 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { ResetPassword } from '../../models/reset-password';
-import { User } from '../../models/user';
+import { CheckUser } from '../../models/check-user';
+import { CheckUserResponse } from '../../models/check-user-response';
 
-export interface UserResetConfirmPasswordCreate$Json$Params {
-      body: ResetPassword
+export interface UserCheckUserCreate$Json$Params {
+      body: CheckUser
 }
 
-export function userResetConfirmPasswordCreate$Json(http: HttpClient, rootUrl: string, params: UserResetConfirmPasswordCreate$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
-  const rb = new RequestBuilder(rootUrl, userResetConfirmPasswordCreate$Json.PATH, 'post');
+export function userCheckUserCreate$Json(http: HttpClient, rootUrl: string, params: UserCheckUserCreate$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<CheckUserResponse>> {
+  const rb = new RequestBuilder(rootUrl, userCheckUserCreate$Json.PATH, 'post');
   if (params) {
     rb.body(params.body, 'application/json');
   }
@@ -24,9 +24,9 @@ export function userResetConfirmPasswordCreate$Json(http: HttpClient, rootUrl: s
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<User>;
+      return r as StrictHttpResponse<CheckUserResponse>;
     })
   );
 }
 
-userResetConfirmPasswordCreate$Json.PATH = '/api/user/reset_confirm_password/';
+userCheckUserCreate$Json.PATH = '/api/user/check_user/';

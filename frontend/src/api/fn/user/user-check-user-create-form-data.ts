@@ -6,15 +6,15 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { User } from '../../models/user';
-import { UserLogin } from '../../models/user-login';
+import { CheckUser } from '../../models/check-user';
+import { CheckUserResponse } from '../../models/check-user-response';
 
-export interface UserLogoutCreate$FormData$Params {
-      body: UserLogin
+export interface UserCheckUserCreate$FormData$Params {
+      body: CheckUser
 }
 
-export function userLogoutCreate$FormData(http: HttpClient, rootUrl: string, params: UserLogoutCreate$FormData$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
-  const rb = new RequestBuilder(rootUrl, userLogoutCreate$FormData.PATH, 'post');
+export function userCheckUserCreate$FormData(http: HttpClient, rootUrl: string, params: UserCheckUserCreate$FormData$Params, context?: HttpContext): Observable<StrictHttpResponse<CheckUserResponse>> {
+  const rb = new RequestBuilder(rootUrl, userCheckUserCreate$FormData.PATH, 'post');
   if (params) {
     rb.body(params.body, 'multipart/form-data');
   }
@@ -24,9 +24,9 @@ export function userLogoutCreate$FormData(http: HttpClient, rootUrl: string, par
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<User>;
+      return r as StrictHttpResponse<CheckUserResponse>;
     })
   );
 }
 
-userLogoutCreate$FormData.PATH = '/api/user/logout/';
+userCheckUserCreate$FormData.PATH = '/api/user/check_user/';

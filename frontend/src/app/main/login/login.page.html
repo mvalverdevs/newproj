@@ -1,13 +1,13 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Sign In
+      Login
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="login-content">
-  <form [formGroup]="loginForm" class="login-form">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm.value)" class="login-form">
     <ion-list lines="none">
       <ion-item>
         <ion-input
@@ -23,11 +23,14 @@
           formControlName="password"
           label="Password"
           labelPlacement="floating"
-          fill="solid">
+          fill="solid"
+          type="password"
+          >
         </ion-input>
       </ion-item>
     </ion-list>
 
     <ion-button class="login-button" type="submit">Sign In</ion-button>
+    ¿No tienes cuenta? <a [routerLink]="['/register']">Sign Up</a>
   </form>
 </ion-content>

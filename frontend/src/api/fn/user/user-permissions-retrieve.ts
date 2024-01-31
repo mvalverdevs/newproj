@@ -6,17 +6,14 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { User } from '../../models/user';
-import { UserLogin } from '../../models/user-login';
+import { Permission } from '../../models/permission';
 
-export interface UserLogoutCreate$FormData$Params {
-      body: UserLogin
+export interface UserPermissionsRetrieve$Params {
 }
 
-export function userLogoutCreate$FormData(http: HttpClient, rootUrl: string, params: UserLogoutCreate$FormData$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
-  const rb = new RequestBuilder(rootUrl, userLogoutCreate$FormData.PATH, 'post');
+export function userPermissionsRetrieve(http: HttpClient, rootUrl: string, params?: UserPermissionsRetrieve$Params, context?: HttpContext): Observable<StrictHttpResponse<Permission>> {
+  const rb = new RequestBuilder(rootUrl, userPermissionsRetrieve.PATH, 'get');
   if (params) {
-    rb.body(params.body, 'multipart/form-data');
   }
 
   return http.request(
@@ -24,9 +21,9 @@ export function userLogoutCreate$FormData(http: HttpClient, rootUrl: string, par
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<User>;
+      return r as StrictHttpResponse<Permission>;
     })
   );
 }
 
-userLogoutCreate$FormData.PATH = '/api/user/logout/';
+userPermissionsRetrieve.PATH = '/api/user/permissions/';

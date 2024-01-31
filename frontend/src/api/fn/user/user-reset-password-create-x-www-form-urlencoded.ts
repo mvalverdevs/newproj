@@ -6,10 +6,11 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
+import { Email } from '../../models/email';
 import { User } from '../../models/user';
 
 export interface UserResetPasswordCreate$XWwwFormUrlencoded$Params {
-      body: User
+      body: Email
 }
 
 export function userResetPasswordCreate$XWwwFormUrlencoded(http: HttpClient, rootUrl: string, params: UserResetPasswordCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {

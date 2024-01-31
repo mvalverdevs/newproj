@@ -3,40 +3,6 @@ info:
   title: ''
   version: 0.0.0
 paths:
-  /api/permissions/:
-    get:
-      operationId: permissions_list
-      parameters:
-      - name: limit
-        required: false
-        in: query
-        description: Number of results to return per page.
-        schema:
-          type: integer
-      - name: offset
-        required: false
-        in: query
-        description: The initial index from which to return the results.
-        schema:
-          type: integer
-      - name: search
-        required: false
-        in: query
-        description: A search term.
-        schema:
-          type: string
-      tags:
-      - permissions
-      security:
-      - cookieAuth: []
-      - tokenAuth: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaginatedPermissionList'
-          description: ''
   /api/schema/:
     get:
       operationId: schema_retrieve
@@ -159,7 +125,6 @@ paths:
       tags:
       - schema
       security:
-      - cookieAuth: []
       - tokenAuth: []
       - {}
       responses:
@@ -186,22 +151,6 @@ paths:
     get:
       operationId: user_list
       parameters:
-      - in: query
-        name: email
-        schema:
-          type: string
-      - in: query
-        name: first_name
-        schema:
-          type: string
-      - in: query
-        name: is_active
-        schema:
-          type: boolean
-      - in: query
-        name: last_name
-        schema:
-          type: string
       - name: limit
         required: false
         in: query
@@ -220,28 +169,16 @@ paths:
         description: Which field to use when ordering the results.
         schema:
           type: string
-      - in: query
-        name: phone
-        schema:
-          type: string
-      - in: query
-        name: roles
-        schema:
-          type: integer
       - name: search
         required: false
         in: query
         description: A search term.
         schema:
           type: string
-      - in: query
-        name: username
-        schema:
-          type: string
       tags:
       - user
       security:
-      - cookieAuth: []
+      - tokenAuth: []
       responses:
         '200':
           content:
@@ -251,7 +188,6 @@ paths:
           description: ''
     post:
       operationId: user_create
-      description: User register view
       tags:
       - user
       requestBody:
@@ -267,7 +203,8 @@ paths:
               $ref: '#/components/schemas/User'
         required: true
       security:
-      - cookieAuth: []
+      - tokenAuth: []
+      - {}
       responses:
         '201':
           content:
@@ -288,7 +225,7 @@ paths:
       tags:
       - user
       security:
-      - cookieAuth: []
+      - tokenAuth: []
       responses:
         '200':
           content:
@@ -320,7 +257,7 @@ paths:
               $ref: '#/components/schemas/User'
         required: true
       security:
-      - cookieAuth: []
+      - tokenAuth: []
       responses:
         '200':
           content:
@@ -351,13 +288,55 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedUser'
       security:
-      - cookieAuth: []
+      - tokenAuth: []
       responses:
         '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+          description: ''
+    delete:
+      operationId: user_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - user
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/user/check_user/:
+    post:
+      operationId: user_check_user_create
+      tags:
+      - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CheckUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CheckUser'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckUserResponse'
           description: ''
   /api/user/login/:
     post:
@@ -369,23 +348,23 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserLogin'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserLogin'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserLogin'
         required: true
       security:
-      - cookieAuth: []
+      - tokenAuth: []
       - {}
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserLogin'
           description: ''
   /api/user/logout/:
     post:
@@ -396,16 +375,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserLogin'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserLogin'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserLogin'
         required: true
       security:
-      - cookieAuth: []
+      - tokenAuth: []
       - {}
       responses:
         '200':
@@ -413,6 +392,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+          description: ''
+  /api/user/permissions/:
+    get:
+      operationId: user_permissions_retrieve
+      tags:
+      - user
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Permission'
           description: ''
   /api/user/reset_confirm_password/:
     post:
@@ -424,16 +417,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/ResetPassword'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/ResetPassword'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/ResetPassword'
         required: true
       security:
-      - cookieAuth: []
+      - tokenAuth: []
       - {}
       responses:
         '200':
@@ -452,16 +445,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/Email'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/Email'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/Email'
         required: true
       security:
-      - cookieAuth: []
+      - tokenAuth: []
       - {}
       responses:
         '200':
@@ -470,62 +463,32 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
           description: ''
-  /api/user_role/:
-    get:
-      operationId: user_role_list
-      parameters:
-      - name: limit
-        required: false
-        in: query
-        description: Number of results to return per page.
-        schema:
-          type: integer
-      - name: offset
-        required: false
-        in: query
-        description: The initial index from which to return the results.
-        schema:
-          type: integer
-      - name: search
-        required: false
-        in: query
-        description: A search term.
-        schema:
-          type: string
-      tags:
-      - user_role
-      security:
-      - cookieAuth: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaginatedUserRoleList'
-          description: ''
 components:
   schemas:
-    PaginatedPermissionList:
+    CheckUser:
       type: object
       properties:
-        count:
-          type: integer
-          example: 123
-        next:
+        email:
           type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
+          format: email
+      required:
+      - email
+    CheckUserResponse:
+      type: object
+      properties:
+        exists:
+          type: boolean
+      required:
+      - exists
+    Email:
+      type: object
+      description: Validate the contact email
+      properties:
+        email:
           type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Permission'
+          format: email
+      required:
+      - email
     PaginatedUserList:
       type: object
       properties:
@@ -546,26 +509,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/User'
-    PaginatedUserRoleList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserRole'
     PatchedUser:
       type: object
       description: |-
@@ -577,40 +520,51 @@ components:
         id:
           type: integer
           readOnly: true
+        password:
+          type: string
+          maxLength: 128
         username:
           type: string
-          readOnly: true
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
         email:
           type: string
           format: email
+          title: User email
           maxLength: 254
         first_name:
           type: string
           nullable: true
+          title: User first name
           maxLength: 30
         last_name:
           type: string
           nullable: true
+          title: User last name
           maxLength: 150
-        roles:
-          type: array
-          items:
-            type: integer
+        role:
+          allOf:
+          - $ref: '#/components/schemas/RoleEnum'
+          title: User role
         phone:
           type: string
           nullable: true
+          title: User phone number
           maxLength: 16
         is_active:
           type: boolean
           nullable: true
+          title: Is user active
         deactivation_datetime:
           type: string
           format: date-time
           readOnly: true
           nullable: true
+          title: Datetime when user was deactivated
         login_attempts:
           type: integer
           readOnly: true
+          title: User login attemps
         last_bad_login_attempt_datetime:
           type: string
           format: date-time
@@ -630,20 +584,28 @@ components:
       required:
       - action
       - url
+    ResetPassword:
+      type: object
+      description: Validate the contact email
+      properties:
+        token:
+          type: string
+        new_password1:
+          type: string
+        new_password2:
+          type: string
+      required:
+      - new_password1
+      - new_password2
+      - token
     RoleEnum:
       enum:
       - superadmin
-      - admin
-      - referent
-      - manager
-      - query
+      - user
       type: string
       description: |-
         * `superadmin` - Superadministrador
-        * `admin` - Administrador
-        * `referent` - Referent
-        * `manager` - Gestor
-        * `query` - Consulta
+        * `user` - User
     User:
       type: object
       description: |-
@@ -655,40 +617,51 @@ components:
         id:
           type: integer
           readOnly: true
+        password:
+          type: string
+          maxLength: 128
         username:
           type: string
-          readOnly: true
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
         email:
           type: string
           format: email
+          title: User email
           maxLength: 254
         first_name:
           type: string
           nullable: true
+          title: User first name
           maxLength: 30
         last_name:
           type: string
           nullable: true
+          title: User last name
           maxLength: 150
-        roles:
-          type: array
-          items:
-            type: integer
+        role:
+          allOf:
+          - $ref: '#/components/schemas/RoleEnum'
+          title: User role
         phone:
           type: string
           nullable: true
+          title: User phone number
           maxLength: 16
         is_active:
           type: boolean
           nullable: true
+          title: Is user active
         deactivation_datetime:
           type: string
           format: date-time
           readOnly: true
           nullable: true
+          title: Datetime when user was deactivated
         login_attempts:
           type: integer
           readOnly: true
+          title: User login attemps
         last_bad_login_attempt_datetime:
           type: string
           format: date-time
@@ -704,32 +677,27 @@ components:
       - id
       - last_bad_login_attempt_datetime
       - login_attempts
-      - roles
+      - password
       - username
-    UserRole:
+    UserLogin:
       type: object
-      description: |-
-        A ModelSerializer that takes additional arguments for
-        "fields" and "include" in order to
-        control which fields are displayed, and whether to replace simple values with
-        complex, nested serializations.
       properties:
-        id:
+        email:
+          type: string
+          format: email
+          title: User email
+          maxLength: 254
+        password:
+          type: string
+          maxLength: 128
+        csrftoken:
           type: integer
           readOnly: true
-        role_display:
-          type: string
-        role:
-          $ref: '#/components/schemas/RoleEnum'
       required:
-      - id
-      - role
-      - role_display
+      - csrftoken
+      - email
+      - password
   securitySchemes:
-    cookieAuth:
-      type: apiKey
-      in: cookie
-      name: sessionid
     tokenAuth:
       type: apiKey
       in: header

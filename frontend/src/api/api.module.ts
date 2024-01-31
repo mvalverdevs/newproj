@@ -4,10 +4,8 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
-import { PermissionsService } from './services/permissions.service';
 import { SchemaService } from './services/schema.service';
 import { UserService } from './services/user.service';
-import { UserRoleService } from './services/user-role.service';
 
 /**
  * Module that provides all services and configuration.
@@ -17,10 +15,8 @@ import { UserRoleService } from './services/user-role.service';
   exports: [],
   declarations: [],
   providers: [
-    PermissionsService,
     SchemaService,
     UserService,
-    UserRoleService,
     ApiConfiguration
   ],
 })

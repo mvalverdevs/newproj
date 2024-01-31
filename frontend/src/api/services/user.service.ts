@@ -9,16 +9,27 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
+import { CheckUserResponse } from '../models/check-user-response';
 import { PaginatedUserList } from '../models/paginated-user-list';
+import { Permission } from '../models/permission';
 import { User } from '../models/user';
+import { userCheckUserCreate$FormData } from '../fn/user/user-check-user-create-form-data';
+import { UserCheckUserCreate$FormData$Params } from '../fn/user/user-check-user-create-form-data';
+import { userCheckUserCreate$Json } from '../fn/user/user-check-user-create-json';
+import { UserCheckUserCreate$Json$Params } from '../fn/user/user-check-user-create-json';
+import { userCheckUserCreate$XWwwFormUrlencoded } from '../fn/user/user-check-user-create-x-www-form-urlencoded';
+import { UserCheckUserCreate$XWwwFormUrlencoded$Params } from '../fn/user/user-check-user-create-x-www-form-urlencoded';
 import { userCreate$FormData } from '../fn/user/user-create-form-data';
 import { UserCreate$FormData$Params } from '../fn/user/user-create-form-data';
 import { userCreate$Json } from '../fn/user/user-create-json';
 import { UserCreate$Json$Params } from '../fn/user/user-create-json';
 import { userCreate$XWwwFormUrlencoded } from '../fn/user/user-create-x-www-form-urlencoded';
 import { UserCreate$XWwwFormUrlencoded$Params } from '../fn/user/user-create-x-www-form-urlencoded';
+import { userDestroy } from '../fn/user/user-destroy';
+import { UserDestroy$Params } from '../fn/user/user-destroy';
 import { userList } from '../fn/user/user-list';
 import { UserList$Params } from '../fn/user/user-list';
+import { UserLogin } from '../models/user-login';
 import { userLoginCreate$FormData } from '../fn/user/user-login-create-form-data';
 import { UserLoginCreate$FormData$Params } from '../fn/user/user-login-create-form-data';
 import { userLoginCreate$Json } from '../fn/user/user-login-create-json';
@@ -37,6 +48,8 @@ import { userPartialUpdate$Json } from '../fn/user/user-partial-update-json';
 import { UserPartialUpdate$Json$Params } from '../fn/user/user-partial-update-json';
 import { userPartialUpdate$XWwwFormUrlencoded } from '../fn/user/user-partial-update-x-www-form-urlencoded';
 import { UserPartialUpdate$XWwwFormUrlencoded$Params } from '../fn/user/user-partial-update-x-www-form-urlencoded';
+import { userPermissionsRetrieve } from '../fn/user/user-permissions-retrieve';
+import { UserPermissionsRetrieve$Params } from '../fn/user/user-permissions-retrieve';
 import { userResetConfirmPasswordCreate$FormData } from '../fn/user/user-reset-confirm-password-create-form-data';
 import { UserResetConfirmPasswordCreate$FormData$Params } from '../fn/user/user-reset-confirm-password-create-form-data';
 import { userResetConfirmPasswordCreate$Json } from '../fn/user/user-reset-confirm-password-create-json';
@@ -93,8 +106,6 @@ export class UserService extends BaseService {
   static readonly UserCreatePath = '/api/user/';
 
   /**
-   * User register view
-   *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
    * To access only the response body, use `userCreate$Json()` instead.
    *
@@ -105,8 +116,6 @@ export class UserService extends BaseService {
   }
 
   /**
-   * User register view
-   *
    * This method provides access only to the response body.
    * To access the full response (for headers, for example), `userCreate$Json$Response()` instead.
    *
@@ -119,8 +128,6 @@ export class UserService extends BaseService {
   }
 
   /**
-   * User register view
-   *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
    * To access only the response body, use `userCreate$XWwwFormUrlencoded()` instead.
    *
@@ -131,8 +138,6 @@ export class UserService extends BaseService {
   }
 
   /**
-   * User register view
-   *
    * This method provides access only to the response body.
    * To access the full response (for headers, for example), `userCreate$XWwwFormUrlencoded$Response()` instead.
    *
@@ -145,8 +150,6 @@ export class UserService extends BaseService {
   }
 
   /**
-   * User register view
-   *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
    * To access only the response body, use `userCreate$FormData()` instead.
    *
@@ -157,8 +160,6 @@ export class UserService extends BaseService {
   }
 
   /**
-   * User register view
-   *
    * This method provides access only to the response body.
    * To access the full response (for headers, for example), `userCreate$FormData$Response()` instead.
    *
@@ -264,6 +265,31 @@ export class UserService extends BaseService {
     );
   }
 
+  /** Path part for operation `userDestroy()` */
+  static readonly UserDestroyPath = '/api/user/{id}/';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `userDestroy()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  userDestroy$Response(params: UserDestroy$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return userDestroy(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `userDestroy$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  userDestroy(params: UserDestroy$Params, context?: HttpContext): Observable<void> {
+    return this.userDestroy$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
   /** Path part for operation `userPartialUpdate()` */
   static readonly UserPartialUpdatePath = '/api/user/{id}/';
 
@@ -333,6 +359,75 @@ export class UserService extends BaseService {
     );
   }
 
+  /** Path part for operation `userCheckUserCreate()` */
+  static readonly UserCheckUserCreatePath = '/api/user/check_user/';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `userCheckUserCreate$Json()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  userCheckUserCreate$Json$Response(params: UserCheckUserCreate$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<CheckUserResponse>> {
+    return userCheckUserCreate$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `userCheckUserCreate$Json$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  userCheckUserCreate$Json(params: UserCheckUserCreate$Json$Params, context?: HttpContext): Observable<CheckUserResponse> {
+    return this.userCheckUserCreate$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<CheckUserResponse>): CheckUserResponse => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `userCheckUserCreate$XWwwFormUrlencoded()` instead.
+   *
+   * This method sends `application/x-www-form-urlencoded` and handles request body of type `application/x-www-form-urlencoded`.
+   */
+  userCheckUserCreate$XWwwFormUrlencoded$Response(params: UserCheckUserCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<StrictHttpResponse<CheckUserResponse>> {
+    return userCheckUserCreate$XWwwFormUrlencoded(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `userCheckUserCreate$XWwwFormUrlencoded$Response()` instead.
+   *
+   * This method sends `application/x-www-form-urlencoded` and handles request body of type `application/x-www-form-urlencoded`.
+   */
+  userCheckUserCreate$XWwwFormUrlencoded(params: UserCheckUserCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<CheckUserResponse> {
+    return this.userCheckUserCreate$XWwwFormUrlencoded$Response(params, context).pipe(
+      map((r: StrictHttpResponse<CheckUserResponse>): CheckUserResponse => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `userCheckUserCreate$FormData()` instead.
+   *
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
+   */
+  userCheckUserCreate$FormData$Response(params: UserCheckUserCreate$FormData$Params, context?: HttpContext): Observable<StrictHttpResponse<CheckUserResponse>> {
+    return userCheckUserCreate$FormData(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `userCheckUserCreate$FormData$Response()` instead.
+   *
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
+   */
+  userCheckUserCreate$FormData(params: UserCheckUserCreate$FormData$Params, context?: HttpContext): Observable<CheckUserResponse> {
+    return this.userCheckUserCreate$FormData$Response(params, context).pipe(
+      map((r: StrictHttpResponse<CheckUserResponse>): CheckUserResponse => r.body)
+    );
+  }
+
   /** Path part for operation `userLoginCreate()` */
   static readonly UserLoginCreatePath = '/api/user/login/';
 
@@ -344,7 +439,7 @@ export class UserService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  userLoginCreate$Json$Response(params: UserLoginCreate$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
+  userLoginCreate$Json$Response(params: UserLoginCreate$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<UserLogin>> {
     return userLoginCreate$Json(this.http, this.rootUrl, params, context);
   }
 
@@ -356,9 +451,9 @@ export class UserService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  userLoginCreate$Json(params: UserLoginCreate$Json$Params, context?: HttpContext): Observable<User> {
+  userLoginCreate$Json(params: UserLoginCreate$Json$Params, context?: HttpContext): Observable<UserLogin> {
     return this.userLoginCreate$Json$Response(params, context).pipe(
-      map((r: StrictHttpResponse<User>): User => r.body)
+      map((r: StrictHttpResponse<UserLogin>): UserLogin => r.body)
     );
   }
 
@@ -370,7 +465,7 @@ export class UserService extends BaseService {
    *
    * This method sends `application/x-www-form-urlencoded` and handles request body of type `application/x-www-form-urlencoded`.
    */
-  userLoginCreate$XWwwFormUrlencoded$Response(params: UserLoginCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
+  userLoginCreate$XWwwFormUrlencoded$Response(params: UserLoginCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<StrictHttpResponse<UserLogin>> {
     return userLoginCreate$XWwwFormUrlencoded(this.http, this.rootUrl, params, context);
   }
 
@@ -382,9 +477,9 @@ export class UserService extends BaseService {
    *
    * This method sends `application/x-www-form-urlencoded` and handles request body of type `application/x-www-form-urlencoded`.
    */
-  userLoginCreate$XWwwFormUrlencoded(params: UserLoginCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<User> {
+  userLoginCreate$XWwwFormUrlencoded(params: UserLoginCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<UserLogin> {
     return this.userLoginCreate$XWwwFormUrlencoded$Response(params, context).pipe(
-      map((r: StrictHttpResponse<User>): User => r.body)
+      map((r: StrictHttpResponse<UserLogin>): UserLogin => r.body)
     );
   }
 
@@ -396,7 +491,7 @@ export class UserService extends BaseService {
    *
    * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
-  userLoginCreate$FormData$Response(params: UserLoginCreate$FormData$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
+  userLoginCreate$FormData$Response(params: UserLoginCreate$FormData$Params, context?: HttpContext): Observable<StrictHttpResponse<UserLogin>> {
     return userLoginCreate$FormData(this.http, this.rootUrl, params, context);
   }
 
@@ -408,9 +503,9 @@ export class UserService extends BaseService {
    *
    * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
-  userLoginCreate$FormData(params: UserLoginCreate$FormData$Params, context?: HttpContext): Observable<User> {
+  userLoginCreate$FormData(params: UserLoginCreate$FormData$Params, context?: HttpContext): Observable<UserLogin> {
     return this.userLoginCreate$FormData$Response(params, context).pipe(
-      map((r: StrictHttpResponse<User>): User => r.body)
+      map((r: StrictHttpResponse<UserLogin>): UserLogin => r.body)
     );
   }
 
@@ -480,6 +575,31 @@ export class UserService extends BaseService {
   userLogoutCreate$FormData(params: UserLogoutCreate$FormData$Params, context?: HttpContext): Observable<User> {
     return this.userLogoutCreate$FormData$Response(params, context).pipe(
       map((r: StrictHttpResponse<User>): User => r.body)
+    );
+  }
+
+  /** Path part for operation `userPermissionsRetrieve()` */
+  static readonly UserPermissionsRetrievePath = '/api/user/permissions/';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `userPermissionsRetrieve()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  userPermissionsRetrieve$Response(params?: UserPermissionsRetrieve$Params, context?: HttpContext): Observable<StrictHttpResponse<Permission>> {
+    return userPermissionsRetrieve(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `userPermissionsRetrieve$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  userPermissionsRetrieve(params?: UserPermissionsRetrieve$Params, context?: HttpContext): Observable<Permission> {
+    return this.userPermissionsRetrieve$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Permission>): Permission => r.body)
     );
   }
 

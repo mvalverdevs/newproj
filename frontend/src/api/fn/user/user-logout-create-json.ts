@@ -7,9 +7,10 @@ import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
 import { User } from '../../models/user';
+import { UserLogin } from '../../models/user-login';
 
 export interface UserLogoutCreate$Json$Params {
-      body: User
+      body: UserLogin
 }
 
 export function userLogoutCreate$Json(http: HttpClient, rootUrl: string, params: UserLogoutCreate$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {

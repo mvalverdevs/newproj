@@ -6,13 +6,13 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { User } from '../../models/user';
+import { UserLogin } from '../../models/user-login';
 
 export interface UserLoginCreate$FormData$Params {
-      body: User
+      body: UserLogin
 }
 
-export function userLoginCreate$FormData(http: HttpClient, rootUrl: string, params: UserLoginCreate$FormData$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
+export function userLoginCreate$FormData(http: HttpClient, rootUrl: string, params: UserLoginCreate$FormData$Params, context?: HttpContext): Observable<StrictHttpResponse<UserLogin>> {
   const rb = new RequestBuilder(rootUrl, userLoginCreate$FormData.PATH, 'post');
   if (params) {
     rb.body(params.body, 'multipart/form-data');
@@ -23,7 +23,7 @@ export function userLoginCreate$FormData(http: HttpClient, rootUrl: string, para
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<User>;
+      return r as StrictHttpResponse<UserLogin>;
     })
   );
 }
