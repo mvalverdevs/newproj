@@ -563,7 +563,8 @@ components:
           title: Datetime when user was deactivated
         login_attempts:
           type: integer
-          readOnly: true
+          maximum: 2147483647
+          minimum: 0
           title: User login attemps
         last_bad_login_attempt_datetime:
           type: string
@@ -660,7 +661,8 @@ components:
           title: Datetime when user was deactivated
         login_attempts:
           type: integer
-          readOnly: true
+          maximum: 2147483647
+          minimum: 0
           title: User login attemps
         last_bad_login_attempt_datetime:
           type: string
@@ -676,7 +678,6 @@ components:
       - has_login_blocked
       - id
       - last_bad_login_attempt_datetime
-      - login_attempts
       - password
       - username
     UserLogin:
@@ -690,13 +691,13 @@ components:
         password:
           type: string
           maxLength: 128
-        csrftoken:
+        token:
           type: integer
           readOnly: true
       required:
-      - csrftoken
       - email
       - password
+      - token
   securitySchemes:
     tokenAuth:
       type: apiKey

@@ -17,7 +17,7 @@ export interface User {
   is_active?: null | boolean;
   last_bad_login_attempt_datetime: null | string;
   last_name?: null | string;
-  login_attempts: number;
+  login_attempts?: number;
   password: string;
   phone?: null | string;
   role?: RoleEnum;

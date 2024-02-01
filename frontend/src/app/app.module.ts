@@ -10,6 +10,7 @@ import {LoginPage} from "./main/login/login.page";
 import {RegisterPage} from "./main/register/register.page";
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { ApiModule } from 'src/api/api.module';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ApiModule.forRoot({ rootUrl: 'http://localhost:8000' })
   ],
   providers: [
     {

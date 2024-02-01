@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import {UserService} from "../../../api/services/user.service";
 import { UserLogin } from 'src/api/models';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, ToastController } from '@ionic/angular';
 import { RegisterPage } from '../register/register.page';
 import { Router } from '@angular/router';
 
@@ -15,11 +15,14 @@ export class LoginPage implements OnInit {
 
   loginForm: FormGroup
   register = RegisterPage
+  hasError = false
+  errorMessage = ''
 
   constructor(
     private _loadingCtrl: LoadingController,
     private _formBuilder: FormBuilder,
-    private _userService: UserService
+    private _userService: UserService,
+    private _toastController: ToastController
   ) {
     this.loginForm = this._formBuilder.group({
       username: new FormControl('', Validators.required),
@@ -38,14 +41,28 @@ export class LoginPage implements OnInit {
     this._userService.userLoginCreate$Json$Response({body: userLogin}).subscribe({
       next: (response) => {
       },
-      error: (e) => 
-      console.error(e),
+      error: (e) => {
+        this._toastController.create({
+          message: e.error,
+          duration: 1500,
+          position: 'bottom',
+        }).then(
+          (toast) => {
+            toast.present()
+          }
+        );
+        
+
+        console.error(e)
+        loading.dismiss()
+      },
       complete: () => {
-        loading.dismiss();
+        
         // NAVIGATE TO THE APP
         //this._router.navigate(['/...']);
       }
     });
   }
+
 
 }

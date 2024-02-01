@@ -32,6 +32,8 @@ SECRET_KEY = config(
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = config("DJANGO_ALLOWED_HOSTS", cast=Csv(), default="*")
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
 # Application definition
 
@@ -54,6 +56,7 @@ THIRD_PARTY_APPS = [
     'django_extensions',
     'drf_spectacular',
     'drf_spectacular_sidecar',
+    'corsheaders'
 ]
 
 LOCAL_APPS = [
@@ -76,6 +79,7 @@ PASSWORD_HASHERS = [
 
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
