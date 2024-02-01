@@ -10,10 +10,11 @@ import { RecipeCategoryService, RecipeService } from 'src/api/services';
 })
 export class RecipeListPage implements OnInit {
 
-  recipeCategories: RecipeCategory[] = [];
+  recipeCategories: RecipeCategory[] = []
   recipes: Recipe[] = []
-  selectedCategory: number | undefined = undefined;
-  search: string | undefined = undefined;
+  selectedCategory: number | undefined = undefined
+  search: string | undefined = undefined
+  loaded = false
 
   constructor(
     private _loadingCtrl: LoadingController,
@@ -28,7 +29,6 @@ export class RecipeListPage implements OnInit {
       duration: 4000,
     });
     loading.present();
-
     // 🚩 Obtaining recipeCategory list
     this._recipeCategoryService.recipeCategoryList().subscribe({
       next: (recipeCategories) => {
@@ -43,12 +43,14 @@ export class RecipeListPage implements OnInit {
     // 🚩 Obtaining recipe list
     this.getRecipes();
   }
+
   ngOnInit(){}
 
   async getRecipes(
     selectedCategory: number[] | undefined = undefined,
     search: string | undefined = undefined
     ){
+    this.loaded = false;
     const loading = await this._loadingCtrl.create({
       message: 'Loading...',
       duration: 4000,
@@ -68,6 +70,7 @@ export class RecipeListPage implements OnInit {
       error: (e) => console.error(e),
       complete: () => {
         loading.dismiss();
+        this.loaded = true;
       }
     });
 

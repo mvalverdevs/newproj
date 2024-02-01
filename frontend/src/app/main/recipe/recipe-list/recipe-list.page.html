@@ -25,6 +25,25 @@
         [outline]="selectedCategory != category.id">
         {{category.name}}
       </ion-chip>
+      <!-- Skeleton Categories chip -->
+      <ion-chip [outline]="true">
+        <ion-skeleton-text [animated]="true" style="width: 40px;"></ion-skeleton-text>
+      </ion-chip>
+      <ion-chip [outline]="true">
+        <ion-skeleton-text [animated]="true" style="width: 70px;"></ion-skeleton-text>
+      </ion-chip>
+      <ion-chip [outline]="true">
+        <ion-skeleton-text [animated]="true" style="width: 50px;"></ion-skeleton-text>
+      </ion-chip>
+      <ion-chip [outline]="true">
+        <ion-skeleton-text [animated]="true" style="width: 40px;"></ion-skeleton-text>
+      </ion-chip>
+      <ion-chip [outline]="true">
+        <ion-skeleton-text [animated]="true" style="width: 50px;"></ion-skeleton-text>
+      </ion-chip>
+      <ion-chip [outline]="true">
+        <ion-skeleton-text [animated]="true" style="width: 50;"></ion-skeleton-text>
+      </ion-chip>
     </div>
   </ion-toolbar>
 </ion-header>
@@ -66,8 +85,38 @@
         </ion-card-content>
       </ion-card>
     </ion-item>
-
   </ion-list>
 
+  <ion-list *ngIf="!loaded" lines="none">
+    <ion-item *ngFor="let dummy of ' '.repeat(3).split(''), let x = index">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-skeleton-text class="loading-image" [animated]="true"></ion-skeleton-text>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-skeleton-text [animated]="true" style="width: 25%;"></ion-skeleton-text>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-skeleton-text [animated]="true" style="width: 70%;height: 20px;"></ion-skeleton-text>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-skeleton-text [animated]="true" style="width: 80%;height: 10px;"></ion-skeleton-text>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-skeleton-text [animated]="true" style="width: 75%;height: 10px;"></ion-skeleton-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
 
 </ion-content>
