@@ -12,6 +12,8 @@ from utils.views import ModelViewSet
 from rest_framework.permissions import AllowAny, IsAuthenticated, DjangoModelPermissions
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.exceptions import APIException
 
 
 class UserView(ModelViewSet):
@@ -67,44 +69,31 @@ class UserView(ModelViewSet):
         password = request.data.get('password', None)
 
         user = authenticate(email=email, password=password)
-        if user is not None:
-            print('MANUEL')
 
-        LOGIN_BLOCKED_MSG = "Login Blocked. Please contact the administrator for assistance"
+        if user is None:
+            # Invalid login
+            saved_user = user_models.User.objects.filter(email=email).first()
+            if saved_user is not None:
 
-        # Check if the user has a password
-        user = user_models.User.objects.filter(email=email).first()
-        if user is None or user.password is None:
+                if saved_user.has_login_blocked or not saved_user.is_active:
+                    return Response(status=status.HTTP_400_BAD_REQUEST, data=["Login Blocked. Please contact the administrator for assistance"])
+
+                # User exists +1 login attempt
+                saved_user.login_attempts = saved_user.login_attempts + 1
+                saved_user.last_bad_login_attempt_datetime = timezone.now()
+                saved_user.save()
+
             return Response(status=status.HTTP_400_BAD_REQUEST, data=["Invalid credentials"])
+        else:
+            if user.has_login_blocked or not user.is_active:
+                return Response(status=status.HTTP_400_BAD_REQUEST, data=["Login Blocked. Please contact the administrator for assistance"])
 
-        print(user)
-        user = authenticate(email=email, password=password)
-        print(user)
-
-        if user is None or not user.is_active:
-            # Authentication fail and saving bad login attempt
-            try:
-                user = user_models.User.objects.get(email=email)
-                if user.has_login_blocked:
-                    return Response(status=status.HTTP_400_BAD_REQUEST, data=[LOGIN_BLOCKED_MSG])
-                user.login_attempts = user.login_attempts + 1
-                user.last_bad_login_attempt_datetime = timezone.now()
+            # Restore login attempts when login correctly
+            if user.login_attempts >= 1:
+                user.login_attempts = 0
                 user.save()
-            except:
-                pass
-            return Response(status=status.HTTP_400_BAD_REQUEST, data=["Invalid credentials"])
 
-        if user.has_login_blocked:
-            return Response(status=status.HTTP_400_BAD_REQUEST, data=[LOGIN_BLOCKED_MSG])
-
-        login(request=request, user=user)
-
-        # Reset login_attempts when user login correctly
-        if user.login_attempts >= 1:
-            user.login_attempts = 0
-            user.save()
-
-        return Response(status=status.HTTP_200_OK, data=user_serializers.UserLoginSerializer(user,context={"request": request}).data)
+        return Response(status=status.HTTP_200_OK, data=user_serializers.UserLoginSerializer(instance=user).data)
 
     @extend_schema(
         request=user_serializers.EmailSerializer,

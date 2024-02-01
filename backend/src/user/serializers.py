@@ -35,7 +35,6 @@ class UserSerializer(DynamicModelSerializer):
             'id',
             'date_joined',
             'deactivation_datetime',
-            'login_attempts',
             'last_bad_login_attempt_datetime',
             'has_login_blocked',
         )
@@ -50,24 +49,21 @@ class CheckUserResponse(serializers.Serializer):
 
 
 class UserLoginSerializer(serializers.ModelSerializer):
-    csrftoken = serializers.SerializerMethodField(read_only=True)
+    token = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = user_models.User
         fields = (
             'email',
             'password',
-            'csrftoken'
+            'token'
         )
 
     @extend_schema_field(field=serializers.IntegerField)
-    def get_csrftoken(self, data):
-        request = self.context["request"]
-        token, created = Token.objects.get_or_create(user=self.context.get('request').user)
-        if created:
-            return token.key
-        else:
-            return 'aaaa'
+    def get_token(self, user):
+        print(type(user))
+        token, created = Token.objects.get_or_create(user=user)
+        return token.key
 
 
 class EmailSerializer(serializers.Serializer):
