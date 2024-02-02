@@ -11,6 +11,10 @@ import {RegisterPage} from "./main/register/register.page";
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ApiModule } from 'src/api/api.module';
+import {provideHttpClient, withInterceptors, withJsonpSupport} from '@angular/common/http';
+import { authInterceptor } from './auth/auth.interceptor';
+
+
 
 
 @NgModule({
@@ -30,7 +34,7 @@ import { ApiModule } from 'src/api/api.module';
   providers: [
     {
       provide: RouteReuseStrategy,
-      useClass: IonicRouteStrategy
+      useClass: IonicRouteStrategy,
     }
   ],
   bootstrap: [

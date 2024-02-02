@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, ToastController } from '@ionic/angular';
 import { CheckUser } from 'src/api/models';
 import { UserService } from 'src/api/services';
 
@@ -17,6 +17,7 @@ export class RegisterPage implements OnInit {
     private _formBuilder: FormBuilder,
     private _userService: UserService,
     private _loadingCtrl: LoadingController,
+    private _toastController: ToastController
   ) {
     this.registerForm = this._formBuilder.group({
       email: new FormControl('', Validators.required),
@@ -36,11 +37,32 @@ export class RegisterPage implements OnInit {
     this._userService.userCheckUserCreate$Json$Response({body: email}).subscribe({
       next: (response) => {
         if (response.body.exists){
-          alert('YES')
+          this._toastController.create({
+            message: 'El correo ya existe',
+            duration: 1500,
+            position: 'bottom',
+          }).then(
+            (toast) => {
+              toast.present()
+            }
+          );
+        }else {
+          // AQUI METER EL CAMPO CONTRASEÑA
         }
       },
-      error: (e) => 
-      console.error(e),
+      error: (e) => {
+        loading.dismiss();
+        this._toastController.create({
+          message: e.error,
+          duration: 1500,
+          position: 'bottom',
+        }).then(
+          (toast) => {
+            toast.present()
+          }
+        );
+        console.error(e)
+      },
       complete: () => {
         loading.dismiss();
         // NAVIGATE TO THE APP

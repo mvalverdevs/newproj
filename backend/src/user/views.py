@@ -28,6 +28,7 @@ class UserView(ModelViewSet):
             'reset_password',
             'change_password',
             'reset_confirm_password',
+            'check_user'
         )
         if self.action in no_permission_views:
             return (AllowAny(), )
@@ -53,10 +54,11 @@ class UserView(ModelViewSet):
     def check_user(self, request, *args, **kwargs):
         email = request.data.get('email', None)
         if email is not None:
-            data = user_serializers.CheckUserResponse(data={
-                'exists': not self.queryset.objects.filter(email=email).exists()
+            serializer = user_serializers.CheckUserResponse(data={
+                'exists': self.queryset.filter(email=email).exists()
             })
-            return Response(status=status.HTTP_200_OK, data=data)
+            serializer.is_valid()
+            return Response(status=status.HTTP_200_OK, data=serializer.data)
 
     @extend_schema(
         request=user_serializers.UserLoginSerializer,

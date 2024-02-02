@@ -25,7 +25,7 @@ export class LoginPage implements OnInit {
     private _toastController: ToastController
   ) {
     this.loginForm = this._formBuilder.group({
-      username: new FormControl('', Validators.required),
+      email: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required)
     });
   }
@@ -51,13 +51,11 @@ export class LoginPage implements OnInit {
             toast.present()
           }
         );
-        
-
         console.error(e)
         loading.dismiss()
       },
       complete: () => {
-        
+        loading.dismiss()
         // NAVIGATE TO THE APP
         //this._router.navigate(['/...']);
       }
