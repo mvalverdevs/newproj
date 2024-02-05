@@ -28,7 +28,8 @@ class UserView(ModelViewSet):
             'reset_password',
             'change_password',
             'reset_confirm_password',
-            'check_user'
+            'check_email',
+            'check_username'
         )
         if self.action in no_permission_views:
             return (AllowAny(), )
@@ -47,17 +48,30 @@ class UserView(ModelViewSet):
         return Response(status=status.HTTP_200_OK)
 
     @extend_schema(
-        request=user_serializers.CheckUserSerializer,
+        request=user_serializers.CheckEmailSerializer,
         responses={200: user_serializers.CheckUserResponse}
     )
     @action(detail=False, methods=['post'])
-    def check_user(self, request, *args, **kwargs):
+    def check_email(self, request, *args, **kwargs):
         email = request.data.get('email', None)
-        if email is not None:
+        serializer = user_serializers.CheckUserResponse(data={
+            'exists': self.queryset.filter(email=email).exists()
+        })
+        serializer.is_valid(raise_exception=True)
+        return Response(status=status.HTTP_200_OK, data=serializer.data)
+
+    @extend_schema(
+        request=user_serializers.CheckUsernameSerializer,
+        responses={200: user_serializers.CheckUserResponse}
+    )
+    @action(detail=False, methods=['post'])
+    def check_username(self, request, *args, **kwargs):
+        username = request.data.get('username', None)
+        if username is not None:
             serializer = user_serializers.CheckUserResponse(data={
-                'exists': self.queryset.filter(email=email).exists()
+                'exists': self.queryset.filter(username=username).exists()
             })
-            serializer.is_valid()
+            serializer.is_valid(raise_exception=True)
             return Response(status=status.HTTP_200_OK, data=serializer.data)
 
     @extend_schema(

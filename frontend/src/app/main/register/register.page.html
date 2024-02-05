@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-back-button defaultHref='/login'></ion-back-button>
     </ion-buttons>
     <ion-title>
       Register
@@ -9,20 +9,19 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="login-content">
-  <form [formGroup]="registerForm" class="login-form" (ngSubmit)="checkUsername(registerForm.value)">
-    <ion-list lines="none">
-      <ion-item>
-        <ion-input
-          type="email"
-          formControlName="email"
-          label="Email"
-          labelPlacement="floating"
-          fill="solid">
-        </ion-input>
-      </ion-item>
-    </ion-list>
+<ion-content [fullscreen]="true">
+  <app-step-check-email 
+    *ngIf="current_step == CHECK_EMAIL_STEP"
+    (step)="changeStep($event)">
+  </app-step-check-email>
 
-    <ion-button class="login-button" type="submit">Next</ion-button>
-  </form>
+  <app-step-check-username
+    *ngIf="current_step == CHECK_USERNAME_STEP"
+    (step)="changeStep($event)"
+  ></app-step-check-username>
+
+  <app-step-password
+    *ngIf="current_step == PASSWORD_STEP"
+  ></app-step-password>
+
 </ion-content>

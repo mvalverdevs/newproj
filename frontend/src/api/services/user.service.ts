@@ -13,12 +13,18 @@ import { CheckUserResponse } from '../models/check-user-response';
 import { PaginatedUserList } from '../models/paginated-user-list';
 import { Permission } from '../models/permission';
 import { User } from '../models/user';
-import { userCheckUserCreate$FormData } from '../fn/user/user-check-user-create-form-data';
-import { UserCheckUserCreate$FormData$Params } from '../fn/user/user-check-user-create-form-data';
-import { userCheckUserCreate$Json } from '../fn/user/user-check-user-create-json';
-import { UserCheckUserCreate$Json$Params } from '../fn/user/user-check-user-create-json';
-import { userCheckUserCreate$XWwwFormUrlencoded } from '../fn/user/user-check-user-create-x-www-form-urlencoded';
-import { UserCheckUserCreate$XWwwFormUrlencoded$Params } from '../fn/user/user-check-user-create-x-www-form-urlencoded';
+import { userCheckEmailCreate$FormData } from '../fn/user/user-check-email-create-form-data';
+import { UserCheckEmailCreate$FormData$Params } from '../fn/user/user-check-email-create-form-data';
+import { userCheckEmailCreate$Json } from '../fn/user/user-check-email-create-json';
+import { UserCheckEmailCreate$Json$Params } from '../fn/user/user-check-email-create-json';
+import { userCheckEmailCreate$XWwwFormUrlencoded } from '../fn/user/user-check-email-create-x-www-form-urlencoded';
+import { UserCheckEmailCreate$XWwwFormUrlencoded$Params } from '../fn/user/user-check-email-create-x-www-form-urlencoded';
+import { userCheckUsernameCreate$FormData } from '../fn/user/user-check-username-create-form-data';
+import { UserCheckUsernameCreate$FormData$Params } from '../fn/user/user-check-username-create-form-data';
+import { userCheckUsernameCreate$Json } from '../fn/user/user-check-username-create-json';
+import { UserCheckUsernameCreate$Json$Params } from '../fn/user/user-check-username-create-json';
+import { userCheckUsernameCreate$XWwwFormUrlencoded } from '../fn/user/user-check-username-create-x-www-form-urlencoded';
+import { UserCheckUsernameCreate$XWwwFormUrlencoded$Params } from '../fn/user/user-check-username-create-x-www-form-urlencoded';
 import { userCreate$FormData } from '../fn/user/user-create-form-data';
 import { UserCreate$FormData$Params } from '../fn/user/user-create-form-data';
 import { userCreate$Json } from '../fn/user/user-create-json';
@@ -359,71 +365,140 @@ export class UserService extends BaseService {
     );
   }
 
-  /** Path part for operation `userCheckUserCreate()` */
-  static readonly UserCheckUserCreatePath = '/api/user/check_user/';
+  /** Path part for operation `userCheckEmailCreate()` */
+  static readonly UserCheckEmailCreatePath = '/api/user/check_email/';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `userCheckUserCreate$Json()` instead.
+   * To access only the response body, use `userCheckEmailCreate$Json()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  userCheckUserCreate$Json$Response(params: UserCheckUserCreate$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<CheckUserResponse>> {
-    return userCheckUserCreate$Json(this.http, this.rootUrl, params, context);
+  userCheckEmailCreate$Json$Response(params: UserCheckEmailCreate$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<CheckUserResponse>> {
+    return userCheckEmailCreate$Json(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `userCheckUserCreate$Json$Response()` instead.
+   * To access the full response (for headers, for example), `userCheckEmailCreate$Json$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  userCheckUserCreate$Json(params: UserCheckUserCreate$Json$Params, context?: HttpContext): Observable<CheckUserResponse> {
-    return this.userCheckUserCreate$Json$Response(params, context).pipe(
+  userCheckEmailCreate$Json(params: UserCheckEmailCreate$Json$Params, context?: HttpContext): Observable<CheckUserResponse> {
+    return this.userCheckEmailCreate$Json$Response(params, context).pipe(
       map((r: StrictHttpResponse<CheckUserResponse>): CheckUserResponse => r.body)
     );
   }
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `userCheckUserCreate$XWwwFormUrlencoded()` instead.
+   * To access only the response body, use `userCheckEmailCreate$XWwwFormUrlencoded()` instead.
    *
    * This method sends `application/x-www-form-urlencoded` and handles request body of type `application/x-www-form-urlencoded`.
    */
-  userCheckUserCreate$XWwwFormUrlencoded$Response(params: UserCheckUserCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<StrictHttpResponse<CheckUserResponse>> {
-    return userCheckUserCreate$XWwwFormUrlencoded(this.http, this.rootUrl, params, context);
+  userCheckEmailCreate$XWwwFormUrlencoded$Response(params: UserCheckEmailCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<StrictHttpResponse<CheckUserResponse>> {
+    return userCheckEmailCreate$XWwwFormUrlencoded(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `userCheckUserCreate$XWwwFormUrlencoded$Response()` instead.
+   * To access the full response (for headers, for example), `userCheckEmailCreate$XWwwFormUrlencoded$Response()` instead.
    *
    * This method sends `application/x-www-form-urlencoded` and handles request body of type `application/x-www-form-urlencoded`.
    */
-  userCheckUserCreate$XWwwFormUrlencoded(params: UserCheckUserCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<CheckUserResponse> {
-    return this.userCheckUserCreate$XWwwFormUrlencoded$Response(params, context).pipe(
+  userCheckEmailCreate$XWwwFormUrlencoded(params: UserCheckEmailCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<CheckUserResponse> {
+    return this.userCheckEmailCreate$XWwwFormUrlencoded$Response(params, context).pipe(
       map((r: StrictHttpResponse<CheckUserResponse>): CheckUserResponse => r.body)
     );
   }
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `userCheckUserCreate$FormData()` instead.
+   * To access only the response body, use `userCheckEmailCreate$FormData()` instead.
    *
    * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
-  userCheckUserCreate$FormData$Response(params: UserCheckUserCreate$FormData$Params, context?: HttpContext): Observable<StrictHttpResponse<CheckUserResponse>> {
-    return userCheckUserCreate$FormData(this.http, this.rootUrl, params, context);
+  userCheckEmailCreate$FormData$Response(params: UserCheckEmailCreate$FormData$Params, context?: HttpContext): Observable<StrictHttpResponse<CheckUserResponse>> {
+    return userCheckEmailCreate$FormData(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `userCheckUserCreate$FormData$Response()` instead.
+   * To access the full response (for headers, for example), `userCheckEmailCreate$FormData$Response()` instead.
    *
    * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
-  userCheckUserCreate$FormData(params: UserCheckUserCreate$FormData$Params, context?: HttpContext): Observable<CheckUserResponse> {
-    return this.userCheckUserCreate$FormData$Response(params, context).pipe(
+  userCheckEmailCreate$FormData(params: UserCheckEmailCreate$FormData$Params, context?: HttpContext): Observable<CheckUserResponse> {
+    return this.userCheckEmailCreate$FormData$Response(params, context).pipe(
+      map((r: StrictHttpResponse<CheckUserResponse>): CheckUserResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `userCheckUsernameCreate()` */
+  static readonly UserCheckUsernameCreatePath = '/api/user/check_username/';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `userCheckUsernameCreate$Json()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  userCheckUsernameCreate$Json$Response(params: UserCheckUsernameCreate$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<CheckUserResponse>> {
+    return userCheckUsernameCreate$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `userCheckUsernameCreate$Json$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  userCheckUsernameCreate$Json(params: UserCheckUsernameCreate$Json$Params, context?: HttpContext): Observable<CheckUserResponse> {
+    return this.userCheckUsernameCreate$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<CheckUserResponse>): CheckUserResponse => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `userCheckUsernameCreate$XWwwFormUrlencoded()` instead.
+   *
+   * This method sends `application/x-www-form-urlencoded` and handles request body of type `application/x-www-form-urlencoded`.
+   */
+  userCheckUsernameCreate$XWwwFormUrlencoded$Response(params: UserCheckUsernameCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<StrictHttpResponse<CheckUserResponse>> {
+    return userCheckUsernameCreate$XWwwFormUrlencoded(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `userCheckUsernameCreate$XWwwFormUrlencoded$Response()` instead.
+   *
+   * This method sends `application/x-www-form-urlencoded` and handles request body of type `application/x-www-form-urlencoded`.
+   */
+  userCheckUsernameCreate$XWwwFormUrlencoded(params: UserCheckUsernameCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<CheckUserResponse> {
+    return this.userCheckUsernameCreate$XWwwFormUrlencoded$Response(params, context).pipe(
+      map((r: StrictHttpResponse<CheckUserResponse>): CheckUserResponse => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `userCheckUsernameCreate$FormData()` instead.
+   *
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
+   */
+  userCheckUsernameCreate$FormData$Response(params: UserCheckUsernameCreate$FormData$Params, context?: HttpContext): Observable<StrictHttpResponse<CheckUserResponse>> {
+    return userCheckUsernameCreate$FormData(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `userCheckUsernameCreate$FormData$Response()` instead.
+   *
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
+   */
+  userCheckUsernameCreate$FormData(params: UserCheckUsernameCreate$FormData$Params, context?: HttpContext): Observable<CheckUserResponse> {
+    return this.userCheckUsernameCreate$FormData$Response(params, context).pipe(
       map((r: StrictHttpResponse<CheckUserResponse>): CheckUserResponse => r.body)
     );
   }

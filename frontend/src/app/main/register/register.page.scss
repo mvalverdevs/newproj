@@ -1,12 +1,7 @@
-.login-form{
-  width: 75%;
-  margin: 60% auto;
-  padding: 10px;
-}
-
 .login-button{
-  margin: 20px 0px;
-  width: 100%;
+  margin: 20px 22px;
+  width: 90%;
+  display: block;
 }
 
 ion-input {
@@ -14,11 +9,6 @@ ion-input {
   border-radius: 10px;
 }
 
-form {
-  background-color: #ff950083;
-  padding: 20px 10px;
-  border-radius: 10px;
-}
 
 ion-list {
   background-color: transparent!important;

@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-export { CheckUser } from './models/check-user';
+export { CheckEmail } from './models/check-email';
+export { CheckUsername } from './models/check-username';
 export { CheckUserResponse } from './models/check-user-response';
 export { Email } from './models/email';
 export { PaginatedUserList } from './models/paginated-user-list';

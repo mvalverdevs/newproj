@@ -6,8 +6,11 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="login-content">
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm.value)" class="login-form">
+<ion-content [fullscreen]="true">
+  <form
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit(loginForm.value)"
+  >
     <ion-list lines="none">
       <ion-item>
         <ion-input

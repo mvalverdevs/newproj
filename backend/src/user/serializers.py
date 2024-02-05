@@ -40,7 +40,11 @@ class UserSerializer(DynamicModelSerializer):
         )
 
 
-class CheckUserSerializer(serializers.Serializer):
+class CheckUsernameSerializer(serializers.Serializer):
+    username = serializers.CharField(required=True)
+
+
+class CheckEmailSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
 
 

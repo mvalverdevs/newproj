@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
-import { LoadingController, ToastController } from '@ionic/angular';
-import { CheckUser } from 'src/api/models';
-import { UserService } from 'src/api/services';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -11,15 +8,18 @@ import { UserService } from 'src/api/services';
 })
 export class RegisterPage implements OnInit {
 
-  registerForm: FormGroup
+  CHECK_EMAIL_STEP = 'checkEmail'
+  CHECK_USERNAME_STEP = 'checkUsername'
+  PASSWORD_STEP = 'password'
+
+  current_step = 'checkEmail'
+
+  checkEmailForm: FormGroup
 
   constructor(
     private _formBuilder: FormBuilder,
-    private _userService: UserService,
-    private _loadingCtrl: LoadingController,
-    private _toastController: ToastController
   ) {
-    this.registerForm = this._formBuilder.group({
+    this.checkEmailForm = this._formBuilder.group({
       email: new FormControl('', Validators.required),
     });
   }
@@ -28,47 +28,8 @@ export class RegisterPage implements OnInit {
 
     }
 
-  async checkUsername(email: CheckUser){
-    const loading = await this._loadingCtrl.create({
-      message: 'Saving...',
-      duration: 4000,
-    });
-    loading.present();
-    this._userService.userCheckUserCreate$Json$Response({body: email}).subscribe({
-      next: (response) => {
-        if (response.body.exists){
-          this._toastController.create({
-            message: 'El correo ya existe',
-            duration: 1500,
-            position: 'bottom',
-          }).then(
-            (toast) => {
-              toast.present()
-            }
-          );
-        }else {
-          // AQUI METER EL CAMPO CONTRASEÑA
-        }
-      },
-      error: (e) => {
-        loading.dismiss();
-        this._toastController.create({
-          message: e.error,
-          duration: 1500,
-          position: 'bottom',
-        }).then(
-          (toast) => {
-            toast.present()
-          }
-        );
-        console.error(e)
-      },
-      complete: () => {
-        loading.dismiss();
-        // NAVIGATE TO THE APP
-        //this._router.navigate(['/...']);
-      }
-    });
+  changeStep(step: string){
+    this.current_step = step
   }
 
 }

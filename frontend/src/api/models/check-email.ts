@@ -1,5 +1,5 @@
 /* tslint:disable */
 /* eslint-disable */
-export interface CheckUser {
+export interface CheckEmail {
   email: string;
 }

@@ -6,17 +6,17 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { CheckUser } from '../../models/check-user';
+import { CheckEmail } from '../../models/check-email';
 import { CheckUserResponse } from '../../models/check-user-response';
 
-export interface UserCheckUserCreate$Json$Params {
-      body: CheckUser
+export interface UserCheckEmailCreate$FormData$Params {
+      body: CheckEmail
 }
 
-export function userCheckUserCreate$Json(http: HttpClient, rootUrl: string, params: UserCheckUserCreate$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<CheckUserResponse>> {
-  const rb = new RequestBuilder(rootUrl, userCheckUserCreate$Json.PATH, 'post');
+export function userCheckEmailCreate$FormData(http: HttpClient, rootUrl: string, params: UserCheckEmailCreate$FormData$Params, context?: HttpContext): Observable<StrictHttpResponse<CheckUserResponse>> {
+  const rb = new RequestBuilder(rootUrl, userCheckEmailCreate$FormData.PATH, 'post');
   if (params) {
-    rb.body(params.body, 'application/json');
+    rb.body(params.body, 'multipart/form-data');
   }
 
   return http.request(
@@ -29,4 +29,4 @@ export function userCheckUserCreate$Json(http: HttpClient, rootUrl: string, para
   );
 }
 
-userCheckUserCreate$Json.PATH = '/api/user/check_user/';
+userCheckEmailCreate$FormData.PATH = '/api/user/check_email/';

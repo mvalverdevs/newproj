@@ -1,0 +1,19 @@
+<form
+      [formGroup]="checkEmailForm"
+      (ngSubmit)="checkEmail(checkEmailForm.value)"
+  >
+    <ion-list lines="none">
+      <ion-item>
+        <ion-input
+          type="email"
+          formControlName="email"
+          label="Email"
+          labelPlacement="floating"
+          fill="solid"
+          errorText="No hay email">
+        </ion-input>
+      </ion-item>
+    </ion-list>
+
+    <ion-button [disabled]="!checkEmailForm.valid" type="submit">Next</ion-button>
+  </form>

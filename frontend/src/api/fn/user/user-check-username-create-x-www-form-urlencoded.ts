@@ -6,15 +6,15 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { CheckUser } from '../../models/check-user';
+import { CheckUsername } from '../../models/check-username';
 import { CheckUserResponse } from '../../models/check-user-response';
 
-export interface UserCheckUserCreate$XWwwFormUrlencoded$Params {
-      body: CheckUser
+export interface UserCheckUsernameCreate$XWwwFormUrlencoded$Params {
+      body: CheckUsername
 }
 
-export function userCheckUserCreate$XWwwFormUrlencoded(http: HttpClient, rootUrl: string, params: UserCheckUserCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<StrictHttpResponse<CheckUserResponse>> {
-  const rb = new RequestBuilder(rootUrl, userCheckUserCreate$XWwwFormUrlencoded.PATH, 'post');
+export function userCheckUsernameCreate$XWwwFormUrlencoded(http: HttpClient, rootUrl: string, params: UserCheckUsernameCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<StrictHttpResponse<CheckUserResponse>> {
+  const rb = new RequestBuilder(rootUrl, userCheckUsernameCreate$XWwwFormUrlencoded.PATH, 'post');
   if (params) {
     rb.body(params.body, 'application/x-www-form-urlencoded');
   }
@@ -29,4 +29,4 @@ export function userCheckUserCreate$XWwwFormUrlencoded(http: HttpClient, rootUrl
   );
 }
 
-userCheckUserCreate$XWwwFormUrlencoded.PATH = '/api/user/check_user/';
+userCheckUsernameCreate$XWwwFormUrlencoded.PATH = '/api/user/check_username/';

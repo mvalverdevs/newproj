@@ -13,6 +13,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { ApiModule } from 'src/api/api.module';
 import {provideHttpClient, withInterceptors, withJsonpSupport} from '@angular/common/http';
 import { authInterceptor } from './auth/auth.interceptor';
+import { StepCheckEmailComponent } from './main/register/components/step-check-email/step-check-email.component';
+import { StepPasswordComponent } from './main/register/components/step-password/step-password.component';
+import { StepCheckUsernameComponent } from './main/register/components/step-check-username/step-check-username.component';
 
 
 
@@ -21,7 +24,10 @@ import { authInterceptor } from './auth/auth.interceptor';
   declarations: [
     AppComponent,
     LoginPage,
-    RegisterPage
+    RegisterPage,
+    StepCheckEmailComponent,
+    StepPasswordComponent,
+    StepCheckUsernameComponent
   ],
   imports: [
     ReactiveFormsModule,
