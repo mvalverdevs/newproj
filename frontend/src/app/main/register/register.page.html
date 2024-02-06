@@ -12,16 +12,43 @@
 <ion-content [fullscreen]="true">
   <app-step-check-email 
     *ngIf="current_step == CHECK_EMAIL_STEP"
-    (step)="changeStep($event)">
+    (step)="changeStep($event)"
+    (email)="selectEmail($event)"
+    >
   </app-step-check-email>
 
   <app-step-check-username
     *ngIf="current_step == CHECK_USERNAME_STEP"
     (step)="changeStep($event)"
+    (username)="selectUsername($event)"
   ></app-step-check-username>
 
-  <app-step-password
-    *ngIf="current_step == PASSWORD_STEP"
-  ></app-step-password>
+  <form 
+      [formGroup]="userForm"
+      (ngSubmit)="createUser(userForm.value)"
+      *ngIf="current_step == PASSWORD_STEP"
+  >
+    <ion-list lines="none">
+      <ion-item>
+        <ion-input
+          formControlName="first_name"
+          label="Name"
+          labelPlacement="floating"
+          fill="solid">
+        </ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input
+          formControlName="password"
+          label="Password"
+          labelPlacement="floating"
+          fill="solid">
+        </ion-input>
+      </ion-item>
+    </ion-list>
+
+    <ion-button type="submit">Save</ion-button>
+  </form>
 
 </ion-content>

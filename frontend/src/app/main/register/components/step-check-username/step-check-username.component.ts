@@ -13,6 +13,7 @@ export class StepCheckUsernameComponent  implements OnInit {
 
   checkUsernameForm: FormGroup
   @Output() step = new EventEmitter<string>();
+  @Output() username = new EventEmitter<string>();
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -37,7 +38,7 @@ export class StepCheckUsernameComponent  implements OnInit {
       next: (response) => {
         if (response.body.exists){
           this._toastController.create({
-            message: 'El correo ya existe',
+            message: 'El usuario ya existe',
             duration: 1500,
             position: 'bottom',
           }).then(
@@ -47,6 +48,7 @@ export class StepCheckUsernameComponent  implements OnInit {
           );
         }else {
           this.step.emit('password');
+          this.username.emit(username.username);
         }
       },
       error: (e) => {

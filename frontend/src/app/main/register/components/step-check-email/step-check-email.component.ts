@@ -14,6 +14,7 @@ export class StepCheckEmailComponent  implements OnInit {
   checkEmailForm: FormGroup
   emailChecked = false
   @Output() step = new EventEmitter<string>();
+  @Output() email = new EventEmitter<string>();
   
 
   constructor(
@@ -58,6 +59,7 @@ export class StepCheckEmailComponent  implements OnInit {
           this.emailChecked = true
           // AQUI METER EL CAMPO CONTRASEÑA
           this.step.emit('checkUsername');
+          this.email.emit(email.email);
         }
       },
       error: (e) => {
@@ -75,8 +77,6 @@ export class StepCheckEmailComponent  implements OnInit {
       },
       complete: () => {
         loading.dismiss();
-        // NAVIGATE TO THE APP
-        //this._router.navigate(['/...']);
       }
     });
   }
