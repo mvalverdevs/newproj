@@ -5,17 +5,17 @@ import {RegisterPage} from "./main/register/register.page";
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
+  {
     path: 'login',
     component: LoginPage
   },
   {
     path: 'register',
     component: RegisterPage
-  },
-  {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
   },
 ];
 @NgModule({

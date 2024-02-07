@@ -1,77 +1,49 @@
-import {HttpErrorResponse, HttpEvent, HttpHandlerFn, HttpRequest, HttpXsrfTokenExtractor} from '@angular/common/http';
-import {inject} from '@angular/core';
-import {AuthService} from 'src/app/auth/auth.service';
-import {catchError, Observable, throwError} from 'rxjs';
-import {Router} from "@angular/router";
-import { AuthUtils } from 'src/app/auth/auth.utils';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { catchError, Observable, tap, throwError} from 'rxjs';
+import { Router } from "@angular/router";
 
-/**
- * Intercept
- *
- * @param req
- * @param next
- */
-export const authInterceptor = (req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> => {
-    const authService = inject(AuthService);
-    // const tokenExtractor = inject(HttpXsrfTokenExtractor);
-    // const cookieService = inject(CookieService);
-    const _router = inject(Router);
+@Injectable()
+export class AuthInterceptor implements HttpInterceptor {
 
-    // Clone the request object
-    let newReq = req.clone();
+    constructor(
+        private _router: Router
+    ) {}
 
-    // const headerName = 'X-CSRFTOKEN';
-    // const respHeaderName = 'X-Csrftoken';
-    // let token = authService.accessToken as string;
-    // if (token !== null && !req.headers.has(headerName)) {
-    //     newReq = req.clone({headers: req.headers.set(respHeaderName, token)});
-    // }
+    intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+        // Get userToken from localStorage
+        let userToken = localStorage.getItem('accessToken')
 
-    // Request
-    //
-    // If the access token didn't expire, add the Authorization header.
-    // We won't add the Authorization header if the access token expired.
-    // This will force the server to return a "401 Unauthorized" response
-    // for the protected API routes which our response interceptor will
-    // catch and delete the access token from the local storage while logging
-    // the user out from the app.
-    alert('INTERCEPTOR')
-    if (authService.accessToken && authService.accessToken !== 'undefined') {
-        newReq = req.clone({
-            headers: req.headers.set('Authorization', 'Token ' + authService.accessToken),
-        });
-    }
+        if (userToken == null){
+            this._router.navigate(['/login']);
+        }
 
-
-    // Response
-    return next(newReq).pipe(
-        catchError((error) => {
-            // Catch "401 Unauthorized" responses
-            if (error instanceof HttpErrorResponse && error.status === 401) {
-                // Sign out
-                
-                // authService.signOut();
-
-                // Reload the app
-                // location.reload();
-            }else if (error instanceof HttpErrorResponse && error.status === 403){
-
-                //TODO Mirar esto bien
-                if(!_router.url.includes('/sign-in') && !_router.url.includes('/auth') ){
-                    authService.signOut();
-                    authService.user.subscribe(value=>{
-                        if(value){
-                            _router.navigateByUrl(`inici`);
-                        } else {
-                            _router.navigateByUrl(`sign-in`);
-                        }
-                    })
-                    // Reload the app
-                    // location.reload();
-                }
+        const _req = req.clone({
+            setHeaders: {
+            'Authorization': userToken!
             }
+        });
 
-            return throwError(error);
-        }),
-    );
-};
+        return next.handle(_req).pipe(
+            tap((response: HttpEvent<any>) => {
+                if (response instanceof HttpResponse) {
+                    // Get token in login request and save it in localStorage
+                    if (response.url && response.url.includes('/api/user/login/')){
+                        let userToken = response.body.token
+                        if (userToken) {
+                            localStorage.setItem('accessToken', `Token ${userToken}`);
+                        }
+                    }
+                }
+            }),
+            catchError((error) => {
+                // If response is Unauthorized redirect to login
+                if (error.status == 401){
+                    this._router.navigate(['/login']);
+                }
+                console.error(error.status)
+                return throwError(error);
+            })
+            );
+    }
+}
