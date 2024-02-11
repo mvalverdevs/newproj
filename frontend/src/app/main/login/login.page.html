@@ -33,7 +33,7 @@
       </ion-item>
     </ion-list>
 
-    <ion-button class="login-button" type="submit">Sign In</ion-button>
+    <ion-button [disabled]="!loginForm.valid" class="login-button" type="submit">Sign In</ion-button>
     ¿No tienes cuenta? <a [routerLink]="['/register']">Sign Up</a>
   </form>
 </ion-content>

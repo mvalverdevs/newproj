@@ -1,0 +1,10 @@
+<div
+  class="image"
+  (click)="takePicture()"
+  [ngStyle]="
+    {
+      'background-image':
+      'url(' + (imageUrl ? imageUrl : 'https://ionicframework.com/docs/img/demos/card-media.png') + ')'
+    }
+  ">
+</div>

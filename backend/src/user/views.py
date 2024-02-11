@@ -14,7 +14,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.exceptions import APIException
-
+from utils.serializers import EmptySerializer
 
 class UserView(ModelViewSet):
     queryset = user_models.User.objects.all()
@@ -39,13 +39,17 @@ class UserView(ModelViewSet):
             return (DjangoModelPermissions(), )
 
     @extend_schema(
-        request=user_serializers.UserLoginSerializer,
+        request=EmptySerializer,
         responses={200: user_serializers.UserSerializer}
     )
     @action(detail=False, methods=['post'])
     def logout(self, request, *args, **kwargs):
         logout(request=request)
         return Response(status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['get'])
+    def current(self, request, *args, **kwargs):
+        return Response(self.serializer_class(request.user).data)
 
     @extend_schema(
         request=user_serializers.CheckEmailSerializer,

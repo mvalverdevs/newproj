@@ -124,7 +124,7 @@ front-newapp: ## Create new frontend app, expects name argument.
 	mkdir ./frontend/src/app/main/$(name)/$(name)-retrieve/
 
 front-newcomponent: ## Create new frontend component, expects 'name' argument
-	$(DOCKER_DEV) run --rm frontend ionic generate component register/components/$(name)
+	$(DOCKER_DEV) run --rm frontend ionic generate page $(name)
 
 translate: ## Run NPM extract (translate)
 	$(DOCKER_DEV) run --rm frontend npm run extract

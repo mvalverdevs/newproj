@@ -6,14 +6,14 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
+import { Empty } from '../../models/empty';
 import { User } from '../../models/user';
-import { UserLogin } from '../../models/user-login';
 
 export interface UserLogoutCreate$Json$Params {
-      body: UserLogin
+      body?: Empty
 }
 
-export function userLogoutCreate$Json(http: HttpClient, rootUrl: string, params: UserLogoutCreate$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
+export function userLogoutCreate$Json(http: HttpClient, rootUrl: string, params?: UserLogoutCreate$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
   const rb = new RequestBuilder(rootUrl, userLogoutCreate$Json.PATH, 'post');
   if (params) {
     rb.body(params.body, 'application/json');

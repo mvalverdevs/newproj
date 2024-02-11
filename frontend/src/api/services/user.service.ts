@@ -31,6 +31,8 @@ import { userCreate$Json } from '../fn/user/user-create-json';
 import { UserCreate$Json$Params } from '../fn/user/user-create-json';
 import { userCreate$XWwwFormUrlencoded } from '../fn/user/user-create-x-www-form-urlencoded';
 import { UserCreate$XWwwFormUrlencoded$Params } from '../fn/user/user-create-x-www-form-urlencoded';
+import { userCurrentRetrieve } from '../fn/user/user-current-retrieve';
+import { UserCurrentRetrieve$Params } from '../fn/user/user-current-retrieve';
 import { userDestroy } from '../fn/user/user-destroy';
 import { UserDestroy$Params } from '../fn/user/user-destroy';
 import { userList } from '../fn/user/user-list';
@@ -503,6 +505,31 @@ export class UserService extends BaseService {
     );
   }
 
+  /** Path part for operation `userCurrentRetrieve()` */
+  static readonly UserCurrentRetrievePath = '/api/user/current/';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `userCurrentRetrieve()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  userCurrentRetrieve$Response(params?: UserCurrentRetrieve$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
+    return userCurrentRetrieve(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `userCurrentRetrieve$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  userCurrentRetrieve(params?: UserCurrentRetrieve$Params, context?: HttpContext): Observable<User> {
+    return this.userCurrentRetrieve$Response(params, context).pipe(
+      map((r: StrictHttpResponse<User>): User => r.body)
+    );
+  }
+
   /** Path part for operation `userLoginCreate()` */
   static readonly UserLoginCreatePath = '/api/user/login/';
 
@@ -593,7 +620,7 @@ export class UserService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  userLogoutCreate$Json$Response(params: UserLogoutCreate$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
+  userLogoutCreate$Json$Response(params?: UserLogoutCreate$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
     return userLogoutCreate$Json(this.http, this.rootUrl, params, context);
   }
 
@@ -603,7 +630,7 @@ export class UserService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  userLogoutCreate$Json(params: UserLogoutCreate$Json$Params, context?: HttpContext): Observable<User> {
+  userLogoutCreate$Json(params?: UserLogoutCreate$Json$Params, context?: HttpContext): Observable<User> {
     return this.userLogoutCreate$Json$Response(params, context).pipe(
       map((r: StrictHttpResponse<User>): User => r.body)
     );
@@ -615,7 +642,7 @@ export class UserService extends BaseService {
    *
    * This method sends `application/x-www-form-urlencoded` and handles request body of type `application/x-www-form-urlencoded`.
    */
-  userLogoutCreate$XWwwFormUrlencoded$Response(params: UserLogoutCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
+  userLogoutCreate$XWwwFormUrlencoded$Response(params?: UserLogoutCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
     return userLogoutCreate$XWwwFormUrlencoded(this.http, this.rootUrl, params, context);
   }
 
@@ -625,7 +652,7 @@ export class UserService extends BaseService {
    *
    * This method sends `application/x-www-form-urlencoded` and handles request body of type `application/x-www-form-urlencoded`.
    */
-  userLogoutCreate$XWwwFormUrlencoded(params: UserLogoutCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<User> {
+  userLogoutCreate$XWwwFormUrlencoded(params?: UserLogoutCreate$XWwwFormUrlencoded$Params, context?: HttpContext): Observable<User> {
     return this.userLogoutCreate$XWwwFormUrlencoded$Response(params, context).pipe(
       map((r: StrictHttpResponse<User>): User => r.body)
     );
@@ -637,7 +664,7 @@ export class UserService extends BaseService {
    *
    * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
-  userLogoutCreate$FormData$Response(params: UserLogoutCreate$FormData$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
+  userLogoutCreate$FormData$Response(params?: UserLogoutCreate$FormData$Params, context?: HttpContext): Observable<StrictHttpResponse<User>> {
     return userLogoutCreate$FormData(this.http, this.rootUrl, params, context);
   }
 
@@ -647,7 +674,7 @@ export class UserService extends BaseService {
    *
    * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
-  userLogoutCreate$FormData(params: UserLogoutCreate$FormData$Params, context?: HttpContext): Observable<User> {
+  userLogoutCreate$FormData(params?: UserLogoutCreate$FormData$Params, context?: HttpContext): Observable<User> {
     return this.userLogoutCreate$FormData$Response(params, context).pipe(
       map((r: StrictHttpResponse<User>): User => r.body)
     );

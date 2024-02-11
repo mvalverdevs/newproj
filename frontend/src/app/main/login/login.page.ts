@@ -22,10 +22,14 @@ export class LoginPage implements OnInit {
     private _loadingCtrl: LoadingController,
     private _formBuilder: FormBuilder,
     private _userService: UserService,
-    private _toastController: ToastController
+    private _toastController: ToastController,
+    private _router: Router
   ) {
     this.loginForm = this._formBuilder.group({
-      email: new FormControl('', Validators.required),
+      email: new FormControl('', [
+        Validators.required,
+        Validators.email
+      ]),
       password: new FormControl('', Validators.required)
     });
   }
@@ -57,7 +61,7 @@ export class LoginPage implements OnInit {
       complete: () => {
         loading.dismiss()
         // NAVIGATE TO THE APP
-        //this._router.navigate(['/...']);
+        this._router.navigate(['/profile']);
       }
     });
   }

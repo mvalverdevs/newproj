@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { LoadingController, ToastController } from '@ionic/angular';
 import { User } from 'src/api/models';
 import { UserService } from 'src/api/services';
@@ -23,7 +24,8 @@ export class RegisterPage implements OnInit {
     private _formBuilder: FormBuilder,
     private _userService: UserService,
     private _toastController: ToastController,
-    private _loadingCtrl: LoadingController
+    private _loadingCtrl: LoadingController,
+    private _router: Router
   ) {
     this.userForm = this._formBuilder.group({
       first_name: new FormControl('', Validators.required),
@@ -75,9 +77,34 @@ export class RegisterPage implements OnInit {
         console.error(e)
       },
       complete: () => {
-        loading.dismiss();
-        // NAVIGATE TO THE APP
-        //this._router.navigate(['/...']);
+        // Creation successfully, now login
+        this._userService.userLoginCreate$Json$Response({body:
+          {
+            email: this.userForm.get('email')!.value,
+            password: this.userForm.get('password')!.value,
+            token: -1
+          }}).subscribe({
+          next: (response) => {
+          },
+          error: (e) => {
+            this._toastController.create({
+              message: e.error,
+              duration: 1500,
+              position: 'bottom',
+            }).then(
+              (toast) => {
+                toast.present()
+              }
+            );
+            console.error(e)
+            loading.dismiss()
+          },
+          complete: () => {
+            loading.dismiss();
+            // NAVIGATE TO THE APP
+            this._router.navigate(['/profile']);
+          }
+        });
       }
     });
   }

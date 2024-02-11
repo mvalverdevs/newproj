@@ -1,0 +1,43 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+      <ion-title>
+        Profile
+      </ion-title>
+        <ion-buttons slot="end">
+            <ion-button id="profile-menu">
+                <ion-icon slot="icon-only" name="menu-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+<ion-content [fullscreen]="true">
+    <ion-action-sheet 
+        translucent="true"
+        trigger="profile-menu"
+        [buttons]="menuButtons"
+        (didDismiss)="profileMenuResult($event)"
+    ></ion-action-sheet>
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                <div
+                    class="image"
+                    [ngStyle]="
+                        {
+                        'background-image':
+                        'url(' + (imageUrl ? imageUrl : 'https://ionicframework.com/docs/img/demos/avatar.svg') + ')'
+                        }
+                    ">
+                </div>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-text>
+                    <h3 style="text-align: center;">@{{user.username}}</h3>
+                </ion-text>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+</ion-content>

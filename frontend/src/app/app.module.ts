@@ -14,7 +14,7 @@ import { ApiModule } from 'src/api/api.module';
 import { StepCheckEmailComponent } from './main/register/components/step-check-email/step-check-email.component';
 import { StepCheckUsernameComponent } from './main/register/components/step-check-username/step-check-username.component';
 import { AuthInterceptor } from './auth/auth.interceptor';
-
+import { ProfilePage } from './main/profile/profile.page';
 
 
 
@@ -24,7 +24,9 @@ import { AuthInterceptor } from './auth/auth.interceptor';
     LoginPage,
     RegisterPage,
     StepCheckEmailComponent,
-    StepCheckUsernameComponent
+    StepCheckUsernameComponent,
+    ProfilePage,
+    
   ],
   imports: [
     ReactiveFormsModule,

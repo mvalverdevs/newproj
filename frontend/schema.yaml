@@ -366,6 +366,20 @@ paths:
               schema:
                 $ref: '#/components/schemas/CheckUserResponse'
           description: ''
+  /api/user/current/:
+    get:
+      operationId: user_current_retrieve
+      tags:
+      - user
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
   /api/user/login/:
     post:
       operationId: user_login_create
@@ -403,14 +417,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserLogin'
+              $ref: '#/components/schemas/Empty'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/UserLogin'
+              $ref: '#/components/schemas/Empty'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/UserLogin'
-        required: true
+              $ref: '#/components/schemas/Empty'
       security:
       - tokenAuth: []
       - {}
@@ -524,6 +537,14 @@ components:
           format: email
       required:
       - email
+    Empty:
+      type: object
+      properties:
+        empty_data:
+          type: string
+          readOnly: true
+      required:
+      - empty_data
     PaginatedUserList:
       type: object
       properties:

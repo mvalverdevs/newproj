@@ -14,15 +14,16 @@ export class AuthInterceptor implements HttpInterceptor {
         // Get userToken from localStorage
         let userToken = localStorage.getItem('accessToken')
 
-        if (userToken == null){
-            this._router.navigate(['/login']);
-        }
+        let _req = req
 
-        const _req = req.clone({
-            setHeaders: {
-            'Authorization': userToken!
-            }
-        });
+        // If token exists it add Authorization header
+        if (userToken != null){
+            _req = req.clone({
+                setHeaders: {
+                'Authorization': userToken!
+                }
+            });
+        }
 
         return next.handle(_req).pipe(
             tap((response: HttpEvent<any>) => {
@@ -31,15 +32,16 @@ export class AuthInterceptor implements HttpInterceptor {
                     if (response.url && response.url.includes('/api/user/login/')){
                         let userToken = response.body.token
                         if (userToken) {
-                            localStorage.setItem('accessToken', `Token ${userToken}`);
+                            localStorage.setItem('accessToken', `Token ${userToken}`)
                         }
                     }
                 }
             }),
             catchError((error) => {
-                // If response is Unauthorized redirect to login
+                // If response is Unauthorized redirect to login and remove token
                 if (error.status == 401){
-                    this._router.navigate(['/login']);
+                    localStorage.removeItem('accessToken')
+                    this._router.navigate(['/login'])
                 }
                 console.error(error.status)
                 return throwError(error);
